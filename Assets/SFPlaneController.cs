@@ -8,10 +8,17 @@ public class SFPlaneController : MonoBehaviour
     private PlayerInput input;
     private Rigidbody rb;
 
+
+    [SerializeField] private Transform debugCube;
+
+    public Vector3 ForwardPosition { get => transform.position + transform.forward * 10f;  }
+
     void Awake()
     {
         input = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
+
+        debugCube.position = ForwardPosition;
     }
 
     void FixedUpdate()
@@ -22,29 +29,75 @@ public class SFPlaneController : MonoBehaviour
         if (input) RotatePlane();
     }
 
-    public void RotatePlane()
+    private void Update()
     {
-        //rb.AddRelativeTorque(new Vector3(input.y * settings.verticalTurnSpeed, 0, -input.x * settings.horizontalTurnSpeed), ForceMode.VelocityChange);
-
+        Vector3 nextPos = ForwardPosition;
+        float speed;
         if (input.Direction != Vector2.zero)
         {
-            // rotate towards direction
-            rb.AddRelativeTorque(new Vector3(input.Vertical, input.Horizontal, 0) * settings.globalTurnSpeed, ForceMode.VelocityChange);
-        
+            nextPos = debugCube.position + new Vector3(input.Direction.x, input.Direction.y, 0);
+
+            if (Vector3.Distance(nextPos, ForwardPosition) >= 15f) nextPos = debugCube.position;
+
+            speed = 20f;
         }
         else
         {
-            Quaternion deltaQuat = Quaternion.FromToRotation(rb.transform.forward, Vector3.forward);
+            Vector3 dir = (ForwardPosition - debugCube.position).normalized;
+            nextPos = debugCube.position + dir;
+            speed = 15f;
+        }
 
-            Vector3 axis;
-            float angle;
-            deltaQuat.ToAngleAxis(out angle, out axis);
+        //nextPos = Vector3.ClampMagnitude(nextPos, 5f);
+        debugCube.position = Vector3.Lerp(debugCube.position, nextPos, speed * Time.deltaTime);
+    }
 
-            rb.AddTorque(-rb.angularVelocity * settings.dampenFactor, ForceMode.Acceleration);
+    public void RotatePlane()
+    {
+        if (input.Direction != Vector2.zero)
+        {
+            //Vector3 torque = new Vector3(input.Vertical * settings.verticalTurnSpeed, input.Horizontal * settings.horizontalTurnSpeed, 0);
 
-            rb.AddTorque(axis.normalized * angle * settings.adjustFactor, ForceMode.Acceleration);
+            //if (Mathf.Abs(WrapAngle(transform.eulerAngles.x)) >= 50f)
+            //{
+            //    torque.x = 0;
+            //    rb.angularVelocity = new Vector3(0, rb.angularVelocity.y, rb.angularVelocity.z);
+            //}
+            //rb.AddRelativeTorque(torque, ForceMode.VelocityChange);
+        }
+        else
+        {
+            //rb.AddTorque(-rb.angularVelocity * settings.dampenFactor, ForceMode.Acceleration);
+            //StabilizePlaneUp();
         }
 
         rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, settings.maxAngularVelocity);
+    }
+
+    //private void StabilizePlaneForward()
+    //{
+    //    Quaternion deltaQuat = Quaternion.FromToRotation(rb.transform.forward, Vector3.forward);
+    //    Vector3 axis;
+    //    float angle;
+    //    deltaQuat.ToAngleAxis(out angle, out axis);
+    //    rb.AddTorque(axis.normalized * angle * settings.adjustFactor, ForceMode.Acceleration);
+    //}
+
+    private void StabilizePlaneUp()
+    {
+        Quaternion deltaQuat = Quaternion.FromToRotation(rb.transform.up, Vector3.up);
+        Vector3 axis;
+        float angle;
+        deltaQuat.ToAngleAxis(out angle, out axis);
+        rb.AddTorque(axis.normalized * angle * settings.adjustFactor, ForceMode.Acceleration);
+    }
+
+    private static float WrapAngle(float angle)
+    {
+        angle %= 360;
+        if (angle > 180)
+            return angle - 360;
+
+        return angle;
     }
 }
