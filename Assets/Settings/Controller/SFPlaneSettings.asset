@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f99ba694a4c8cb44bbd3970629e8090, type: 3}
   m_Name: SFPlaneSettings
   m_EditorClassIdentifier: 
-  forwardSpeed: 100
+  forwardSpeed: 50
   maxVelocity: 100
   maxAngularVelocity: 2
   horizontalTurnSpeed: 4
   verticalTurnSpeed: 0.75
+  globalTurnSpeed: 3
+  dampenFactor: 5
+  adjustFactor: 10
   maxTurn: 0

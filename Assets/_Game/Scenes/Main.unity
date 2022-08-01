@@ -1823,6 +1823,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <controller>k__BackingField: {fileID: 0}
+--- !u!114 &1400558041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400558035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0996d47424a1f7e4fb41e7fee74b6ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 6211ed95906b4244cb47286321d8c013, type: 2}
 --- !u!1001 &1419707829
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2441,7 +2454,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &6978379268860981513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2647,6 +2660,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2419146915237216312, guid: 1f6b4ba1b31e0224e87da349eed32f8e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044795639066213371, guid: 1f6b4ba1b31e0224e87da349eed32f8e, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
