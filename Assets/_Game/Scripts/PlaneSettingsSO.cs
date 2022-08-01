@@ -8,5 +8,12 @@ public class PlaneSettingsSO : ScriptableObject
     public float maxAngularVelocity;
     public float horizontalTurnSpeed;
     public float verticalTurnSpeed;
+
+    public float globalTurnSpeed;
+
+    //back to standard rotation
+    public float dampenFactor;
+    public float adjustFactor;
+
     public float maxTurn;
 }
