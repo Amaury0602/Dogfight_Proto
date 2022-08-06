@@ -11,14 +11,16 @@ public class SFPlaneController : MonoBehaviour
 
     [SerializeField] private Transform debugCube;
 
-    public Vector3 ForwardPosition { get => transform.position + transform.forward * 10f;  }
+    public Vector3 AimCenter { get => transform.position + transform.forward * 20f;  }
+
+    [SerializeField] private Transform center;
 
     void Awake()
     {
         input = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
 
-        debugCube.position = ForwardPosition;
+        debugCube.position = AimCenter;
     }
 
     void FixedUpdate()
@@ -26,29 +28,44 @@ public class SFPlaneController : MonoBehaviour
         rb.AddForce(transform.forward * settings.forwardSpeed, ForceMode.VelocityChange);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, settings.maxVelocity);
 
-        if (input) RotatePlane();
+
+        RotateTowardsAim();
+        //if (input) RotatePlane();
     }
 
     private void Update()
     {
-        Vector3 nextPos = ForwardPosition;
-        float speed;
+        
+        Vector3 nextPos = debugCube.position;
+        float speed = 0f;
         if (input.Direction != Vector2.zero)
         {
-            nextPos = debugCube.position + new Vector3(input.Direction.x, input.Direction.y, 0);
+            center.position = AimCenter;
+            //debugCube.position = center.position + center.TransformDirection(Vector3.right * 15f);
+            Vector3 inputDir = new Vector3(input.Direction.x, input.Direction.y, 0);
 
-            if (Vector3.Distance(nextPos, ForwardPosition) >= 15f) nextPos = debugCube.position;
 
-            speed = 20f;
+            nextPos = center.position + center.TransformDirection(inputDir * 5f);
+            Vector3 v = nextPos - AimCenter;
+            v = Vector3.ClampMagnitude(v, 20f);
+
+            nextPos = AimCenter + v;
+
+            //if (Vector3.Distance(nextPos, AimCenter) >= 15f) nextPos = debugCube.position;
+
+            //speed = 100f;
+            speed = 5f;
+
+
         }
-        else
+        else 
         {
-            Vector3 dir = (ForwardPosition - debugCube.position).normalized;
+            Vector3 targetPos = new Vector3(debugCube.position.x, transform.position.y, debugCube.position.z);
+            Vector3 dir = targetPos - debugCube.position;
             nextPos = debugCube.position + dir;
-            speed = 15f;
+            speed = 10f;
         }
 
-        //nextPos = Vector3.ClampMagnitude(nextPos, 5f);
         debugCube.position = Vector3.Lerp(debugCube.position, nextPos, speed * Time.deltaTime);
     }
 
@@ -72,6 +89,12 @@ public class SFPlaneController : MonoBehaviour
         }
 
         rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, settings.maxAngularVelocity);
+    }
+
+    private void RotateTowardsAim()
+    {
+        Quaternion rotation = Quaternion.LookRotation(debugCube.position - rb.position);
+        rb.rotation = rotation;
     }
 
     //private void StabilizePlaneForward()
