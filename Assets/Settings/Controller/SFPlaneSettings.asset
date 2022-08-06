@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SFPlaneSettings
   m_EditorClassIdentifier: 
   forwardSpeed: 0
-  maxVelocity: 100
+  maxVelocity: 0
   maxAngularVelocity: 2
   horizontalTurnSpeed: 2
   verticalTurnSpeed: 1.5
