@@ -24,7 +24,7 @@ public class PlaneCamera : MonoBehaviour
 
         //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRot), rotateSpeed * Time.deltaTime);
 
-        Vector3 targetPos = target.position + offSet;
+        Vector3 targetPos = target.position + target.TransformDirection(offSet);
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
 

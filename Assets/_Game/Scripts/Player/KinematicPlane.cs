@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class KinematicPlane : MonoBehaviour
@@ -16,6 +17,8 @@ public class KinematicPlane : MonoBehaviour
     [SerializeField] private Transform[] guns;
 
     [SerializeField] private Transform aimPoint;
+    [SerializeField] private Transform secondAimPoint;
+    [SerializeField] private float maxMagnitude;
 
 
 
@@ -25,16 +28,19 @@ public class KinematicPlane : MonoBehaviour
         input = GetComponent<PlayerInput>();
     }
 
+
+    private float mouseDelta = 0f;
+    private Vector2 prevPos = Vector2.zero;
     private void Update()
     {
-        Vector3 rotMovement = new Vector3(transform.eulerAngles.x  + input.Direction.y, transform.eulerAngles.y + input.Direction.x, 0);
+        //Vector3 rotMovement = new Vector3(transform.eulerAngles.x  + input.Direction.y, transform.eulerAngles.y + input.Direction.x, 0);
+        Vector3 rotMovement = new Vector3(transform.eulerAngles.x  + input.MouseDelta.y, transform.eulerAngles.y + input.MouseDelta.x, 0);
 
         Quaternion rot2 = Quaternion.identity;
         if (input.Direction.y == 0)
         {
             //float angle = Vector3.Angle(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
             //if (transform.forward.y < 0) angle = -angle;
-            rot2 = Quaternion.FromToRotation(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
         }
 
         transform.rotation = Quaternion.Lerp(transform.rotation, rot2 * Quaternion.Euler(rotMovement), rotSpeed * Time.deltaTime);
@@ -42,15 +48,36 @@ public class KinematicPlane : MonoBehaviour
 
         transform.position += transform.forward * Time.deltaTime * moveSpeed;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             for (int i = 0; i < guns.Length; i++)
             {
-                Projectile newProjectile = Instantiate(laserPrefab, guns[i].position, Quaternion.LookRotation(guns[i].forward));
-                Vector3 direction = aimPoint.position - newProjectile.transform.position;
+                Vector3 direction = secondAimPoint.position - guns[i].position;
+                Projectile newProjectile = Instantiate(laserPrefab, guns[i].position, Quaternion.LookRotation(direction));
                 newProjectile.SetDirection(direction.normalized);
             }
         }
 
+
+        MoveSecondAimPoint();
+    }
+
+    private void MoveSecondAimPoint()
+    {
+        Vector3 aimPos;
+        if (input.Direction != Vector2.zero)
+        {
+            aimPos = secondAimPoint.localPosition + new Vector3(input.Direction.x, -input.Direction.y, 0);
+        }
+        else
+        {
+            aimPos = Vector3.zero;
+        }
+
+        aimPos = Vector3.ClampMagnitude(aimPos, maxMagnitude);
+
+        aimPos.z = aimPoint.forward.z + 10f;
+
+        secondAimPoint.localPosition = Vector3.Lerp(secondAimPoint.localPosition, aimPos, 15f * Time.deltaTime);
     }
 }
