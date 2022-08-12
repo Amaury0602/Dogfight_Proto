@@ -15,7 +15,7 @@ MonoBehaviour:
   forwardSpeed: 20
   maxVelocity: 20
   maxAngularVelocity: 2
-  horizontalTurnSpeed: 5
+  horizontalTurnSpeed: 15
   verticalTurnSpeed: 1
   globalTurnSpeed: 3
   dampenFactor: 1
