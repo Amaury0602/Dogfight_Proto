@@ -12,6 +12,11 @@ public class KinematicPlane : MonoBehaviour
 
     [SerializeField] private Transform planeChild;
 
+    [SerializeField] private Projectile laserPrefab;
+    [SerializeField] private Transform[] guns;
+
+    [SerializeField] private Transform aimPoint;
+
 
 
     private void Awake()
@@ -36,6 +41,16 @@ public class KinematicPlane : MonoBehaviour
 
 
         transform.position += transform.forward * Time.deltaTime * moveSpeed;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            for (int i = 0; i < guns.Length; i++)
+            {
+                Projectile newProjectile = Instantiate(laserPrefab, guns[i].position, Quaternion.LookRotation(guns[i].forward));
+                Vector3 direction = aimPoint.position - newProjectile.transform.position;
+                newProjectile.SetDirection(direction.normalized);
+            }
+        }
 
     }
 }
