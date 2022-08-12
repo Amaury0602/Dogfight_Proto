@@ -25,7 +25,6 @@ public class PlaneCamera : MonoBehaviour
         //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRot), rotateSpeed * Time.deltaTime);
 
         Vector3 targetPos = target.position + offSet;
-        targetPos.z = transform.position.z;
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
 
@@ -35,9 +34,15 @@ public class PlaneCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 pos = transform.position;
-        //pos.x = Mathf.Clamp(pos.x, -minMaxPosition.x, minMaxPosition.x);
-        pos.y = Mathf.Clamp(pos.y, 0, minMaxPosition.y);
-        transform.position = pos;
+        //Vector3 pos = transform.position;
+        ////pos.x = Mathf.Clamp(pos.x, -minMaxPosition.x, minMaxPosition.x);
+        //pos.y = Mathf.Clamp(pos.y, 0, minMaxPosition.y);
+        //transform.position = pos;
+
+        Vector3 planeForward = target.position + target.forward * 20f;
+
+        Vector3 lookDir = planeForward - transform.position;
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir), rotateSpeed * Time.deltaTime);
     }
 }

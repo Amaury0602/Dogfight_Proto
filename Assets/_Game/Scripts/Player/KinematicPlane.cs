@@ -12,6 +12,8 @@ public class KinematicPlane : MonoBehaviour
 
     [SerializeField] private Transform planeChild;
 
+
+
     private void Awake()
     {
         cam = Camera.main;
@@ -20,24 +22,20 @@ public class KinematicPlane : MonoBehaviour
 
     private void Update()
     {
-        if (input.Direction == Vector2.zero) return;
+        Vector3 rotMovement = new Vector3(transform.eulerAngles.x  + input.Direction.y, transform.eulerAngles.y + input.Direction.x, 0);
 
-        transform.position += new Vector3(input.Direction.x, input.Direction.y, 0) * moveSpeed * Time.deltaTime;
+        Quaternion rot2 = Quaternion.identity;
+        if (input.Direction.y == 0)
+        {
+            //float angle = Vector3.Angle(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
+            //if (transform.forward.y < 0) angle = -angle;
+            rot2 = Quaternion.FromToRotation(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
+        }
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot2 * Quaternion.Euler(rotMovement), rotSpeed * Time.deltaTime);
 
 
-        Vector3 viewPortPos = cam.WorldToViewportPoint(transform.position);
-        Vector3 rot = Vector3.up * rotSpeed * viewPortPos.x * Time.deltaTime;
+        transform.position += transform.forward * Time.deltaTime * moveSpeed;
 
-        transform.Rotate(rot, Space.World);
-
-        //ClampPositionInViewPort();
-    }
-
-    private void ClampPositionInViewPort()
-    {
-        Vector3 pos = cam.WorldToViewportPoint(planeChild.position);
-        pos.x = Mathf.Clamp01(pos.x);
-        pos.y = Mathf.Clamp01(pos.y);
-        planeChild.position = cam.ViewportToWorldPoint(pos);
     }
 }
