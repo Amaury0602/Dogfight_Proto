@@ -74,7 +74,7 @@ public class KinematicPlane : MonoBehaviour
         else
         {
             childRot = new Vector3(0, 0, planeChild.localEulerAngles.z - input.Direction.x);
-            speed = rotSpeed;
+            speed = rotSpeed * 2f;
         }
 
         childRot.z = ClampAngle(childRot.z, -50, 50f);
