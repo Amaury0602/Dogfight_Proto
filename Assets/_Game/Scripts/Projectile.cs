@@ -17,7 +17,7 @@ public class Projectile : MonoBehaviour
     {
         if (currentDirection == Vector3.zero) return;
 
-        transform.position += currentDirection * 500f * Time.deltaTime;
+        transform.position += currentDirection * 2500f * Time.deltaTime;
     }
 
     private IEnumerator DestroyAfterDelay(float delay)

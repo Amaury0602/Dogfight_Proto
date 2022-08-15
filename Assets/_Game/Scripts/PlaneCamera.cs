@@ -7,6 +7,7 @@ public class PlaneCamera : MonoBehaviour
 
     [SerializeField] private Vector3 offSet;
     [SerializeField] private Transform target;
+    [SerializeField] private Transform rotTarget;
     [SerializeField] private float followSpeed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private float smoothTime;
@@ -39,7 +40,7 @@ public class PlaneCamera : MonoBehaviour
         //pos.y = Mathf.Clamp(pos.y, 0, minMaxPosition.y);
         //transform.position = pos;
 
-        Vector3 planeForward = target.position + target.forward * 20f;
+        Vector3 planeForward = rotTarget.position + rotTarget.forward * 20f;
 
         Vector3 lookDir = planeForward - transform.position;
 
