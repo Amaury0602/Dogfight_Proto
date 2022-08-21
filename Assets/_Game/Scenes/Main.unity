@@ -1755,7 +1755,7 @@ MonoBehaviour:
   target: {fileID: 1717858631}
   rotTarget: {fileID: 1048020643}
   followSpeed: 10
-  xOffsetSpeed: 20
+  xOffsetSpeed: 5
   rotateSpeed: 3
   smoothTime: 0.2
   minMaxPosition: {x: 5, y: 150}

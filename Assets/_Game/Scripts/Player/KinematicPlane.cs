@@ -47,6 +47,9 @@ public class KinematicPlane : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, rot2 * Quaternion.Euler(rotMovement), rotSpeed * Time.deltaTime);
 
 
+        float xRot = ClampAngle(transform.eulerAngles.x, -85f, 85f);
+        transform.eulerAngles = new Vector3(xRot, transform.eulerAngles.y, transform.eulerAngles.z);
+
         transform.position += transform.forward * Time.deltaTime * moveSpeed;
 
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
