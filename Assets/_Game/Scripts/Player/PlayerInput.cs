@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
+    public static PlayerInput i;
 
     public float Horizontal { get => Input.GetAxisRaw("Horizontal"); }
     public float Vertical { get => Input.GetAxisRaw("Vertical"); }
@@ -12,6 +13,12 @@ public class PlayerInput : MonoBehaviour
     public Vector3 MouseDelta { get; private set; }
 
     private Vector3 prevPos = Vector2.zero;
+
+    private void Awake()
+    {
+        i = this;
+    }
+
     private void Update()
     {
         MouseDelta = (Input.mousePosition - prevPos).normalized;
