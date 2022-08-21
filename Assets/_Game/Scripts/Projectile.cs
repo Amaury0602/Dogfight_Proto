@@ -29,17 +29,22 @@ public class Projectile : MonoBehaviour
 
         transform.position += currentDirection * 2500f * Time.deltaTime;
 
-        if (Physics.Linecast(prevPos, transform.position, notPlayerLayer))
+        if (Physics.Linecast(prevPos, transform.position, out RaycastHit hit, notPlayerLayer))
         {
-            Hit();
+            if (!isHit) Hit(hit);
         }
 
         prevPos = transform.position;
     }
 
-    private void Hit()
+    private void Hit(RaycastHit hitInfo)
     {
         isHit = true;
+        transform.position = hitInfo.point;
+
+        IHittable hittable = hitInfo.collider.GetComponentInParent<IHittable>();
+        if (hittable != null) hittable.GetHit();
+
         StopCoroutine(destroyRoutine);
         smokeFX.Play();
         Destroy(gameObject, 5f);

@@ -9,6 +9,7 @@ public class PlaneCamera : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private Transform rotTarget;
     [SerializeField] private float followSpeed;
+    [SerializeField] private float xOffsetSpeed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private float smoothTime;
     private Vector3 velocity = Vector3.zero;
@@ -39,6 +40,15 @@ public class PlaneCamera : MonoBehaviour
         ////pos.x = Mathf.Clamp(pos.x, -minMaxPosition.x, minMaxPosition.x);
         //pos.y = Mathf.Clamp(pos.y, 0, minMaxPosition.y);
         //transform.position = pos;
+
+        Vector3 input = PlayerInput.i.Direction;
+
+        float movement = input.x == 0 ? -offSet.x : input.x;
+
+        offSet += Vector3.right * movement * xOffsetSpeed * Time.deltaTime;
+
+        offSet.x = Mathf.Clamp(offSet.x, -15, 15);
+
 
         Vector3 planeForward = rotTarget.position + rotTarget.forward * 20f;
 
