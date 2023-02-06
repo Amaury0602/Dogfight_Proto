@@ -16,6 +16,7 @@ public class KinematicPlane : MonoBehaviour
 
     [SerializeField] private Transform aimPoint;
     [SerializeField] private Transform secondAimPoint;
+    [SerializeField] private Transform middlePoint;
     [SerializeField] private float maxMagnitude;
 
 
@@ -45,6 +46,9 @@ public class KinematicPlane : MonoBehaviour
 
         transform.rotation = Quaternion.Lerp(transform.rotation, rot2 * Quaternion.Euler(rotMovement), rotSpeed * Time.deltaTime);
 
+
+        float xRot = ClampAngle(transform.eulerAngles.x, -85f, 85f);
+        transform.eulerAngles = new Vector3(xRot, transform.eulerAngles.y, transform.eulerAngles.z);
 
         transform.position += transform.forward * Time.deltaTime * moveSpeed;
 
@@ -77,7 +81,7 @@ public class KinematicPlane : MonoBehaviour
             speed = rotSpeed * 2f;
         }
 
-        childRot.z = ClampAngle(childRot.z, -50, 50f);
+        childRot.z = ClampAngle(childRot.z, -60f, 60f);
 
         planeChild.localRotation = Quaternion.Lerp(planeChild.localRotation, Quaternion.Euler(childRot), speed* Time.deltaTime);
     }
@@ -102,6 +106,9 @@ public class KinematicPlane : MonoBehaviour
         aimPos.z = aimPoint.forward.z + 10f;
 
         secondAimPoint.localPosition = Vector3.Lerp(secondAimPoint.localPosition, aimPos, aimSpeed * Time.deltaTime);
+
+        middlePoint.position = Vector3.Lerp(aimPoint.position, secondAimPoint.position, 0.6f);
+
     }
 
     float ClampAngle(float angle, float from, float to)
