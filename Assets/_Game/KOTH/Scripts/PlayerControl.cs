@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _maxRadiusMove;
