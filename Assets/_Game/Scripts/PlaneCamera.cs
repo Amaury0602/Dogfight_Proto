@@ -36,24 +36,35 @@ public class PlaneCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        //Vector3 pos = transform.position;
-        ////pos.x = Mathf.Clamp(pos.x, -minMaxPosition.x, minMaxPosition.x);
-        //pos.y = Mathf.Clamp(pos.y, 0, minMaxPosition.y);
-        //transform.position = pos;
-
-        Vector3 input = PlayerInput.i.Direction;
-
-        float movement = input.x == 0 ? -offSet.x : input.x;
-
-        offSet += Vector3.right * movement * xOffsetSpeed * Time.deltaTime;
-
-        offSet.x = Mathf.Clamp(offSet.x, -15, 15);
-
-
         Vector3 planeForward = rotTarget.position + rotTarget.forward * 20f;
 
         Vector3 lookDir = planeForward - transform.position;
 
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir), rotateSpeed * Time.deltaTime);
+        
+        
+        //offset on X axis when player turns right or left
+        LateralOffsetFollow();
+    }
+
+    private void LateralOffsetFollow()
+    {
+        Vector3 input = PlayerInput.i.Direction;
+        float movement = 0f;
+        float offSpeed = xOffsetSpeed;
+        if (input.x == 0)
+        {
+            movement = -offSet.x;
+            offSpeed = xOffsetSpeed;
+        }
+        else
+        {
+            movement = input.x;
+            offSpeed = xOffsetSpeed * 3f;
+        }
+
+        offSet += Vector3.right * movement * offSpeed * Time.deltaTime;
+
+        offSet.x = Mathf.Clamp(offSet.x, -15, 15);
     }
 }
