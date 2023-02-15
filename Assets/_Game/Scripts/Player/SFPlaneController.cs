@@ -85,7 +85,7 @@ public class SFPlaneController : MonoBehaviour
         }
         else
         {
-            //rb.AddTorque(-rb.angularVelocity * settings.dampenFactor, ForceMode.Acceleration);
+                    //rb.AddTorque(-rb.angularVelocity * settings.dampenFactor, ForceMode.Acceleration);
             //StabilizePlaneUp();
         }
 
