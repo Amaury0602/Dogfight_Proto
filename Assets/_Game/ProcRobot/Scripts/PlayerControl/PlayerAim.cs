@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerAim : MonoBehaviour
 {
+    [field: SerializeField] public WeaponBase CurrentWeapon { get; private set; } = default;
+    
     private PlayerHandler _player;
 
-    [SerializeField] private Transform _aimingArm;
+    //[SerializeField] private Transform _aimingArm;
+
     [SerializeField] private Transform _headTransform;
+
 
     private bool _aim = false;
 
@@ -15,12 +20,11 @@ public class PlayerAim : MonoBehaviour
 
     public Vector3 Direction { get; private set; }
 
-
     [SerializeField] private LayerMask _aimDetectionLayer;
 
     [SerializeField] private Transform _debugCube;
 
-    public Action OnShoot = default;
+    public Action<RaycastHit> OnShoot = default;
 
     private Quaternion _startArmRotation;
     private Quaternion _startHeadRotation;
@@ -29,43 +33,41 @@ public class PlayerAim : MonoBehaviour
     {
         _cam = Camera.main;
 
-        _startArmRotation = _aimingArm.localRotation;
         _startHeadRotation = _headTransform.localRotation;
 
         _player = GetComponent<PlayerHandler>();
         _player.OnAimDown += AimIn;
         _player.OnAimUp += AimOut;
+
+
+        if (CurrentWeapon) CurrentWeapon.OnEquipped(this);
     }
+
     private void AimIn()
     {
         _aim = true;
         StartCoroutine(Aim());
     }
 
-
     private IEnumerator Aim()
     {
         while(_aim)
         {
-
-
             if (ShootRayToMousePosition(out RaycastHit hit))
             {
-                Direction = (hit.point - _aimingArm.position).normalized;
+                Direction = (hit.point - CurrentWeapon.WeaponTransform.position).normalized;
 
-                _aimingArm.forward = Direction;
+                CurrentWeapon.WeaponTransform.forward = Direction;
                 _headTransform.forward = Direction;
             }
 
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
             {
                 ShootRayFromArm();
             }
             yield return null;
         }
-
     }
-
 
     private bool ShootRayToMousePosition(out RaycastHit mouseHit)
     {
@@ -84,17 +86,17 @@ public class PlayerAim : MonoBehaviour
 
     private void ShootRayFromArm()
     {
-        OnShoot?.Invoke();
-        if (Physics.Raycast(_aimingArm.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: _aimDetectionLayer))
+        if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: _aimDetectionLayer))
         {
             _debugCube.position = hit.point;
+            OnShoot?.Invoke(hit);
         }    
     }
 
     private void AimOut()
     {
         _aim = false;
-        _aimingArm.localRotation = _startArmRotation;
+        CurrentWeapon.WeaponTransform.localRotation = _startArmRotation;
         _headTransform.localRotation = _startHeadRotation;
     }
 
