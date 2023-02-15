@@ -362,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aecbce407e2e67346920aa7f6612c2d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <CurrentWeapon>k__BackingField: {fileID: 816586877}
+  <CurrentWeapon>k__BackingField: {fileID: 931257982}
   _headTransform: {fileID: 1705230916}
   _aimDetectionLayer:
     serializedVersion: 2
