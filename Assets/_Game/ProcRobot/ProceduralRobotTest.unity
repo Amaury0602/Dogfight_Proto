@@ -3937,13 +3937,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   _lookTransform: {fileID: 302460141}
-  _numberOfRays: 10
+  _numberOfRays: 15
   _angle: 110
   _rayDistance: 50
   _hideMask:
     serializedVersion: 2
-    m_Bits: 4294967295
-  _navHitRadius: 1
+    m_Bits: 126
+  _navHitRadius: 2.5
 --- !u!195 &1277450316
 NavMeshAgent:
   m_ObjectHideFlags: 0
