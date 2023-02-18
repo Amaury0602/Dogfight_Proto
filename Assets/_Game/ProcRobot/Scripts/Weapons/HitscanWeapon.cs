@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HitscanWeapon : WeaponBase
 {
+    [SerializeField] private AmmunitionData _bulletData;
     protected override void Shoot(RaycastHit hit)
     {
         base.Shoot(hit);
@@ -12,7 +11,7 @@ public class HitscanWeapon : WeaponBase
         if (shootable != null)
         {
             Vector3 dir = hit.point - WeaponTransform.position;
-            shootable.Shoot(dir.normalized);
+            shootable.OnShot(dir.normalized, _bulletData);
         }
     }
 }

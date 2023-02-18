@@ -1,10 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-public class ProjectileBase : MonoBehaviour
+public class ProjectileBase : AmmunitionBase
 {
-
     [SerializeField] protected float _moveSpeed;
+
+    private void Awake()
+    {
+        Data.Type = AmmunitionType.Projectile;
+    }
 
     public virtual void OnWeaponFire(Vector3 target)
     {

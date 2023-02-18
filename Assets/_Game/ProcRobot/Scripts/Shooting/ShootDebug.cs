@@ -14,7 +14,7 @@ public class ShootDebug : MonoBehaviour, IShootable
         _startPosition = transform.position;
     }
 
-    public void Shoot(Vector3 dir)
+    public void OnShot(Vector3 dir, AmmunitionData data)
     {
         transform.DOKill();
         transform.localScale = _startScale;

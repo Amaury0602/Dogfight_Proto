@@ -1,15 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using DG.Tweening;
 
 public class PlayerAim : MonoBehaviour
 {
     [field: SerializeField] public WeaponBase CurrentWeapon { get; private set; } = default;
     
     private PlayerHandler _player;
-
-    //[SerializeField] private Transform _aimingArm;
 
     [SerializeField] private Transform _headTransform;
 
@@ -88,7 +85,7 @@ public class PlayerAim : MonoBehaviour
     {
         if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: _aimDetectionLayer))
         {
-            _debugCube.position = hit.point;
+            if (_debugCube) _debugCube.position = hit.point;
             OnShoot?.Invoke(hit);
         }    
     }

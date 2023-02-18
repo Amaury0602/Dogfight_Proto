@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IShootable 
 {
-    public void Shoot(Vector3 dir);
+    public void OnShot(Vector3 dir, AmmunitionData data);
 }

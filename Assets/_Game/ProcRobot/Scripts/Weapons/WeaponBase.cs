@@ -6,6 +6,10 @@ public abstract class WeaponBase : MonoBehaviour
 {
     [field: SerializeField] public Transform WeaponTransform { get; private set; } = default;
 
+    [SerializeField] protected Transform _cannon;
+
+    [SerializeField] protected ParticleSystem _muzzleFlash;
+
     [SerializeField] protected float _fireCD;
     [SerializeField] protected float _recoil;
     protected bool _canShoot;
@@ -40,6 +44,8 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected virtual void Shoot(RaycastHit hit)
     {
+        if (_muzzleFlash) _muzzleFlash.Emit(3);
+
         WeaponTransform.DOKill();
         WeaponTransform.localPosition = _startLocalPosition;
         WeaponTransform
