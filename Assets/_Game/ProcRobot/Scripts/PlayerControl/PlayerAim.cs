@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerAim : MonoBehaviour
+public class PlayerAim : ShooterBase
 {
     [field: SerializeField] public WeaponBase CurrentWeapon { get; private set; } = default;
     
@@ -21,7 +21,7 @@ public class PlayerAim : MonoBehaviour
 
     [SerializeField] private Transform _debugCube;
 
-    public Action<RaycastHit> OnShoot = default;
+    public override Action<RaycastHit> OnShoot { get; set; }
 
     private Quaternion _startArmRotation;
     private Quaternion _startHeadRotation;

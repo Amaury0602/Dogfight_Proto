@@ -4,6 +4,9 @@ using UnityEngine;
 public class ProjectileBase : AmmunitionBase
 {
     [SerializeField] protected float _moveSpeed;
+    private Vector3 _lastPos = default;
+
+    private float _timer;
 
     private void Awake()
     {
@@ -17,12 +20,22 @@ public class ProjectileBase : AmmunitionBase
 
     protected virtual IEnumerator FlyTowardsTarget(Vector3 target)
     {
+        _timer = 5f;
+        _lastPos = transform.position;
         Vector3 dir = target - transform.position;
-        while (dir.sqrMagnitude > 1f)
+        while (_timer >= 0)
         {
             transform.position += dir.normalized * _moveSpeed * Time.deltaTime;
 
-            dir = target - transform.position;
+            if (Physics.Linecast(_lastPos, transform.position, out RaycastHit hit))
+            {
+                ReachedTarget();
+                yield break;
+            }
+
+            _timer -= Time.deltaTime;
+
+            _lastPos = transform.position;
 
             yield return null;
         }

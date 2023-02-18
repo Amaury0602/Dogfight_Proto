@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RocketProjectile : ProjectileBase
 {
-    private WaitForSeconds _waitDelay = new WaitForSeconds(0.75f);
+    private WaitForSeconds _waitDelay = new WaitForSeconds(0.25f);
 
     protected override IEnumerator FlyTowardsTarget(Vector3 target)
     {

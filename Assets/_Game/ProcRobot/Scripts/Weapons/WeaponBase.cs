@@ -22,13 +22,13 @@ public abstract class WeaponBase : MonoBehaviour
         _startLocalPosition = WeaponTransform.localPosition;
     }
 
-    public virtual void OnEquipped(PlayerAim shooter)
+    public virtual void OnEquipped(ShooterBase shooter)
     {
         _canShoot = true;
         shooter.OnShoot += TryShoot;
     }
 
-    public virtual void OnUnequipped(PlayerAim shooter)
+    public virtual void OnUnequipped(ShooterBase shooter)
     {
         shooter.OnShoot -= TryShoot;
     }
