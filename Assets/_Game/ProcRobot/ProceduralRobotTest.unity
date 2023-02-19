@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HumanEnemy (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1777289791207366181, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -240,6 +244,10 @@ PrefabInstance:
     - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_Name
       value: HumanEnemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1777289791207366181, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_RootOrder
@@ -720,6 +728,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HumanEnemy (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1777289791207366181, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_RootOrder
       value: 17
@@ -1184,6 +1196,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HumanEnemy (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1777289791207366181, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -1260,6 +1276,10 @@ PrefabInstance:
     - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_Name
       value: HumanEnemy (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1777289791207366181, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_RootOrder
@@ -1606,6 +1626,10 @@ PrefabInstance:
     - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_Name
       value: HumanEnemy (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1777289791207366181, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_RootOrder
@@ -2351,6 +2375,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HumanEnemy (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1777289791207366181, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -2505,6 +2533,10 @@ PrefabInstance:
     - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_Name
       value: HumanEnemy (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1777289791207366181, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_RootOrder
@@ -2944,7 +2976,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1277450314
 Transform:
   m_ObjectHideFlags: 0
@@ -3637,6 +3669,10 @@ PrefabInstance:
     - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_Name
       value: HumanEnemy (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777289791207366180, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1777289791207366181, guid: 5c05e3a0d3d621448905618d1b5afcf9, type: 3}
       propertyPath: m_RootOrder
