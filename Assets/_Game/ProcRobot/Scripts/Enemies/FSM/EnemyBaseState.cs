@@ -9,15 +9,18 @@ public abstract class EnemyBaseState : MonoBehaviour, IShootable
         _stateManager = GetComponent<EnemyStateManager>();
         if (_stateManager == null)
         {
+#if UNITY_EDITOR
             print($"WARNING NO STATE MANAGER ON {gameObject}");
+#endif
         }
     }
 
-    public abstract void EnterState();
+    public abstract void EnterState(EnemyBaseState previousState = null);
     public abstract void ExitState();
     public abstract void UpdateState();
 
     public virtual void OnShot(Vector3 dir, AmmunitionData data)
     {
+        _stateManager.Enemy.OnShot(dir, data);
     }
 }

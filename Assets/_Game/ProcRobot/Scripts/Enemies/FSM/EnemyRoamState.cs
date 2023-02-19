@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyRoamState : EnemyBaseState
@@ -11,7 +9,7 @@ public class EnemyRoamState : EnemyBaseState
 
     [SerializeField] private Detector _playerDetector;
 
-    public override void EnterState()
+    public override void EnterState(EnemyBaseState previous)
     {
         _currentTarget = Random.Range(0f, 1f) > 0.5f ? _pointA : _pointB;
         _stateManager.Mover.SetDestination(_currentTarget.position);

@@ -14,8 +14,8 @@ public class VCamOrientation : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 dir = (Player.I.transform.position - transform.position).normalized;
-        Quaternion rot = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), lookAtSpeed * Time.deltaTime);
-        transform.rotation = rot;
+        //Vector3 dir = (Player.I.transform.position - transform.position).normalized;
+        //Quaternion rot = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), lookAtSpeed * Time.deltaTime);
+        //transform.rotation = rot;
     }
 }

@@ -8,7 +8,6 @@ public class PlayerHandler : MonoBehaviour
 
     private Camera _cam;
 
-
     private bool _isAiming = false;
     public Action OnAimDown = default;
     public Action OnAimUp = default;
@@ -20,8 +19,6 @@ public class PlayerHandler : MonoBehaviour
         _aim = GetComponent<PlayerAim>();
         _cam = Camera.main;
     }
-
-
     void Update()
     {
         DetectMouseInput();

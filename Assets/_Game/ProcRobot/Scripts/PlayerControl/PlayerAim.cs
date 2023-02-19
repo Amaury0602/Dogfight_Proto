@@ -18,9 +18,6 @@ public class PlayerAim : ShooterBase
     public Vector3 Direction { get; private set; }
 
     [SerializeField] private LayerMask _aimDetectionLayer;
-
-    [SerializeField] private Transform _debugCube;
-
     public override Action<RaycastHit> OnShoot { get; set; }
 
     private Quaternion _startArmRotation;
@@ -85,7 +82,6 @@ public class PlayerAim : ShooterBase
     {
         if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: _aimDetectionLayer))
         {
-            if (_debugCube) _debugCube.position = hit.point;
             OnShoot?.Invoke(hit);
         }    
     }

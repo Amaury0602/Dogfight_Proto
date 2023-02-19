@@ -4,9 +4,12 @@ using UnityEngine;
 public class ProjectileBase : AmmunitionBase
 {
     [SerializeField] protected float _moveSpeed;
+    [SerializeField] protected float _effectRadius;
+    [SerializeField] protected int _maxColliders;
     private Vector3 _lastPos = default;
-
     private float _timer;
+
+    private Coroutine _flyRoutine = null;
 
     private void Awake()
     {
@@ -15,7 +18,7 @@ public class ProjectileBase : AmmunitionBase
 
     public virtual void OnWeaponFire(Vector3 target)
     {
-        StartCoroutine(FlyTowardsTarget(target));
+        _flyRoutine = StartCoroutine(FlyTowardsTarget(target));
     }
 
     protected virtual IEnumerator FlyTowardsTarget(Vector3 target)
@@ -45,6 +48,33 @@ public class ProjectileBase : AmmunitionBase
 
     protected virtual void ReachedTarget()
     {
+        if (_flyRoutine != null) StopCoroutine(_flyRoutine);
+        DamageSurroundings();
         Destroy(gameObject);
+    }
+
+    private void DamageSurroundings()
+    {
+        Collider[] hitColliders = new Collider[_maxColliders];
+        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _effectRadius, hitColliders);
+        for (int i = 0; i < numColliders; i++)
+        {
+            IShootable shootable = hitColliders[i].GetComponent<IShootable>();
+            if (shootable != null)
+            {
+                Vector3 dir = hitColliders[i].transform.position - transform.position;
+                shootable.OnShot(dir.normalized, Data);
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position, _effectRadius);
+    }
+
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        ReachedTarget();
     }
 }
