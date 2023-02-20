@@ -17,7 +17,6 @@ public class PlayerAim : ShooterBase
 
     public Vector3 Direction { get; private set; }
 
-    [SerializeField] private LayerMask _aimDetectionLayer;
     public override Action<RaycastHit> OnShoot { get; set; }
 
     private Quaternion _startArmRotation;
@@ -70,7 +69,7 @@ public class PlayerAim : ShooterBase
         mouseHit = default;
 
 
-        if (Physics.Raycast(ray, out mouseHit, Mathf.Infinity , layerMask: _aimDetectionLayer))
+        if (Physics.Raycast(ray, out mouseHit, Mathf.Infinity , layerMask: DetectionLayer))
         {
             return true;
         }
@@ -80,7 +79,7 @@ public class PlayerAim : ShooterBase
 
     private void ShootRayFromArm()
     {
-        if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: _aimDetectionLayer))
+        if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: DetectionLayer))
         {
             OnShoot?.Invoke(hit);
         }    

@@ -59,6 +59,7 @@ public class EnemyStateManager : MonoBehaviour
     private void OnDeath()
     {
         Enemy.OnDeath -= OnDeath;
+        CurrentState.ExitState();
         CurrentState = null;
         Mover.OnDeath();
     }
@@ -67,8 +68,6 @@ public class EnemyStateManager : MonoBehaviour
     private void Update()
     {
         if (CurrentState != null) CurrentState.UpdateState();
-
-
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.C))
         {

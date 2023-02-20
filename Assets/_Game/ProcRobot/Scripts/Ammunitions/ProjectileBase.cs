@@ -11,9 +11,16 @@ public class ProjectileBase : AmmunitionBase
 
     private Coroutine _flyRoutine = null;
 
+    [SerializeField] private LayerMask _mask;
+
     private void Awake()
     {
         Data.Type = AmmunitionType.Projectile;
+    }
+
+    public void SetLayer(LayerMask mask)
+    {
+        _mask = mask;
     }
 
     public virtual void OnWeaponFire(Vector3 target)
@@ -30,7 +37,7 @@ public class ProjectileBase : AmmunitionBase
         {
             transform.position += dir.normalized * _moveSpeed * Time.deltaTime;
 
-            if (Physics.Linecast(_lastPos, transform.position, out RaycastHit hit))
+            if (Physics.Linecast(_lastPos, transform.position, out RaycastHit hit, _mask))
             {
                 ReachedTarget();
                 yield break;
@@ -75,6 +82,10 @@ public class ProjectileBase : AmmunitionBase
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        ReachedTarget();
+        if ((_mask.value & (1 << other.transform.gameObject.layer)) > 0)
+        {
+            ReachedTarget();
+        }
+
     }
 }

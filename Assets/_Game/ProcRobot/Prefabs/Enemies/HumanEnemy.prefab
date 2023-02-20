@@ -169,9 +169,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <CurrentState>k__BackingField: {fileID: 0}
   <PreviousState>k__BackingField: {fileID: 0}
-  <Mover>k__BackingField: {fileID: 0}
-  <Aim>k__BackingField: {fileID: 0}
-  <Enemy>k__BackingField: {fileID: 0}
+  <Mover>k__BackingField: {fileID: 1777289791207366191}
+  <Aim>k__BackingField: {fileID: 1777289791207366354}
+  <Enemy>k__BackingField: {fileID: 1777289791207366186}
   <Target>k__BackingField: {fileID: 0}
 --- !u!114 &1777289791207366185
 MonoBehaviour:
@@ -231,6 +231,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b71ff11bd5e00c3499df41258957dbc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <DetectionLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 264
   _headTransform: {fileID: 0}
   <CurrentWeapon>k__BackingField: {fileID: 1777289792361461406}
   _aimingSpeed: 10

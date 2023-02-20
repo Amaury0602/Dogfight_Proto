@@ -29,6 +29,7 @@ public class EnemyAttackState : EnemyBaseState
         _targetInSight = false;
         _stateManager.Mover.SetDestination(lastPos);
     }
+
     public override void UpdateState()
     {
         if (_stateManager.Target != null)
@@ -54,6 +55,7 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void ExitState()
     {
+        if (_attackRoutine != null) StopCoroutine(_attackRoutine);
         _stateManager.Aim.OnGainSight -= HandleGainSight;
         _stateManager.Aim.OnLostSight -= HandleLoseSight;
     }
