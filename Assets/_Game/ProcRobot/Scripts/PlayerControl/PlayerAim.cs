@@ -53,8 +53,6 @@ public class PlayerAim : ShooterBase
 
     private IEnumerator Aim()
     {
-        
-
         while (_aim)
         {
 
@@ -80,7 +78,10 @@ public class PlayerAim : ShooterBase
             if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit2, Mathf.Infinity, layerMask: DetectionLayer))
             {
                 _debug.position = hit2.point;
-                worldPos = hit2.point;
+                if ((transform.position - worldPos).sqrMagnitude > (transform.position - hit2.point).sqrMagnitude)
+                {
+                    worldPos = hit2.point;
+                }
             }
 
             PlayerUICursor.Instance.UpdatePosition(_cam.WorldToScreenPoint(worldPos));
