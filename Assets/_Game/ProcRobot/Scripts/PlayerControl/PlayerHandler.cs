@@ -36,20 +36,20 @@ public class PlayerHandler : MonoBehaviour
 
         transform.position = Vector3.Lerp(transform.position, transform.position + mov, Time.deltaTime * _moveSpeed);
 
-
-        if (_isAiming)
-        {
-            Vector3 aimingDir = _aim.Direction;
-            aimingDir.y = 0;
-            Quaternion rot = Quaternion.LookRotation(aimingDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * _rotSpeed);
-        }
-        else
-        {
-            if (inputDirection == Vector3.zero) return;
-            Quaternion rot = Quaternion.LookRotation(mov);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * _rotSpeed);
-        }
+        Vector3 aimingDir = _aim.Direction;
+        aimingDir.y = 0;
+        Quaternion rot = Quaternion.LookRotation(aimingDir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * _rotSpeed);
+        //if (_isAiming)
+        //{
+            
+        //}
+        //else
+        //{
+        //    if (inputDirection == Vector3.zero) return;
+        //    Quaternion rot = Quaternion.LookRotation(mov);
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * _rotSpeed);
+        //}
     }
 
     private void DetectMouseInput()

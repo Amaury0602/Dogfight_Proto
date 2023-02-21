@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public abstract class WeaponBase : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public abstract class WeaponBase : MonoBehaviour
 
     private Vector3 _startLocalPosition;
 
+    public Action OnShotFired = default;
+
     private void Awake()
     {
         _startLocalPosition = WeaponTransform.localPosition;
@@ -26,11 +29,22 @@ public abstract class WeaponBase : MonoBehaviour
     {
         _canShoot = true;
         shooter.OnShoot += TryShoot;
+        shooter.OnShootInDirection += ShootInDirection;
+    }
+
+    public virtual void ShootInDirection(Vector3 dir)
+    {
+        if (_canShoot)
+        {
+            PlayerShootInDirection(dir);
+            StartCoroutine(ResetFireCoolDown());
+        }
     }
 
     public virtual void OnUnequipped(ShooterBase shooter)
     {
         shooter.OnShoot -= TryShoot;
+        shooter.OnShootInDirection -= ShootInDirection;
     }
 
     private void TryShoot(RaycastHit hit)
@@ -44,6 +58,21 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected virtual void Shoot(RaycastHit hit)
     {
+        OnShotFired?.Invoke();
+
+        if (_muzzleFlash) _muzzleFlash.Emit(3);
+
+        WeaponTransform.DOKill();
+        WeaponTransform.localPosition = _startLocalPosition;
+        WeaponTransform
+            .DOLocalMoveZ(WeaponTransform.localPosition.z - _recoil, 0.05f)
+            .SetLoops(2, LoopType.Yoyo);
+    }
+
+    protected virtual void PlayerShootInDirection(Vector3 dir)
+    {
+        OnShotFired?.Invoke();
+
         if (_muzzleFlash) _muzzleFlash.Emit(3);
 
         WeaponTransform.DOKill();

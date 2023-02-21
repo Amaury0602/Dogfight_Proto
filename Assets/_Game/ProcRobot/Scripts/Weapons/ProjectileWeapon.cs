@@ -21,4 +21,15 @@ public class ProjectileWeapon : WeaponBase
         
         proj.OnWeaponFire(hit.point);
     }
+
+    protected override void PlayerShootInDirection(Vector3 dir)
+    {
+        base.PlayerShootInDirection(dir);
+
+        ProjectileBase proj = Instantiate(_projectile, Cannon.position, Quaternion.LookRotation(WeaponTransform.forward));
+
+        proj.SetLayer(_shooterLayer);
+
+        proj.OnWeaponFire(proj.transform.position + dir);
+    }
 }
