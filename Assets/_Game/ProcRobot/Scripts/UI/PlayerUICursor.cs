@@ -15,4 +15,9 @@ public class PlayerUICursor : MonoBehaviour
     {
         transform.position = position;
     }
+
+    public void Move(Vector2 position)
+    {
+        transform.position = position;
+    }
 }
