@@ -6,7 +6,7 @@ public abstract class WeaponBase : MonoBehaviour
 {
     [field: SerializeField] public Transform WeaponTransform { get; private set; } = default;
 
-    [SerializeField] protected Transform _cannon;
+    [SerializeField] public Transform Cannon;
 
     [SerializeField] protected ParticleSystem _muzzleFlash;
 

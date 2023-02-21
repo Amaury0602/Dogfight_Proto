@@ -9,6 +9,7 @@ public class PlayerAim : ShooterBase
     private PlayerHandler _player;
 
     [SerializeField] private Transform _headTransform;
+    [SerializeField] private AimVisuals _visuals;
 
 
     private bool _aim = false;
@@ -39,20 +40,36 @@ public class PlayerAim : ShooterBase
     private void AimIn()
     {
         _aim = true;
+
+        _visuals.EnableLine();
+
         StartCoroutine(Aim());
     }
 
     private IEnumerator Aim()
     {
-        while(_aim)
+        
+
+        while (_aim)
         {
+
+            Vector3 start = CurrentWeapon.Cannon.position;
+            Vector3 end;
+
             if (ShootRayToMousePosition(out RaycastHit hit))
             {
                 Direction = (hit.point - CurrentWeapon.WeaponTransform.position).normalized;
+                Direction = new Vector3(Direction.x, 0, Direction.z);
+                end = hit.point;
 
                 CurrentWeapon.WeaponTransform.forward = Direction;
                 _headTransform.forward = Direction;
             }
+
+            end = start + CurrentWeapon.WeaponTransform.forward * 75f;
+
+
+            _visuals.UpdateLine(start, end);
 
             if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
             {
@@ -65,9 +82,7 @@ public class PlayerAim : ShooterBase
     private bool ShootRayToMousePosition(out RaycastHit mouseHit)
     {
         Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
-
         mouseHit = default;
-
 
         if (Physics.Raycast(ray, out mouseHit, Mathf.Infinity , layerMask: DetectionLayer))
         {
@@ -88,6 +103,7 @@ public class PlayerAim : ShooterBase
     private void AimOut()
     {
         _aim = false;
+        _visuals.DisableLine();
         CurrentWeapon.WeaponTransform.localRotation = _startArmRotation;
         _headTransform.localRotation = _startHeadRotation;
     }
