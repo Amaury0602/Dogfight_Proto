@@ -11,6 +11,8 @@ public class PlayerAim : ShooterBase
     [SerializeField] private Transform _headTransform;
     [SerializeField] private AimVisuals _visuals;
 
+    [SerializeField] private LayerMask _floorLayer;
+
 
     private bool _aim = false;
 
@@ -23,8 +25,11 @@ public class PlayerAim : ShooterBase
     private Quaternion _startArmRotation;
     private Quaternion _startHeadRotation;
 
+    [SerializeField] private Transform _debug;
+
     private void Start()
     {
+        Cursor.visible = false;
         _cam = Camera.main;
 
         _startHeadRotation = _headTransform.localRotation;
@@ -56,21 +61,32 @@ public class PlayerAim : ShooterBase
             Vector3 start = CurrentWeapon.Cannon.position;
             Vector3 end;
 
-            if (ShootRayToMousePosition(out RaycastHit hit))
+            if (ShootRayToFloorPosition(out RaycastHit hit))
             {
                 Direction = (hit.point - CurrentWeapon.WeaponTransform.position).normalized;
                 Direction = new Vector3(Direction.x, 0, Direction.z);
                 end = hit.point;
-
                 CurrentWeapon.WeaponTransform.forward = Direction;
                 _headTransform.forward = Direction;
             }
 
             end = start + CurrentWeapon.WeaponTransform.forward * 75f;
-
-
             _visuals.UpdateLine(start, end);
 
+            Vector3 worldPos = hit.point;
+            worldPos.y = CurrentWeapon.WeaponTransform.position.y;
+
+
+            if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit2, Mathf.Infinity, layerMask: DetectionLayer))
+            {
+                _debug.position = hit2.point;
+                worldPos = hit2.point;
+            }
+
+            PlayerUICursor.Instance.UpdatePosition(_cam.WorldToScreenPoint(worldPos));
+
+
+            //SHOOTING
             if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
             {
                 ShootRayFromArm();
@@ -79,18 +95,31 @@ public class PlayerAim : ShooterBase
         }
     }
 
-    private bool ShootRayToMousePosition(out RaycastHit mouseHit)
+    private bool ShootRayToFloorPosition(out RaycastHit mouseHit)
     {
         Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
         mouseHit = default;
 
-        if (Physics.Raycast(ray, out mouseHit, Mathf.Infinity , layerMask: DetectionLayer))
+        if (Physics.Raycast(ray, out mouseHit, Mathf.Infinity, layerMask: _floorLayer))
         {
             return true;
         }
 
         return false;
     }
+
+    //private bool ShootRayToMousePosition(out RaycastHit mouseHit)
+    //{
+    //    Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
+    //    mouseHit = default;
+
+    //    if (Physics.Raycast(ray, out mouseHit, Mathf.Infinity , layerMask: DetectionLayer))
+    //    {
+    //        return true;
+    //    }
+
+    //    return false;
+    //}
 
     private void ShootRayFromArm()
     {

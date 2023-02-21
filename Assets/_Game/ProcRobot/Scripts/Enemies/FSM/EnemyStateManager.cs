@@ -43,7 +43,9 @@ public class EnemyStateManager : MonoBehaviour
     {
         if (state == null)
         {
+#if UNITY_EDITOR
             print($"this character has no {state}");
+#endif
             return;
         }
         if (CurrentState != null) 
