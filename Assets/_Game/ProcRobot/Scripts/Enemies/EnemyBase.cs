@@ -1,12 +1,14 @@
 using UnityEngine;
 using System;
 
-public abstract class EnemyBase : MonoBehaviour
+public abstract class EnemyBase : MonoBehaviour, IShootable
 {
     [field: SerializeField] public int Health { get; private set; }
-    public float RemainingHealth => (float)_startHealth / (float)Health;
+    public float RemainingHealth => (float)Health / (float)_startHealth;
 
     private int _startHealth;
+
+    [SerializeField] private EnemyStateManager _state;
 
     public bool Alive => Health > 0;
 
@@ -15,7 +17,7 @@ public abstract class EnemyBase : MonoBehaviour
     public Action<int> OnHealthGained = default;
 
 
-    private void Awake()
+    private void Start()
     {
         _startHealth = Health;
     }
@@ -38,8 +40,10 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    public void OnShot(Vector3 dir, AmmunitionData data)
+    public void OnShot(Vector3 dir, AmmunitionData data) // interface method
     {
+        if (!Alive) return;
         TakeDamage(data.Damage);
+        _state.OnShotTaken(data.Damage);
     }
 }

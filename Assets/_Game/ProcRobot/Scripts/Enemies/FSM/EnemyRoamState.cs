@@ -31,7 +31,7 @@ public class EnemyRoamState : EnemyBaseState
 
     public override void UpdateState()
     {
-        _stateManager.Mover.RotateTowardsTarget(_stateManager.Target.position);
+        _stateManager.Mover.RotateTowardsTarget(_stateManager.Player.Position);
         if ((_currentTarget.position - transform.position).sqrMagnitude < 2f)
         {
             if (_currentTarget == _pointA)
@@ -45,5 +45,11 @@ public class EnemyRoamState : EnemyBaseState
 
             _stateManager.Mover.SetDestination(_currentTarget.position);
         }
+    }
+
+    public override void OnShot(int damage)
+    {
+        base.OnShot(damage);
+        _stateManager.SetState(_stateManager.CoverState);
     }
 }

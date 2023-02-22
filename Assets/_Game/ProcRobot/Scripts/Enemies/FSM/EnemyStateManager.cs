@@ -17,7 +17,7 @@ public class EnemyStateManager : MonoBehaviour
     public EnemyAttackState AttackState { get; private set; }
     public EnemyCoverState CoverState { get; private set; }
 
-    [field: SerializeField] public Transform Target { get; private set; }
+    [field: SerializeField] public PlayerHandler Player { get; private set; }
 
     private void Awake()
     {
@@ -54,6 +54,8 @@ public class EnemyStateManager : MonoBehaviour
             PreviousState = CurrentState;
         }
 
+        Mover.OnStateChanged();
+
         CurrentState = state;
         CurrentState.EnterState(PreviousState);
     }
@@ -76,6 +78,11 @@ public class EnemyStateManager : MonoBehaviour
             SetState(CoverState);
         }
 #endif
+    }
+
+    public void OnShotTaken(int damage)
+    {
+        if (CurrentState != null) CurrentState.OnShot(damage);
     }
 
 }

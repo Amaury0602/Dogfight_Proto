@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Data>k__BackingField: {fileID: 11400000, guid: ada6affdba9bd6f4b9252fc0e0920636, type: 2}
-  _moveSpeed: 30
+  _moveSpeed: 50
   _effectRadius: 4
   _maxColliders: 10
   _mask:
@@ -144,7 +144,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.75
   m_Height: 1.47632
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.23184001}

@@ -79,8 +79,8 @@ public class PlayerUICursor : MonoBehaviour
 
         //clamp cursor on screen
         Vector3 pos = transform.position;
-        pos.x = Mathf.Clamp(pos.x, 0, screenSize.x);
-        pos.y = Mathf.Clamp(pos.y, 0, screenSize.y);
+        pos.x = Mathf.Clamp(pos.x, 0, Screen.width);
+        pos.y = Mathf.Clamp(pos.y, 0, Screen.height);
         transform.position = pos;
     }
 

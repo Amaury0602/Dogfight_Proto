@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class EnemyBaseState : MonoBehaviour, IShootable
+public abstract class EnemyBaseState : MonoBehaviour
 {
     protected EnemyStateManager _stateManager;
 
@@ -19,13 +19,15 @@ public abstract class EnemyBaseState : MonoBehaviour, IShootable
     public abstract void ExitState();
     public abstract void UpdateState();
 
-    public virtual void OnShot(Vector3 dir, AmmunitionData data)
-    {
-#if UNITY_EDITOR
-        print($"{gameObject.name}, and this : {this}");
-#endif
+    public virtual void OnShot(int damage) { }
+
+//    public virtual void OnShot(Vector3 dir, AmmunitionData data)
+//    {
+//#if UNITY_EDITOR
+//        print($"{gameObject.name}, and this : {this}");
+//#endif
 
 
-        _stateManager.Enemy.OnShot(dir, data);
-    }
+//        _stateManager.Enemy.OnShot(dir, data);
+//    }
 }

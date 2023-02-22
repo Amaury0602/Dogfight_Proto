@@ -20,6 +20,9 @@ public class PlayerHandler : MonoBehaviour
 
     private Rigidbody _rb;
 
+    public Vector3 Direction { get; private set; }
+    public Vector3 Position => transform.position;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -55,10 +58,13 @@ public class PlayerHandler : MonoBehaviour
 
             transform.position = Vector3.Lerp(transform.position, transform.position + mov, Time.deltaTime * _moveSpeed);
 
+
+            Direction = mov;
             //_rb.velocity = Vector3.Lerp(_rb.velocity, mov * _rbMoveSpeed, Time.deltaTime * _dt);
         }
         else
         {
+            Direction = Vector3.zero;
             //_rb.velocity = Vector3.zero;
         }
 

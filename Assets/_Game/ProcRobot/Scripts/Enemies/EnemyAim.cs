@@ -26,6 +26,8 @@ public class EnemyAim : ShooterBase
 
     private RaycastHit[] _visionHits;
 
+
+    [SerializeField] private Transform _debug;
     private void Awake()
     {
         _visionHits = new RaycastHit[5];
@@ -36,7 +38,7 @@ public class EnemyAim : ShooterBase
         CurrentWeapon.OnEquipped(this);
     }
 
-    public void AimAt(Vector3 position)
+    public void AimAt(Vector3 position, Vector3 movement)
     {
         if ((position - transform.position).sqrMagnitude > _sightDistance * _sightDistance) return; 
 
@@ -58,9 +60,10 @@ public class EnemyAim : ShooterBase
 
 
 #if UNITY_EDITOR
-        Debug.DrawRay(transform.position, transform.forward * _sightDistance, Color.blue);
+        Debug.DrawRay(CurrentWeapon.WeaponTransform.position, Direction * 30f, Color.blue);
 #endif
 
+        // CHECK IF AN OBSTACLE IS BETWEEN THE PLAYER AND ME
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit h, maxDistance: _sightDistance, layerMask: _playerLayer))
         {
             if (h.collider.gameObject.layer != LayerMask.NameToLayer("PLAYER"))
@@ -72,6 +75,7 @@ public class EnemyAim : ShooterBase
             }
         }
 
+        // GAIN AND LOSE SIGHT EVENTS
         if (!obstacle && inSight) // IN SIGHT
         {
             _lastKnownPosition = position;
@@ -90,16 +94,30 @@ public class EnemyAim : ShooterBase
             }
         }
 
-        //shoot cast
+        HandleShooting(position, movement);
+        
+    }
+
+    private void HandleShooting(Vector3 pos, Vector3 dir)
+    {
         if (Physics.SphereCast(CurrentWeapon.transform.position, _aimRadius, CurrentWeapon.transform.forward, out RaycastHit hit, maxDistance: 50f, layerMask: _playerLayer))
         {
+            //player in sight
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("PLAYER"))
             {
-                OnShoot?.Invoke(hit);
+                if (CurrentWeapon is HitscanWeapon)
+                {
+                    OnShoot?.Invoke(hit);
+                }
+                else
+                {
+                    Vector3 anticipatedShootDir = (hit.point + dir * UnityEngine.Random.Range(0f, 10f)) - CurrentWeapon.Cannon.position;
+                    anticipatedShootDir.y = 0;
+                    OnShootInDirection?.Invoke(anticipatedShootDir);
+                }
             }
         }
     }
-
     public void StopAiming()
     {
 

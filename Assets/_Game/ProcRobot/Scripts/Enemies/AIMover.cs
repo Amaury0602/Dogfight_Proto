@@ -31,6 +31,11 @@ public class AIMover : MonoBehaviour
         _checkDestinationReachedRoutine = StartCoroutine(CheckDestinationReached(target, onEnd));
     }
 
+    public void OnStateChanged()
+    {
+        if (_checkDestinationReachedRoutine != null) StopCoroutine(_checkDestinationReachedRoutine);
+    }
+
     private IEnumerator CheckDestinationReached(Vector3 dest, Action onReachedDest = null)
     {
         if (_agent.pathPending) yield return null;

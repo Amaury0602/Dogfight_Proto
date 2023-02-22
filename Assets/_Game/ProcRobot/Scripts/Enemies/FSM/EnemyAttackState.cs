@@ -8,12 +8,23 @@ public class EnemyAttackState : EnemyBaseState
 
     private Coroutine _attackRoutine = default;
 
+    [SerializeField] private float _refreshDamageCD = 2f;
+    [SerializeField] private float _damageThreshold = 30f;
+    private float _computedDamage;
+    private Coroutine _damageComputeRoutine = null;
+
+    [SerializeField, Range(-0.1f, 1f)] private float aggressiveness;
+
+
+    private Vector3 lastKnownPosition = default;
     public override void EnterState(EnemyBaseState previous)
     {
         _stateManager.Aim.SetWeapon();
         _stateManager.Aim.OnGainSight += HandleGainSight;
         _stateManager.Aim.OnLostSight += HandleLoseSight;
         _stateManager.Aim.SetWeapon();
+
+        _attackRoutine = StartCoroutine(ChaseTarget());
     }
     private void HandleGainSight()
     {
@@ -22,20 +33,53 @@ public class EnemyAttackState : EnemyBaseState
         _attackRoutine = StartCoroutine(ChaseTarget());
     }
 
-    private void HandleLoseSight(Vector3 lastPos)
+    private void HandleLoseSight(Vector3 lastKnownPos)
     {
+        lastKnownPosition = lastKnownPos;
         if (_attackRoutine != null) StopCoroutine(_attackRoutine);
 
         _targetInSight = false;
-        _stateManager.Mover.SetDestination(lastPos);
+
+        if (Random.Range(0f, 1f) < aggressiveness) // harass player 
+        {
+            //print("HARAASSSSSS");
+            _stateManager.Mover.SetDestination(lastKnownPosition);
+        }
+        else
+        {
+            //print("HMM NO HARASS");
+            Vector3 closePoint = Vector3.Lerp(transform.position, lastKnownPosition, 0.35f);
+            if (CanFindPosAroundPoint(closePoint, 5f, out Vector3 pos)) 
+            {
+                _stateManager.Mover.SetDestination(pos);
+            }
+        }
+
+    }
+
+    private bool CanFindPosAroundPoint(Vector3 point, float radius, out Vector3 pos)
+    {
+        pos = Vector3.zero;
+        for (int i = 0; i < 10; i++)
+        {
+            Vector2 rand = Random.insideUnitCircle.normalized * radius;
+            Vector3 aroundPoint = point + new Vector3(rand.x, 0, rand.y);
+
+            if (_stateManager.Mover.TryFindPositionCloseToPoint(aroundPoint, out pos))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public override void UpdateState()
     {
-        if (_stateManager.Target != null)
+        if (_stateManager.Player != null)
         {
-            _stateManager.Aim.AimAt(_stateManager.Target.position);
-            _stateManager.Mover.RotateTowardsTarget(_stateManager.Target.position);
+            _stateManager.Aim.AimAt(_stateManager.Player.Position, _stateManager.Player.Direction);
+            _stateManager.Mover.RotateTowardsTarget(_stateManager.Player.Position);
         }
     }
 
@@ -43,34 +87,50 @@ public class EnemyAttackState : EnemyBaseState
     {
         while(_targetInSight)
         {
-            
-            yield return null;
+            if (CanFindPosAroundPoint(_stateManager.Player.Position, 10f, out Vector3 pos))
+            {
+                print("go after player");
+                _stateManager.Mover.SetDestination(pos);
+            }
+            yield return new WaitForSeconds(Random.Range(3f, 6f));  
         }
-    }
-
-    private void FindSpotToAttackTarget()
-    {
-
     }
 
     public override void ExitState()
     {
         if (_attackRoutine != null) StopCoroutine(_attackRoutine);
+        if (_damageComputeRoutine != null) StopCoroutine(_damageComputeRoutine);
+
         _stateManager.Aim.OnGainSight -= HandleGainSight;
         _stateManager.Aim.OnLostSight -= HandleLoseSight;
     }
 
-    public override void OnShot(Vector3 dir, AmmunitionData data)
+    public override void OnShot(int damage)
     {
-
-        print($"Im getting shot in state {this}");
-        base.OnShot(dir, data);
-
-        print(_stateManager.Enemy.RemainingHealth);
-
-        if (_stateManager.Enemy.RemainingHealth < .5f)
+        if (_damageComputeRoutine != null)
         {
-            _stateManager.SetState(_stateManager.CoverState);
+            StopCoroutine(_damageComputeRoutine);
         }
+
+        StartCoroutine(ComputeDamageTaken(damage));
+
+        if (_computedDamage >= _damageThreshold)
+        {
+            OnTooMuchDamageReceived();
+        }
+    }
+
+    private void OnTooMuchDamageReceived()
+    {
+        if (_attackRoutine != null) StopCoroutine(_attackRoutine);
+        print("trying to find cover");
+        _stateManager.SetState(_stateManager.CoverState);
+    }
+
+    private IEnumerator ComputeDamageTaken(int dmg)
+    {
+        _computedDamage += dmg;
+        yield return new WaitForSeconds(_refreshDamageCD);
+        _computedDamage = 0;
     }
 }

@@ -26,7 +26,7 @@ public class ProjectileWeapon : WeaponBase
     {
         base.PlayerShootInDirection(dir);
 
-        ProjectileBase proj = Instantiate(_projectile, Cannon.position, Quaternion.LookRotation(WeaponTransform.forward));
+        ProjectileBase proj = Instantiate(_projectile, Cannon.position, Quaternion.LookRotation(dir));
 
         proj.SetLayer(_shooterLayer);
 

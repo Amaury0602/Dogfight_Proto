@@ -12,30 +12,37 @@ public class EnemyCoverState : EnemyBaseState
     [SerializeField] private float _navHitRadius = 1f;
     private List<Vector3> _hitPoints = new List<Vector3>();
 
+    private Coroutine _afterCoverRoutine = null;
+
+    private bool _isCovered = false;
+
     public override void EnterState(EnemyBaseState previous)
     {
+        _stateManager.Aim.OnGainSight += GetOutOfCover;
+        _isCovered = false;
         if (previous is EnemyAttackState)
         {
             //_stateManager.Aim.AimAt(_stateManager.Target.position);
-            //_stateManager.Mover.RotateTowardsTarget(_stateManager.Target.position);
         }
         GetToCover();
     }
 
     public override void ExitState()
     {
-
+        if (_afterCoverRoutine != null) StopCoroutine(_afterCoverRoutine);
+        _stateManager.Aim.OnGainSight -= GetOutOfCover;
+        _isCovered = false;
     }
 
     public override void UpdateState()
     {
-        
+        _stateManager.Mover.RotateTowardsTarget(_stateManager.Player.Position);
     }
 
     private void GetToCover()
     {
 
-        Vector3 start = _stateManager.Target.position;
+        Vector3 start = _stateManager.Player.Position;
 
         float anglePerRay = _angle / (float)_numberOfRays;
 
@@ -43,12 +50,12 @@ public class EnemyCoverState : EnemyBaseState
 
         for (int i = 0; i < _numberOfRays; i++)
         {
-            Vector3 rotateVector = Quaternion.AngleAxis(anglePerRay * i - _angle / 2f, Vector3.up) * _stateManager.Target.forward;
-            Vector3 end = _stateManager.Target.position + _rayDistance * rotateVector;
+            Vector3 rotateVector = Quaternion.AngleAxis(anglePerRay * i - _angle / 2f, Vector3.up) * _stateManager.Player.transform.forward;
+            Vector3 end = _stateManager.Player.Position + _rayDistance * rotateVector;
             if (Physics.Linecast(start, end, out RaycastHit hit, layerMask: _hideMask))
             {
                 //if collided
-                Vector3 dir = hit.point - _stateManager.Target.position;
+                Vector3 dir = hit.point - _stateManager.Player.Position;
                 Vector3 newStart = hit.point + dir.normalized * 15f;
 
                 if (Physics.Linecast(newStart, hit.point, out RaycastHit hitt, layerMask: _hideMask))
@@ -78,12 +85,29 @@ public class EnemyCoverState : EnemyBaseState
 
     private void OnCovered()
     {
-        StartCoroutine(GoBackToAttackMode());
+        _isCovered = true;
+        
+        _afterCoverRoutine = StartCoroutine(GoBackToAttackMode());
+    }
+
+
+    private void GetOutOfCover()
+    {
+        if (!_isCovered) return;
+        print("On gain sight while coveredd");
+        if (_afterCoverRoutine != null) StopCoroutine(_afterCoverRoutine);
+        _stateManager.SetState(_stateManager.AttackState);
+    }
+
+    public override void OnShot(int damage)
+    {
+        base.OnShot(damage);
+        GetOutOfCover();
     }
 
     private IEnumerator GoBackToAttackMode() 
     {
-        yield return new WaitForSeconds(Random.Range(1f, 3f));
+        yield return new WaitForSeconds(Random.Range(2f, 5f));
         _stateManager.SetState(_stateManager.AttackState);
     }
 
@@ -94,20 +118,20 @@ public class EnemyCoverState : EnemyBaseState
     {
         if (_stateManager == null) return;
 
-        Vector3 start = _stateManager.Target.position;
+        Vector3 start = _stateManager.Player.Position;
 
         float anglePerRay = _angle / (float)_numberOfRays;
 
         for (int i = 0; i < _numberOfRays; i++)
         {
-            Vector3 rotateVector = Quaternion.AngleAxis(anglePerRay * i - _angle / 2f, Vector3.up) * _stateManager.Target.forward;
-            Vector3 end = _stateManager.Target.position + _rayDistance * rotateVector;
+            Vector3 rotateVector = Quaternion.AngleAxis(anglePerRay * i - _angle / 2f, Vector3.up) * _stateManager.Player.Position;
+            Vector3 end = _stateManager.Player.Position + _rayDistance * rotateVector;
             Debug.DrawLine(start, end, Color.yellow);
 
             if (Physics.Linecast(start, end, out RaycastHit hit, layerMask: _hideMask))
             {
                 //if collided
-                Vector3 dir = hit.point - _stateManager.Target.position;
+                Vector3 dir = hit.point - _stateManager.Player.Position;
                 Vector3 newStart = hit.point + dir.normalized * 15f;
 
                 Debug.DrawLine(newStart, hit.point, Color.red);

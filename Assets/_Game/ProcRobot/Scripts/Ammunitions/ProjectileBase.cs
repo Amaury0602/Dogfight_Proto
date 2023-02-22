@@ -30,7 +30,7 @@ public class ProjectileBase : AmmunitionBase
 
     protected virtual IEnumerator FlyTowardsTarget(Vector3 target)
     {
-        _timer = 5f;
+        _timer = 2f;
         _lastPos = transform.position;
         Vector3 dir = target - transform.position;
         while (_timer >= 0)
@@ -77,7 +77,7 @@ public class ProjectileBase : AmmunitionBase
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(transform.position, _effectRadius);
+        Gizmos.DrawWireSphere(transform.position, _effectRadius);
     }
 
     protected virtual void OnTriggerEnter(Collider other)
