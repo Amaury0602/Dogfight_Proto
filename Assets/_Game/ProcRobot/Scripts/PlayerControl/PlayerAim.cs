@@ -11,10 +11,16 @@ public class PlayerAim : ShooterBase
 
     public override Action<RaycastHit> OnShoot { get; set; }
     public override Action<Vector3> OnShootInDirection { get; set; }
+
+    private Player _player;
+
     private void Start()
     {
         Cursor.visible = false;
 
+        _player = GetComponent<Player>();
+        _player.OnDeath += OnDeath;
+        
         PlayerUICursor.Instance.OnProjectedPoint += FollowCursor;
 
         if (CurrentWeapon) CurrentWeapon.OnEquipped(this);
@@ -56,6 +62,12 @@ public class PlayerAim : ShooterBase
         {
             OnShootInDirection?.Invoke(CurrentWeapon.WeaponTransform.forward);
         }    
+    }
+
+    private void OnDeath()
+    {
+        _player.OnDeath -= OnDeath;
+        PlayerUICursor.Instance.OnProjectedPoint -= FollowCursor;
     }
 
 }
