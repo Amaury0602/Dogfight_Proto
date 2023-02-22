@@ -5,12 +5,12 @@ public class MouseInput : MonoBehaviour
 
     public static MouseInput Instance;
 
-    [SerializeField] private float _speed;
+    [SerializeField] private float _sensitivity;
     private Vector2 _lastPosition = Vector2.zero;
-    private Vector2 _currentPosition = Vector2.zero;
     private Vector2 _mouseMovement = Vector2.zero;
 
     public System.Action<Vector2> OnMouseMove = default;
+    
 
     private void Awake()
     {
@@ -19,9 +19,9 @@ public class MouseInput : MonoBehaviour
 
     private void Update()
     {
-        _mouseMovement = _lastPosition - (Vector2)Input.mousePosition;
-        if (_mouseMovement != Vector2.zero) OnMouseMove?.Invoke(_mouseMovement);
+        _mouseMovement = ((Vector2)Input.mousePosition - _lastPosition);
 
         _lastPosition = Input.mousePosition;
+        OnMouseMove?.Invoke(_mouseMovement * _sensitivity);
     }
 }

@@ -1,141 +1,73 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class PlayerAim : ShooterBase
 {
     [field: SerializeField] public WeaponBase CurrentWeapon { get; private set; } = default;
     
-    private PlayerHandler _player;
-
     [SerializeField] private Transform _headTransform;
     [SerializeField] private AimVisuals _visuals;
-
-    [SerializeField] private LayerMask _floorLayer;
-
-
-    private bool _aim = false;
-
-    private Camera _cam;
-
     public Vector3 Direction { get; private set; }
 
     public override Action<RaycastHit> OnShoot { get; set; }
+    public override Action<Vector3> OnShootInDirection { get; set; }
 
-    private Quaternion _startArmRotation;
-    private Quaternion _startHeadRotation;
-
-    [SerializeField] private Transform _debug;
+    private Player _player;
 
     private void Start()
     {
         Cursor.visible = false;
-        _cam = Camera.main;
 
-        _startHeadRotation = _headTransform.localRotation;
-
-        _player = GetComponent<PlayerHandler>();
-        _player.OnAimDown += AimIn;
-        _player.OnAimUp += AimOut;
-
+        _player = GetComponent<Player>();
+        _player.OnDeath += OnDeath;
+        
+        PlayerUICursor.Instance.OnProjectedPoint += FollowCursor;
 
         if (CurrentWeapon) CurrentWeapon.OnEquipped(this);
     }
-
-    private void AimIn()
+    private void FollowCursor(Vector3 aimPoint)
     {
-        _aim = true;
+        Vector3 start = CurrentWeapon.Cannon.position;
+        Vector3 end = start +CurrentWeapon.WeaponTransform.forward * 75f; ;
 
-        _visuals.EnableLine();
+        Direction = (aimPoint - CurrentWeapon.WeaponTransform.position).normalized;
+        CurrentWeapon.WeaponTransform.forward = Direction;
+        _headTransform.forward = Direction;
 
-        StartCoroutine(Aim());
-    }
-
-    private IEnumerator Aim()
-    {
-        while (_aim)
+        if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: DetectionLayer))
         {
-
-            Vector3 start = CurrentWeapon.Cannon.position;
-            Vector3 end;
-
-            if (ShootRayToFloorPosition(out RaycastHit hit))
+            if ((transform.position - aimPoint).sqrMagnitude > (transform.position - hit.point).sqrMagnitude)
             {
-                Direction = (hit.point - CurrentWeapon.WeaponTransform.position).normalized;
-                Direction = new Vector3(Direction.x, 0, Direction.z);
                 end = hit.point;
-                CurrentWeapon.WeaponTransform.forward = Direction;
-                _headTransform.forward = Direction;
             }
-
-            end = start + CurrentWeapon.WeaponTransform.forward * 75f;
-            _visuals.UpdateLine(start, end);
-
-            Vector3 worldPos = hit.point;
-            worldPos.y = CurrentWeapon.WeaponTransform.position.y;
-
-
-            if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit2, Mathf.Infinity, layerMask: DetectionLayer))
-            {
-                _debug.position = hit2.point;
-                if ((transform.position - worldPos).sqrMagnitude > (transform.position - hit2.point).sqrMagnitude)
-                {
-                    worldPos = hit2.point;
-                }
-            }
-
-            PlayerUICursor.Instance.UpdatePosition(_cam.WorldToScreenPoint(worldPos));
-
-
-            //SHOOTING
-            if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
-            {
-                ShootRayFromArm();
-            }
-            yield return null;
         }
-    }
 
-    private bool ShootRayToFloorPosition(out RaycastHit mouseHit)
-    {
-        Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
-        mouseHit = default;
+        _visuals.UpdateLine(start, end);
 
-        if (Physics.Raycast(ray, out mouseHit, Mathf.Infinity, layerMask: _floorLayer))
+
+        //SHOOTING
+        if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
         {
-            return true;
+            ShootRayFromArm();
         }
-
-        return false;
     }
-
-    //private bool ShootRayToMousePosition(out RaycastHit mouseHit)
-    //{
-    //    Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
-    //    mouseHit = default;
-
-    //    if (Physics.Raycast(ray, out mouseHit, Mathf.Infinity , layerMask: DetectionLayer))
-    //    {
-    //        return true;
-    //    }
-
-    //    return false;
-    //}
 
     private void ShootRayFromArm()
     {
         if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: DetectionLayer))
         {
             OnShoot?.Invoke(hit);
+        }
+        else
+        {
+            OnShootInDirection?.Invoke(CurrentWeapon.WeaponTransform.forward);
         }    
     }
 
-    private void AimOut()
+    private void OnDeath()
     {
-        _aim = false;
-        _visuals.DisableLine();
-        CurrentWeapon.WeaponTransform.localRotation = _startArmRotation;
-        _headTransform.localRotation = _startHeadRotation;
+        _player.OnDeath -= OnDeath;
+        PlayerUICursor.Instance.OnProjectedPoint -= FollowCursor;
     }
 
 }
