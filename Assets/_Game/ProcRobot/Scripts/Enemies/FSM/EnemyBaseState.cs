@@ -21,6 +21,11 @@ public abstract class EnemyBaseState : MonoBehaviour, IShootable
 
     public virtual void OnShot(Vector3 dir, AmmunitionData data)
     {
+#if UNITY_EDITOR
+        print($"{gameObject.name}, and this : {this}");
+#endif
+
+
         _stateManager.Enemy.OnShot(dir, data);
     }
 }

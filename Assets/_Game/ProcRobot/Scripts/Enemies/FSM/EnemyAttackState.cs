@@ -59,4 +59,18 @@ public class EnemyAttackState : EnemyBaseState
         _stateManager.Aim.OnGainSight -= HandleGainSight;
         _stateManager.Aim.OnLostSight -= HandleLoseSight;
     }
+
+    public override void OnShot(Vector3 dir, AmmunitionData data)
+    {
+
+        print($"Im getting shot in state {this}");
+        base.OnShot(dir, data);
+
+        print(_stateManager.Enemy.RemainingHealth);
+
+        if (_stateManager.Enemy.RemainingHealth < .5f)
+        {
+            _stateManager.SetState(_stateManager.CoverState);
+        }
+    }
 }

@@ -17,6 +17,7 @@ public class PlayerAim : ShooterBase
     private void Start()
     {
         Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         _player = GetComponent<Player>();
         _player.OnDeath += OnDeath;
