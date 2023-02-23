@@ -27,12 +27,17 @@ public abstract class WeaponBase : MonoBehaviour
 
     public virtual void OnEquipped(ShooterBase shooter)
     {
+#if UNITY_EDITOR
+        print($"{shooter.gameObject.name}.OnEquipped {this} ");
+#endif
+
+
         _canShoot = true;
         shooter.OnShoot += TryShoot;
-        shooter.OnShootInDirection += ShootInDirection;
+        shooter.OnShootInDirection += TryShootInDirection;
     }
 
-    public virtual void ShootInDirection(Vector3 dir)
+    public virtual void TryShootInDirection(Vector3 dir)
     {
         if (_canShoot)
         {
@@ -44,7 +49,7 @@ public abstract class WeaponBase : MonoBehaviour
     public virtual void OnUnequipped(ShooterBase shooter)
     {
         shooter.OnShoot -= TryShoot;
-        shooter.OnShootInDirection -= ShootInDirection;
+        shooter.OnShootInDirection -= TryShootInDirection;
     }
 
     private void TryShoot(RaycastHit hit)

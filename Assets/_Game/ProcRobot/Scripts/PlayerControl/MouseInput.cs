@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MouseInput : MonoBehaviour
 {
+
+    [SerializeField] private InputActionReference _action;
 
     public static MouseInput Instance;
 
@@ -17,11 +20,16 @@ public class MouseInput : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     private void Update()
     {
         _mouseMovement = ((Vector2)Input.mousePosition - _lastPosition);
-
         _lastPosition = Input.mousePosition;
-        OnMouseMove?.Invoke(_mouseMovement * _sensitivity);
+        OnMouseMove?.Invoke(Mouse.current.delta.ReadValue()/*_mouseMovement*/ * _sensitivity);
     }
 }

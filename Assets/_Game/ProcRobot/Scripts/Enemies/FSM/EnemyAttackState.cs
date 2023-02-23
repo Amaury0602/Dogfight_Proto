@@ -19,7 +19,6 @@ public class EnemyAttackState : EnemyBaseState
     private Vector3 lastKnownPosition = default;
     public override void EnterState(EnemyBaseState previous)
     {
-        _stateManager.Aim.SetWeapon();
         _stateManager.Aim.OnGainSight += HandleGainSight;
         _stateManager.Aim.OnLostSight += HandleLoseSight;
         _stateManager.Aim.SetWeapon();
@@ -42,12 +41,10 @@ public class EnemyAttackState : EnemyBaseState
 
         if (Random.Range(0f, 1f) < aggressiveness) // harass player 
         {
-            //print("HARAASSSSSS");
             _stateManager.Mover.SetDestination(lastKnownPosition);
         }
         else
         {
-            //print("HMM NO HARASS");
             Vector3 closePoint = Vector3.Lerp(transform.position, lastKnownPosition, 0.35f);
             if (CanFindPosAroundPoint(closePoint, 5f, out Vector3 pos)) 
             {
@@ -89,7 +86,6 @@ public class EnemyAttackState : EnemyBaseState
         {
             if (CanFindPosAroundPoint(_stateManager.Player.Position, 10f, out Vector3 pos))
             {
-                print("go after player");
                 _stateManager.Mover.SetDestination(pos);
             }
             yield return new WaitForSeconds(Random.Range(3f, 6f));  

@@ -623,7 +623,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205230069}
   m_LocalRotation: {x: 0.29613733, y: 0.1656112, z: -0.052217, w: 0.9392279}
-  m_LocalPosition: {x: -24.808325, y: 31.478813, z: -3.6875613}
+  m_LocalPosition: {x: -24.808323, y: 31.478813, z: -3.687562}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 822169234}
@@ -857,7 +857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 241a5beb28fb14045a2e414ffbd7b130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sensitivity: 1.25
+  _action: {fileID: -1203084781787024241, guid: a1427c2eb633a8d4da75a56e93df2b97, type: 3}
+  _sensitivity: 3
 --- !u!1 &310331403
 GameObject:
   m_ObjectHideFlags: 0
@@ -7373,7 +7374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &795624326
 Transform:
   m_ObjectHideFlags: 0
@@ -7407,7 +7408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4b37bae203cae4e8537a3ccfcc4b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 400
+  <Health>k__BackingField: 200
   _state: {fileID: 795624328}
 --- !u!114 &795624328
 MonoBehaviour:
@@ -7618,7 +7619,7 @@ MonoBehaviour:
   <WeaponTransform>k__BackingField: {fileID: 816586876}
   Cannon: {fileID: 365768807}
   _muzzleFlash: {fileID: 1320154169}
-  _fireCD: 0.15
+  _fireCD: 0.25
   _recoil: 3
   _projectile: {fileID: 1813744878465740766, guid: ab76d12acf5f123458b7a9fff5f6f3ff, type: 3}
   _shooterLayer:
@@ -9542,7 +9543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _refreshDamageCD: 2
-  _damageThreshold: 100
+  _damageThreshold: 50
   aggressiveness: 1
 --- !u!114 &1277450320
 MonoBehaviour:
@@ -9600,7 +9601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4b37bae203cae4e8537a3ccfcc4b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 400
+  <Health>k__BackingField: 500
   _state: {fileID: 1277450317}
 --- !u!65 &1277450323
 BoxCollider:
@@ -19522,7 +19523,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458651701}
   m_LocalRotation: {x: 0.29613733, y: 0.1656112, z: -0.052217, w: 0.9392279}
-  m_LocalPosition: {x: -24.808325, y: 31.478813, z: -3.6875613}
+  m_LocalPosition: {x: -24.808323, y: 31.478813, z: -3.687562}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -36,6 +36,7 @@ public class EnemyCoverState : EnemyBaseState
 
     public override void UpdateState()
     {
+        _stateManager.Aim.AimAt(_stateManager.Player.Position, _stateManager.Player.Direction);
         _stateManager.Mover.RotateTowardsTarget(_stateManager.Player.Position);
     }
 
@@ -94,7 +95,7 @@ public class EnemyCoverState : EnemyBaseState
     private void GetOutOfCover()
     {
         if (!_isCovered) return;
-        print("On gain sight while coveredd");
+        print("On gain sight while cover");
         if (_afterCoverRoutine != null) StopCoroutine(_afterCoverRoutine);
         _stateManager.SetState(_stateManager.AttackState);
     }
@@ -107,7 +108,7 @@ public class EnemyCoverState : EnemyBaseState
 
     private IEnumerator GoBackToAttackMode() 
     {
-        yield return new WaitForSeconds(Random.Range(2f, 5f));
+        yield return new WaitForSeconds(Random.Range(4f, 8f));
         _stateManager.SetState(_stateManager.AttackState);
     }
 

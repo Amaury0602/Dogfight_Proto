@@ -35,6 +35,10 @@ public class EnemyAim : ShooterBase
 
     public void SetWeapon()
     {
+        if (CurrentWeapon != null)
+        {
+            CurrentWeapon.OnUnequipped(this);
+        }
         CurrentWeapon.OnEquipped(this);
     }
 
