@@ -6,6 +6,9 @@ public class ProjectileBase : AmmunitionBase
     [SerializeField] protected float _moveSpeed;
     [SerializeField] protected float _effectRadius;
     [SerializeField] protected int _maxColliders;
+
+    protected Collider[] _hitColliders = default;
+
     private Vector3 _lastPos = default;
     private float _timer;
 
@@ -15,9 +18,9 @@ public class ProjectileBase : AmmunitionBase
 
     private void Awake()
     {
+        if (_hitColliders == null) _hitColliders = new Collider[_maxColliders];
         Data.Type = AmmunitionType.Projectile;
     }
-
     public void SetLayer(LayerMask mask)
     {
         _mask = mask;
@@ -25,6 +28,13 @@ public class ProjectileBase : AmmunitionBase
 
     public virtual void OnWeaponFire(Vector3 target)
     {
+        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, 0.1f, _hitColliders, _mask);
+
+        if (numColliders > 0) 
+        {
+            ReachedTarget();
+            return;
+        } 
         _flyRoutine = StartCoroutine(FlyTowardsTarget(target));
     }
 
@@ -62,14 +72,13 @@ public class ProjectileBase : AmmunitionBase
 
     private void DamageSurroundings()
     {
-        Collider[] hitColliders = new Collider[_maxColliders];
-        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _effectRadius, hitColliders);
+        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _effectRadius, _hitColliders);
         for (int i = 0; i < numColliders; i++)
         {
-            IShootable shootable = hitColliders[i].GetComponent<IShootable>();
+            IShootable shootable = _hitColliders[i].GetComponent<IShootable>();
             if (shootable != null)
             {
-                Vector3 dir = hitColliders[i].transform.position - transform.position;
+                Vector3 dir = _hitColliders[i].transform.position - transform.position;
                 shootable.OnShot(dir.normalized, Data);
             }
         }

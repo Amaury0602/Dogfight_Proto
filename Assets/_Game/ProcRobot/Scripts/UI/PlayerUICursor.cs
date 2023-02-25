@@ -22,6 +22,7 @@ public class PlayerUICursor : MonoBehaviour
     public Action<Vector3> OnProjectedPoint = default;
 
     [SerializeField] private Transform _playerHeightMarker;
+    [SerializeField] private Transform _worldCursor;
 
     private Plane _playerPlane;
 
@@ -69,6 +70,7 @@ public class PlayerUICursor : MonoBehaviour
 
             if (_playerPlane.Raycast(ray, out float rayDistance/*, out RaycastHit hit*/))
             {
+                //_worldCursor.position = ray.GetPoint(rayDistance);
                 OnProjectedPoint?.Invoke(ray.GetPoint(rayDistance));
                 //Vector3 worldPoint = ray.GetPoint(rayDistance);
             }

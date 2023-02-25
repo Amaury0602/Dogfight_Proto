@@ -33,6 +33,11 @@ public class EnemyAim : ShooterBase
         _visionHits = new RaycastHit[5];
     }
 
+    private void Start()
+    {
+        SetWeapon();
+    }
+
     public void SetWeapon()
     {
         if (CurrentWeapon != null)

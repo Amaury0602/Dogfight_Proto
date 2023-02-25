@@ -43,9 +43,6 @@ public class EnemyStateManager : MonoBehaviour
     {
         if (state == null)
         {
-#if UNITY_EDITOR
-            print($"this character has no {state}");
-#endif
             return;
         }
         if (CurrentState != null) 
@@ -64,20 +61,14 @@ public class EnemyStateManager : MonoBehaviour
     {
         Enemy.OnDeath -= OnDeath;
         CurrentState.ExitState();
-        CurrentState = null;
         Mover.OnDeath();
+        CurrentState = null;
     }
 
 
     private void Update()
     {
         if (CurrentState != null) CurrentState.UpdateState();
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            SetState(CoverState);
-        }
-#endif
     }
 
     public void OnShotTaken(int damage)

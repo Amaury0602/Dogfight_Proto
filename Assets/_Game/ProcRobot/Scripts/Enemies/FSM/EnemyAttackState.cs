@@ -13,7 +13,7 @@ public class EnemyAttackState : EnemyBaseState
     private float _computedDamage;
     private Coroutine _damageComputeRoutine = null;
 
-    [SerializeField, Range(-0.1f, 1f)] private float aggressiveness;
+    [SerializeField, Range(-0.1f, 1.1f)] private float aggressiveness;
 
 
     private Vector3 lastKnownPosition = default;
@@ -21,7 +21,6 @@ public class EnemyAttackState : EnemyBaseState
     {
         _stateManager.Aim.OnGainSight += HandleGainSight;
         _stateManager.Aim.OnLostSight += HandleLoseSight;
-        _stateManager.Aim.SetWeapon();
 
         _attackRoutine = StartCoroutine(ChaseTarget());
     }
@@ -84,7 +83,10 @@ public class EnemyAttackState : EnemyBaseState
     {
         while(_targetInSight)
         {
-            if (CanFindPosAroundPoint(_stateManager.Player.Position, 10f, out Vector3 pos))
+            float distToPlayer = 30f;
+            if (Random.Range(0f, 1f) < aggressiveness) distToPlayer = 15f;
+
+            if (CanFindPosAroundPoint(_stateManager.Player.Position, distToPlayer, out Vector3 pos))
             {
                 _stateManager.Mover.SetDestination(pos);
             }
@@ -94,11 +96,11 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void ExitState()
     {
-        if (_attackRoutine != null) StopCoroutine(_attackRoutine);
-        if (_damageComputeRoutine != null) StopCoroutine(_damageComputeRoutine);
-
+        _targetInSight = false;
         _stateManager.Aim.OnGainSight -= HandleGainSight;
         _stateManager.Aim.OnLostSight -= HandleLoseSight;
+        if (_attackRoutine != null) StopCoroutine(_attackRoutine);
+        if (_damageComputeRoutine != null) StopCoroutine(_damageComputeRoutine);
     }
 
     public override void OnShot(int damage)
