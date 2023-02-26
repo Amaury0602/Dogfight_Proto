@@ -26,6 +26,6 @@ public class HitscanWeapon : WeaponBase
 
     protected virtual void SpawnBulletTrail(Vector3 targetPoint)
     {
-        FXHandler.Instance.PlayBulletTrail(Cannon.position, targetPoint);
+        FXHandler.Instance.PlayBulletTrail(Cannon.position, targetPoint + Random.insideUnitSphere * 2f);
     }
 }

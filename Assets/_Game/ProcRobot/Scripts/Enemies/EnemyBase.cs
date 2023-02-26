@@ -10,6 +10,8 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
 
     [SerializeField] private EnemyStateManager _state;
 
+    [SerializeField] protected Collider _mainCollider;
+
     public bool Alive => Health > 0;
 
     public Action OnDeath = default;
@@ -24,6 +26,7 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
 
     protected virtual void Die()
     {
+        _mainCollider.enabled = false;
         OnDeath?.Invoke();
     }
 

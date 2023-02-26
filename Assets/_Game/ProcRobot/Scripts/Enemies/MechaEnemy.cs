@@ -8,13 +8,4 @@ public class MechaEnemy : EnemyBase
     {
         _rb = GetComponent<Rigidbody>();
     }
-
-    protected override void Die()
-    {
-        base.Die();
-        _rb.isKinematic = false;
-
-        _rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
-        _rb.AddTorque(Random.insideUnitSphere * 150f , ForceMode.Impulse);
-    }
 }

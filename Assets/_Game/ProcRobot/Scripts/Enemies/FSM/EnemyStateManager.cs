@@ -35,23 +35,26 @@ public class EnemyStateManager : MonoBehaviour
 
     private void Start()
     {
-        PreviousState = null;
+        PreviousState = RoamState;
         SetState(RoamState);
     }
 
     public void SetState(EnemyBaseState state)
     {
-        if (state == null)
-        {
-            return;
-        }
         if (CurrentState != null) 
         {
             CurrentState.ExitState();
             PreviousState = CurrentState;
         }
-
         Mover.OnStateChanged();
+
+
+        if (state == null)
+        {
+            SetState(PreviousState);
+            return;
+        }
+
 
         CurrentState = state;
         CurrentState.EnterState(PreviousState);

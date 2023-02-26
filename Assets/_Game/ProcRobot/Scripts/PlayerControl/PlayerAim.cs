@@ -21,8 +21,15 @@ public class PlayerAim : ShooterBase
         
         PlayerUICursor.Instance.OnProjectedPoint += FollowCursor;
 
+        MouseInput.Instance.OnRightMouseDown += OnRightMouseDown;
+        MouseInput.Instance.OnRightMouseHold += OnRightMouseHold;
+        MouseInput.Instance.OnRightMouseUp += OnRightMouseUp;
+
         if (CurrentWeapon) CurrentWeapon.OnEquipped(this);
     }
+
+    
+
     private void FollowCursor(Vector3 aimPoint)
     {
         Vector3 start = CurrentWeapon.Cannon.position;
@@ -44,10 +51,25 @@ public class PlayerAim : ShooterBase
 
 
         //SHOOTING
-        if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
+        if (Input.GetMouseButton(0))
         {
             ShootRayFromArm();
         }
+    }
+
+    private void OnRightMouseDown()
+    {
+
+    }
+
+    private void OnRightMouseHold()
+    {
+
+    }
+
+    private void OnRightMouseUp()
+    {
+
     }
 
     private void ShootRayFromArm()

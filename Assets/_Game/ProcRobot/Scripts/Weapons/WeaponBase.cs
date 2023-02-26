@@ -6,6 +6,7 @@ using System;
 public abstract class WeaponBase : MonoBehaviour
 {
     [field: SerializeField] public Transform WeaponTransform { get; private set; } = default;
+    [field: SerializeField] public SecondaryWeaponBase Secondary { get; private set; } = default;
 
     [SerializeField] public Transform Cannon;
 
@@ -27,11 +28,6 @@ public abstract class WeaponBase : MonoBehaviour
 
     public virtual void OnEquipped(ShooterBase shooter)
     {
-#if UNITY_EDITOR
-        print($"{shooter.gameObject.name}.OnEquipped {this} ");
-#endif
-
-
         _canShoot = true;
         shooter.OnShoot += TryShoot;
         shooter.OnShootInDirection += TryShootInDirection;
