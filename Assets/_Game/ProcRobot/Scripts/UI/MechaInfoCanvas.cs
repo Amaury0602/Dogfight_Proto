@@ -9,11 +9,14 @@ public class MechaInfoCanvas : MonoBehaviour
     [SerializeField] private EnemyBase _enemy;
     [SerializeField] private Image _fillBar;
 
+    private Vector3 _startLocalPosition;
+
     private int _startHealth;
     private int _currentHealth;
 
     private void Awake()
     {
+        _startLocalPosition = transform.localPosition;
         _cam = Camera.main;
         _startHealth = _enemy.Health;
         _currentHealth = _enemy.Health;
@@ -25,7 +28,7 @@ public class MechaInfoCanvas : MonoBehaviour
     {
 
         transform.DOKill();
-
+        transform.localPosition = _startLocalPosition;
         transform.DOShakePosition(0.15f, Vector3.right * 2f);
 
         _currentHealth -= damage;

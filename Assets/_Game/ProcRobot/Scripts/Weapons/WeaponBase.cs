@@ -6,7 +6,6 @@ using System;
 public abstract class WeaponBase : MonoBehaviour
 {
     [field: SerializeField] public Transform WeaponTransform { get; private set; } = default;
-    [field: SerializeField] public SecondaryWeaponBase Secondary { get; private set; } = default;
 
     [SerializeField] public Transform Cannon;
 
@@ -14,6 +13,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     [SerializeField] protected float _fireCD;
     [SerializeField] protected float _recoil;
+    [SerializeField] protected int _muzzleFlashParticleCount;
     protected bool _canShoot;
     private float _currentCD;
 
@@ -44,6 +44,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     public virtual void OnUnequipped(ShooterBase shooter)
     {
+        _canShoot = false;
         shooter.OnShoot -= TryShoot;
         shooter.OnShootInDirection -= TryShootInDirection;
     }
@@ -61,7 +62,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         OnShotFired?.Invoke();
 
-        if (_muzzleFlash) _muzzleFlash.Emit(3);
+        if (_muzzleFlash) _muzzleFlash.Emit(_muzzleFlashParticleCount);
 
         WeaponTransform.DOKill();
         WeaponTransform.localPosition = _startLocalPosition;
@@ -74,7 +75,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         OnShotFired?.Invoke();
 
-        if (_muzzleFlash) _muzzleFlash.Emit(3);
+        if (_muzzleFlash) _muzzleFlash.Emit(_muzzleFlashParticleCount);
 
         WeaponTransform.DOKill();
         WeaponTransform.localPosition = _startLocalPosition;

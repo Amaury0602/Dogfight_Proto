@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using DG.Tweening;
 
@@ -15,6 +16,10 @@ public class PlayerUICursor : MonoBehaviour
     [SerializeField] private LayerMask _specificAimLayer;
 
     private Vector2 screenSize;
+
+    [SerializeField] private Image _cursorImage;
+    [SerializeField] private Sprite _baseCursor;
+    [SerializeField] private Sprite _secondaryCursor;
 
 
     public Vector3 ProjectedWorldPosition { get; private set; }
@@ -40,6 +45,18 @@ public class PlayerUICursor : MonoBehaviour
     private void OnEnable()
     {
         MouseInput.Instance.OnMouseMove += Move;
+        MouseInput.Instance.OnRightMouseDown += SwitchToSecondaryCursor;
+        MouseInput.Instance.OnRightMouseUp += SwitchToBaseCursor;
+    }
+
+    private void SwitchToBaseCursor()
+    {
+        _cursorImage.sprite = _baseCursor;
+    }
+
+    private void SwitchToSecondaryCursor()
+    {
+        _cursorImage.sprite = _secondaryCursor;
     }
 
     private void Start()
@@ -91,5 +108,7 @@ public class PlayerUICursor : MonoBehaviour
     private void OnDisable()
     {
         MouseInput.Instance.OnMouseMove -= Move;
+        MouseInput.Instance.OnRightMouseDown -= SwitchToSecondaryCursor;
+        MouseInput.Instance.OnRightMouseUp -= SwitchToBaseCursor;
     }
 }

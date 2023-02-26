@@ -60,7 +60,7 @@ public class PlayerHandler : MonoBehaviour
 
 
             Direction = mov;
-            //_rb.velocity = Vector3.Lerp(_rb.velocity, mov * _rbMoveSpeed, Time.deltaTime * _dt);
+            //_rb.velocity = mov * _rbMoveSpeed;
         }
         else
         {

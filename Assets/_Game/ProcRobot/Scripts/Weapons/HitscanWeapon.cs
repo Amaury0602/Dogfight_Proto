@@ -20,6 +20,7 @@ public class HitscanWeapon : WeaponBase
 
     protected override void PlayerShootInDirection(Vector3 dir)
     {
+        base.PlayerShootInDirection(dir);
         SpawnBulletTrail(WeaponTransform.position + dir * 50f);
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerAim : ShooterBase
 {
     [field: SerializeField] public WeaponBase CurrentWeapon { get; private set; } = default;
+    [field: SerializeField] public SecondaryWeaponBase SecondaryWeapon { get; private set; } = default;
     
     [SerializeField] private Transform _headTransform;
     [SerializeField] private AimVisuals _visuals;
@@ -33,7 +34,7 @@ public class PlayerAim : ShooterBase
     private void FollowCursor(Vector3 aimPoint)
     {
         Vector3 start = CurrentWeapon.Cannon.position;
-        Vector3 end = start +CurrentWeapon.WeaponTransform.forward * 75f; ;
+        Vector3 end = start + CurrentWeapon.WeaponTransform.forward * 75f; ;
 
         Direction = (aimPoint - CurrentWeapon.WeaponTransform.position).normalized;
         CurrentWeapon.WeaponTransform.forward = Direction;
@@ -59,7 +60,8 @@ public class PlayerAim : ShooterBase
 
     private void OnRightMouseDown()
     {
-
+        CurrentWeapon.OnUnequipped(this);
+        SecondaryWeapon.OnEquipped(this);
     }
 
     private void OnRightMouseHold()
@@ -69,7 +71,8 @@ public class PlayerAim : ShooterBase
 
     private void OnRightMouseUp()
     {
-
+        CurrentWeapon.OnEquipped(this);
+        SecondaryWeapon.OnUnequipped(this);
     }
 
     private void ShootRayFromArm()

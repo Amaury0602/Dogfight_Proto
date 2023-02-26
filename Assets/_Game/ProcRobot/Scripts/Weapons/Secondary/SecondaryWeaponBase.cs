@@ -1,14 +1,22 @@
 using UnityEngine;
 
-public class SecondaryWeaponBase : MonoBehaviour
+public abstract class SecondaryWeaponBase : WeaponBase
 {
-    public virtual void OnStart()
+    public bool IsActive { get; private set; } = false;
+    public override void OnEquipped(ShooterBase shooter)
     {
-
+        base.OnEquipped(shooter);
+        IsActive = true;
+        OnStart();
     }
 
-    public virtual void OnExit()
+    public override void OnUnequipped(ShooterBase shooter)
     {
-
+        base.OnUnequipped(shooter);
+        IsActive = false;
+        OnExit();
     }
+
+    public abstract void OnStart();
+    public abstract void OnExit();
 }
