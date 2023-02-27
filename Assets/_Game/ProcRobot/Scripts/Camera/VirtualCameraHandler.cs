@@ -12,6 +12,14 @@ public class VirtualCameraHandler : MonoBehaviour
 
     [SerializeField] private NoiseSettings _noiseSettings;
 
+    private Coroutine _shakeRoutine = default;
+
+
+    [Header("Shake Debug Variables")]
+    [SerializeField] private float _testAmplitude;
+    [SerializeField] private float _testFrequency;
+    [SerializeField] private float _testDuration;
+
     void Start()
     {
         _brain = GetComponent<CinemachineBrain>();
@@ -20,16 +28,36 @@ public class VirtualCameraHandler : MonoBehaviour
         _perlin.m_NoiseProfile = _noiseSettings;
     }
 
+#if UNITY_EDITOR
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.K))
         {
-            //_perlin.
+            if (_shakeRoutine != null)
+            {
+                StopCoroutine(_shakeRoutine);
+            }
+
+            _shakeRoutine = StartCoroutine(Shake(_testAmplitude, _testFrequency, _testDuration));
         }
     }
+#endif
 
-    //private void StopShake()
-    //{
-    //    _noiseSettings.ampl
-    //}
-}
+
+    public IEnumerator Shake(float amplitude, float frequency, float duration)
+    {
+        float elapsed = 0f;
+
+        _perlin.m_FrequencyGain = frequency;
+        _perlin.m_AmplitudeGain = amplitude;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        _perlin.m_AmplitudeGain = 0f;
+        _perlin.m_FrequencyGain = 0f;
+    }
+} 

@@ -24,7 +24,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     public Action OnShotFired = default;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _startLocalPosition = WeaponTransform.localPosition;
     }
@@ -34,6 +34,8 @@ public abstract class WeaponBase : MonoBehaviour
         _canShoot = true;
         shooter.OnShoot += TryShoot;
         shooter.OnShootInDirection += TryShootInDirection;
+
+        _currentCD = _fireCD;
     }
 
     public virtual void TryShootInDirection(Vector3 dir)
@@ -81,6 +83,7 @@ public abstract class WeaponBase : MonoBehaviour
         if (_muzzleFlash) _muzzleFlash.Emit(_muzzleFlashParticleCount);
 
         WeaponTransform.DOKill();
+
         WeaponTransform.localPosition = _startLocalPosition;
         WeaponTransform
             .DOLocalMoveZ(WeaponTransform.localPosition.z - _recoil, 0.05f)
