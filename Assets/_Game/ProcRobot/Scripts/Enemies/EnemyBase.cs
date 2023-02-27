@@ -49,4 +49,11 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
         TakeDamage(data.Damage);
         _state.OnShotTaken(data.Damage);
     }
+
+    public void OnShot(Vector3 dir, int damage, AmmunitionData data) // interface method
+    {
+        if (!Alive) return;
+        TakeDamage(damage);
+        _state.OnShotTaken(damage);
+    }
 }

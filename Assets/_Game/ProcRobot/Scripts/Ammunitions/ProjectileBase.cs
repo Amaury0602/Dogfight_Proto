@@ -15,15 +15,18 @@ public class ProjectileBase : AmmunitionBase
     private Coroutine _flyRoutine = null;
 
     [SerializeField] private LayerMask _mask;
+    private AmmunitionData _data;
 
     private void Awake()
     {
         if (_hitColliders == null) _hitColliders = new Collider[_maxColliders];
-        Data.Type = AmmunitionType.Projectile;
     }
-    public void SetLayer(LayerMask mask)
+
+    public void Initialize(LayerMask mask, AmmunitionData data)
     {
         _mask = mask;
+        _data = data;
+        _data.Type = AmmunitionType.Projectile;
     }
 
     public virtual void OnWeaponFire(Vector3 target)
@@ -79,7 +82,7 @@ public class ProjectileBase : AmmunitionBase
             if (shootable != null)
             {
                 Vector3 dir = _hitColliders[i].transform.position - transform.position;
-                shootable.OnShot(dir.normalized, Data);
+                shootable.OnShot(dir.normalized, _data);
             }
         }
     }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class ShootDebug : MonoBehaviour, IShootable
+public class ShootDebug : MonoBehaviour/*, IShootable*/
 {
 
     private Vector3 _startScale;

@@ -14,6 +14,9 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected float _fireCD;
     [SerializeField] protected float _recoil;
     [SerializeField] protected int _muzzleFlashParticleCount;
+
+    [SerializeField] protected AmmunitionData Data;
+
     protected bool _canShoot;
     private float _currentCD;
 
@@ -84,7 +87,7 @@ public abstract class WeaponBase : MonoBehaviour
             .SetLoops(2, LoopType.Yoyo);
     }
 
-    private IEnumerator ResetFireCoolDown()
+    protected IEnumerator ResetFireCoolDown()
     {
         _canShoot = false;
         while (_currentCD >= 0)

@@ -17,7 +17,7 @@ public class ProjectileWeapon : WeaponBase
 
         ProjectileBase proj = Instantiate(_projectile, Cannon.position, Quaternion.LookRotation(WeaponTransform.forward));
 
-        proj.SetLayer(_shooterLayer);
+        proj.Initialize(_shooterLayer, Data);
         
         proj.OnWeaponFire(hit.point);
     }
@@ -28,7 +28,7 @@ public class ProjectileWeapon : WeaponBase
 
         ProjectileBase proj = Instantiate(_projectile, Cannon.position, Quaternion.LookRotation(dir));
 
-        proj.SetLayer(_shooterLayer);
+        proj.Initialize(_shooterLayer, Data);
 
         proj.OnWeaponFire(proj.transform.position + dir);
     }

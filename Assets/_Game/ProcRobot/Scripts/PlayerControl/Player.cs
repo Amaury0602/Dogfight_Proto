@@ -28,4 +28,9 @@ public class Player : MonoBehaviour, IShootable
     {
         OnDeath?.Invoke();
     }
+
+    public void OnShot(Vector3 dir, int damage, AmmunitionData data)
+    {
+        //throw new NotImplementedException();
+    }
 }

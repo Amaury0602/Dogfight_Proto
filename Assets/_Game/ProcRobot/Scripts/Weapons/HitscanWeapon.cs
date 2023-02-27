@@ -7,7 +7,6 @@ public class HitscanWeapon : WeaponBase
     {
         base.Shoot(hit);
 
-
         SpawnBulletTrail(hit.point);
 
         IShootable shootable = hit.collider.GetComponent<IShootable>();
