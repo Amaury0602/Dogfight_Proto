@@ -90,7 +90,7 @@ public abstract class WeaponBase : MonoBehaviour
             .SetLoops(2, LoopType.Yoyo);
     }
 
-    protected IEnumerator ResetFireCoolDown()
+    protected virtual IEnumerator ResetFireCoolDown()
     {
         _canShoot = false;
         while (_currentCD >= 0)

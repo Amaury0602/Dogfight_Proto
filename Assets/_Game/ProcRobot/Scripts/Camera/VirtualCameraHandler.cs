@@ -14,11 +14,18 @@ public class VirtualCameraHandler : MonoBehaviour
 
     private Coroutine _shakeRoutine = default;
 
+    public static VirtualCameraHandler Instance;
+
 
     [Header("Shake Debug Variables")]
     [SerializeField] private float _testAmplitude;
     [SerializeField] private float _testFrequency;
     [SerializeField] private float _testDuration;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -38,13 +45,18 @@ public class VirtualCameraHandler : MonoBehaviour
                 StopCoroutine(_shakeRoutine);
             }
 
-            _shakeRoutine = StartCoroutine(Shake(_testAmplitude, _testFrequency, _testDuration));
+            _shakeRoutine = StartCoroutine(ShakeRoutine(_testAmplitude, _testFrequency, _testDuration));
         }
     }
 #endif
 
 
-    public IEnumerator Shake(float amplitude, float frequency, float duration)
+    public void Shake(float amplitude, float frequency, float duration)
+    {
+        _shakeRoutine = StartCoroutine(ShakeRoutine(amplitude, frequency, duration));
+    }
+
+    private IEnumerator ShakeRoutine(float amplitude, float frequency, float duration)
     {
         float elapsed = 0f;
 

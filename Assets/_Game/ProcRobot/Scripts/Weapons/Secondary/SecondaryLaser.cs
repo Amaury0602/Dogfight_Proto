@@ -9,6 +9,7 @@ public class SecondaryLaser : SecondaryWeaponBase
 
     private Coroutine _beamRoutine = null;
 
+    private bool _isActive = false;
 
     [Header("Laser Visuals")]
     [SerializeField] private LineRenderer _line;
@@ -26,15 +27,15 @@ public class SecondaryLaser : SecondaryWeaponBase
 
     public override void OnStart()
     {
-        _chargeBeamFX.Play();
+        _isActive = true;
         _currentPower = 0;
         _beamRoutine = StartCoroutine(ChargeBeam());
-
         _line.positionCount = 2;
     }
 
     private IEnumerator ChargeBeam()
     {
+        _chargeBeamFX.Play();
         float elapsed = 0f;
         _line.positionCount = 0;
         _currentPower = 0f;
@@ -50,6 +51,12 @@ public class SecondaryLaser : SecondaryWeaponBase
     private IEnumerator ReleaseBeam(Vector3 endPoint)
     {
         StopCoroutine(_beamRoutine);
+
+
+        if (_currentPower >= 0.75f) VirtualCameraHandler.Instance.Shake(2, 0.1f, 0.25f);
+
+
+        _chargeBeamFX.Stop();
 
         float duration = Mathf.Lerp(_minMaxDuration.x, _minMaxDuration.y, _currentPower);
         float width = Mathf.Lerp(_minMaxWidth.x, _minMaxWidth.y, _currentPower);
@@ -70,7 +77,7 @@ public class SecondaryLaser : SecondaryWeaponBase
 
         yield return null;
 
-        _beamRoutine = StartCoroutine(ChargeBeam());
+        _line.positionCount = 0;
     }
 
     protected override void Shoot(RaycastHit hit)
@@ -84,8 +91,6 @@ public class SecondaryLaser : SecondaryWeaponBase
             Vector3 dir = hit.point - WeaponTransform.position;
             shootable.OnShot(dir.normalized, Mathf.FloorToInt(Data.Damage * _currentPower), Data);
         }
-
-        
     }
 
     protected override void PlayerShootInDirection(Vector3 dir)
@@ -94,9 +99,17 @@ public class SecondaryLaser : SecondaryWeaponBase
         StartCoroutine(ReleaseBeam(Cannon.position + dir * 50f));
     }
 
+    protected override IEnumerator ResetFireCoolDown()
+    {
+        yield return base.ResetFireCoolDown();
+        if (_isActive) _beamRoutine = StartCoroutine(ChargeBeam());
+    }
+
 
     public override void OnExit()
     {
+        _isActive = false;
+
         _chargeBeamFX.Stop();
         _currentPower = 0f;
 

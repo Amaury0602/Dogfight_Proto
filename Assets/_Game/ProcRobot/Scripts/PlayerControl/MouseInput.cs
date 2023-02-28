@@ -34,8 +34,9 @@ public class MouseInput : MonoBehaviour
 
     private void Update()
     {
-        _mouseMovement = ((Vector2)Input.mousePosition - _lastPosition);
-        _lastPosition = Input.mousePosition;
+        //_mouseMovement = ((Vector2)Input.mousePosition - _lastPosition);
+        //_lastPosition = Input.mousePosition;
+
         OnMouseMove?.Invoke(Mouse.current.delta.ReadValue()/*_mouseMovement*/ * _sensitivity);
 
         if (Input.GetMouseButtonDown(1))
