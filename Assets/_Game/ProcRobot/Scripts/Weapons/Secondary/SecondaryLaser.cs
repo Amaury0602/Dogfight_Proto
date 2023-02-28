@@ -17,6 +17,12 @@ public class SecondaryLaser : SecondaryWeaponBase
 
     private float _currentPower = 0;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        _line.positionCount = 0;
+    }
+
 
     public override void OnStart()
     {
@@ -24,12 +30,15 @@ public class SecondaryLaser : SecondaryWeaponBase
         _currentPower = 0;
         _beamRoutine = StartCoroutine(ChargeBeam());
 
-        _line.positionCount = 0;
+        _line.positionCount = 2;
     }
 
     private IEnumerator ChargeBeam()
     {
         float elapsed = 0f;
+        _line.positionCount = 0;
+        _currentPower = 0f;
+
         while (IsActive)
         {
             elapsed += Time.deltaTime;
@@ -40,15 +49,10 @@ public class SecondaryLaser : SecondaryWeaponBase
 
     private IEnumerator ReleaseBeam(Vector3 endPoint)
     {
-
+        StopCoroutine(_beamRoutine);
 
         float duration = Mathf.Lerp(_minMaxDuration.x, _minMaxDuration.y, _currentPower);
         float width = Mathf.Lerp(_minMaxWidth.x, _minMaxWidth.y, _currentPower);
-#if UNITY_EDITOR
-        print(_currentPower);
-        print(duration);
-        print(width);
-#endif
 
         float elapsed = 0;
 
@@ -59,15 +63,14 @@ public class SecondaryLaser : SecondaryWeaponBase
 
         while (elapsed < duration)
         {
-            _line.SetPosition(0, Cannon.position);
+            _line.widthMultiplier = Mathf.Lerp(0, width, 1 - Mathf.Clamp01(elapsed / duration));
             elapsed += Time.deltaTime;
-            _line.widthMultiplier = 1 - Mathf.Lerp(0, width, Mathf.Clamp01(elapsed / duration));
             yield return null;
         }
 
         yield return null;
 
-        _line.positionCount = 0;
+        _beamRoutine = StartCoroutine(ChargeBeam());
     }
 
     protected override void Shoot(RaycastHit hit)
@@ -79,8 +82,10 @@ public class SecondaryLaser : SecondaryWeaponBase
         if (shootable != null)
         {
             Vector3 dir = hit.point - WeaponTransform.position;
-            shootable.OnShot(dir.normalized, Data.Damage * Mathf.FloorToInt(_currentPower), Data);
+            shootable.OnShot(dir.normalized, Mathf.FloorToInt(Data.Damage * _currentPower), Data);
         }
+
+        
     }
 
     protected override void PlayerShootInDirection(Vector3 dir)
@@ -93,6 +98,9 @@ public class SecondaryLaser : SecondaryWeaponBase
     public override void OnExit()
     {
         _chargeBeamFX.Stop();
+        _currentPower = 0f;
+
+        if (_beamRoutine != null) StopCoroutine(_beamRoutine);
     }
 
 }

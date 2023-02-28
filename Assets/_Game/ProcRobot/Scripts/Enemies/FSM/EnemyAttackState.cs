@@ -121,7 +121,6 @@ public class EnemyAttackState : EnemyBaseState
     private void OnTooMuchDamageReceived()
     {
         if (_attackRoutine != null) StopCoroutine(_attackRoutine);
-        print("trying to find cover");
         _stateManager.SetState(_stateManager.CoverState);
     }
 

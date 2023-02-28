@@ -6741,11 +6741,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NoiseProfile: {fileID: 11400000, guid: 385e4bb937ffc5e46921035274c49789, type: 2}
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 1
-  m_FrequencyGain: 1
-  mNoiseOffsets: {x: 993.71814, y: 327.92282, z: 376.01657}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
+  mNoiseOffsets: {x: 107.3855, y: 493.52856, z: 13.113403}
 --- !u!1 &828236930
 GameObject:
   m_ObjectHideFlags: 0
@@ -7256,16 +7256,16 @@ MonoBehaviour:
   <WeaponTransform>k__BackingField: {fileID: 931257981}
   Cannon: {fileID: 1550505332}
   _muzzleFlash: {fileID: 1504570802}
-  _fireCD: 2
-  _recoil: 5
+  _fireCD: 0.75
+  _recoil: 3
   _muzzleFlashParticleCount: 24
   Data: {fileID: 11400000, guid: 6adcb202b3f0ad841b6412121ea5eb48, type: 2}
   _chargeBeamFX: {fileID: 775206849}
   _debugBeam: {fileID: 0}
-  _timeToFullCharge: 5
+  _timeToFullCharge: 3
   _line: {fileID: 931257984}
-  _minMaxWidth: {x: 0.15, y: 0.75}
-  _minMaxDuration: {x: 0.25, y: 0.5}
+  _minMaxWidth: {x: 0.25, y: 3.5}
+  _minMaxDuration: {x: 0.15, y: 0.15}
 --- !u!120 &931257984
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -7325,8 +7325,8 @@ LineRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.12954712
-        value: 0.9450003
+        time: 0.14189404
+        value: 0.6874232
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -7343,8 +7343,8 @@ LineRenderer:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.41363636
-        value: 0.955
+        time: 0.4171637
+        value: 0.86409086
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -7361,8 +7361,8 @@ LineRenderer:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.6909091
-        value: 0.955
+        time: 0.69443643
+        value: 0.86409086
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -7379,8 +7379,8 @@ LineRenderer:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.9409091
-        value: 0.965
+        time: 0.94443643
+        value: 0.87409085
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -17930,7 +17930,7 @@ GameObject:
   - component: {fileID: 1458651706}
   - component: {fileID: 1458651707}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: CamManager
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18080,7 +18080,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1794631d476589419e52873812e466f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _noiseSettings: {fileID: 11400000, guid: 385e4bb937ffc5e46921035274c49789, type: 2}
+  _noiseSettings: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  _testAmplitude: 1
+  _testFrequency: 1
+  _testDuration: 0.15
 --- !u!1 &1466525282
 GameObject:
   m_ObjectHideFlags: 0
