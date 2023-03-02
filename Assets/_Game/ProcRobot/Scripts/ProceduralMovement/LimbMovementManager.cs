@@ -19,6 +19,7 @@ public class LimbMovementManager : MonoBehaviour
     [Header("Steps")]
     [SerializeField] private Transform[] _limbTargets;
     [SerializeField] private Transform[] _limbDetectors;
+    [SerializeField] private Vector3[] _detectorsStartPositions;
     [SerializeField] private float _stepSize = 1;
     [SerializeField] private float _stepHeight = 1;
     [SerializeField] private int _smoothness = 1;
@@ -36,6 +37,11 @@ public class LimbMovementManager : MonoBehaviour
 
     void Start()
     {
+
+        _detectorsStartPositions = new Vector3[_limbDetectors.Length];
+        _detectorsStartPositions[0] = _limbDetectors[0].localPosition;
+        _detectorsStartPositions[1] = _limbDetectors[1].localPosition;
+
         _nLimbs = _limbTargets.Length;
         _limbs = new ProceduralLimb[_nLimbs];
         Transform t;
@@ -73,10 +79,10 @@ public class LimbMovementManager : MonoBehaviour
         float greatestDistance = _stepSize;
         int limbToMove = -1;
 
-        //for (int i = 0; i < _limbDetectors.Length; i++)
-        //{
-        //    _limbDetectors[i].position = _velocity;
-        //}
+        for (int i = 0; i < _limbDetectors.Length; i++)
+        {
+            _limbDetectors[i].localPosition = _detectorsStartPositions[i] + _velocity;
+        }
 
 
 
