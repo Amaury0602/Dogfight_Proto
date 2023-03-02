@@ -15,6 +15,7 @@ public class SecondaryLaser : SecondaryWeaponBase
     [SerializeField] private LineRenderer _line;
     [SerializeField] private Vector2 _minMaxWidth;
     [SerializeField] private Vector2 _minMaxDuration;
+    [SerializeField] private Vector2 _minMaxShake;
 
     private float _currentPower = 0;
 
@@ -53,7 +54,7 @@ public class SecondaryLaser : SecondaryWeaponBase
         StopCoroutine(_beamRoutine);
 
 
-        if (_currentPower >= 0.75f) VirtualCameraHandler.Instance.Shake(2, 0.1f, 0.25f);
+        VirtualCameraHandler.Instance.Shake(Mathf.Lerp(_minMaxShake.x, _minMaxShake.y, _currentPower), 0.1f, 0.25f);
 
 
         _chargeBeamFX.Stop();

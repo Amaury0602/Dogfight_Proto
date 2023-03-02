@@ -23,16 +23,18 @@ public class PlayerHandler : MonoBehaviour
     public Vector3 Direction { get; private set; }
     public Vector3 Position => transform.position;
 
+    [SerializeField] private bool _rotateWithMovement = false;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _aim = GetComponent<PlayerAim>();
         _player = GetComponent<Player>();
         _cam = Camera.main;
+        _canMove = true;
 
         _player.OnDeath += OnDeath;
 
-        _canMove = true;
     }
     void Update()
     {
@@ -68,10 +70,19 @@ public class PlayerHandler : MonoBehaviour
             //_rb.velocity = Vector3.zero;
         }
 
+        Quaternion rot = transform.rotation;
 
-        Vector3 aimingDir = _aim.Direction;
-        aimingDir.y = 0;
-        Quaternion rot = Quaternion.LookRotation(aimingDir);
+        if (_rotateWithMovement)
+        {
+            if (Direction != Vector3.zero) rot = Quaternion.LookRotation(Direction);
+        }
+        else
+        {
+            Vector3 aimingDir = _aim.Direction;
+            aimingDir.y = 0;
+            rot = Quaternion.LookRotation(aimingDir);
+        }
+        
         transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * _rotSpeed);
     }
     private void OnDeath()
