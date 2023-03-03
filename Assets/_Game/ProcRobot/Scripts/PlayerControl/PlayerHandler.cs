@@ -25,6 +25,9 @@ public class PlayerHandler : MonoBehaviour
 
     [SerializeField] private bool _rotateWithMovement = false;
 
+
+    private Vector3 _inputDirection;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -42,46 +45,45 @@ public class PlayerHandler : MonoBehaviour
         Move();
     }
 
+
+    private void FixedUpdate()
+    {
+        if (_inputDirection != Vector3.zero)
+        {
+            _rb.velocity = Direction * _rbMoveSpeed;
+        }
+        else
+        {
+            _rb.velocity = Vector3.zero;
+        }
+    }
+
     private void Move()
     {
 
         if (!_canMove) return;
 
+        _inputDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
-
-        Vector3 inputDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-
-        if (inputDirection != Vector3.zero)
+        if (_inputDirection != Vector3.zero)
         {
-            Vector3 forward = _cam.transform.forward * inputDirection.z;
-            Vector3 right = _cam.transform.right * inputDirection.x;
+            Vector3 forward = _cam.transform.forward * _inputDirection.z;
+            Vector3 right = _cam.transform.right * _inputDirection.x;
             Vector3 mov = (forward + right).normalized;
             mov.y = 0;
 
-            transform.position = Vector3.Lerp(transform.position, transform.position + mov, Time.deltaTime * _moveSpeed);
-
-
+            //transform.position = Vector3.Lerp(transform.position, transform.position + mov, Time.deltaTime * _moveSpeed);
             Direction = mov;
-            //_rb.velocity = mov * _rbMoveSpeed;
         }
         else
         {
             Direction = Vector3.zero;
-            //_rb.velocity = Vector3.zero;
         }
-
-        Quaternion rot = transform.rotation;
-
-        if (_rotateWithMovement)
-        {
-            if (Direction != Vector3.zero) rot = Quaternion.LookRotation(Direction);
-        }
-        else
-        {
-            Vector3 aimingDir = _aim.Direction;
-            aimingDir.y = 0;
-            rot = Quaternion.LookRotation(aimingDir);
-        }
+        
+        Vector3 aimingDir = _aim.Direction;
+        aimingDir.y = 0;
+        Quaternion rot = Quaternion.LookRotation(aimingDir);
+        
         
         transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * _rotSpeed);
     }
