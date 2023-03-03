@@ -48,14 +48,7 @@ public class PlayerHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_inputDirection != Vector3.zero)
-        {
-            _rb.velocity = Direction * _rbMoveSpeed;
-        }
-        else
-        {
-            _rb.velocity = Vector3.zero;
-        }
+        _rb.velocity = Direction * _rbMoveSpeed;
     }
 
     private void Move()
