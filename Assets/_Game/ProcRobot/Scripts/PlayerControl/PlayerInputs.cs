@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MouseInput : MonoBehaviour
+public class PlayerInputs : MonoBehaviour
 {
 
     [SerializeField] private InputActionReference _action;
 
-    public static MouseInput Instance;
+    public static PlayerInputs Instance;
 
     [SerializeField] private float _sensitivity;
     private Vector2 _lastPosition = Vector2.zero;
@@ -16,6 +16,7 @@ public class MouseInput : MonoBehaviour
     public System.Action OnRightMouseDown = default;
     public System.Action OnRightMouseHold = default;
     public System.Action OnRightMouseUp = default;
+    public System.Action OnSpaceDown = default;
 
     private bool _rightMouseDown = false;
     
@@ -37,7 +38,6 @@ public class MouseInput : MonoBehaviour
         //_mouseMovement = ((Vector2)Input.mousePosition - _lastPosition);
         //_lastPosition = Input.mousePosition;
 
-        OnMouseMove?.Invoke(Mouse.current.delta.ReadValue()/*_mouseMovement*/ * _sensitivity);
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -54,5 +54,15 @@ public class MouseInput : MonoBehaviour
             OnRightMouseUp?.Invoke();
         }
 
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnSpaceDown?.Invoke();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        OnMouseMove?.Invoke(Mouse.current.delta.ReadValue()/*_mouseMovement*/ * _sensitivity);
     }
 }

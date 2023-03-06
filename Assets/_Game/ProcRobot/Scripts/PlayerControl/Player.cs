@@ -5,10 +5,21 @@ public class Player : MonoBehaviour, IShootable
 {
     [field: SerializeField] public int Health { get; private set; }
 
+    public PlayerHandler Handler { get; private set; }
+
+
+    public static Player Instance;
+
     public bool Alive => Health > 0;
 
     public Action OnTakeDamage = default;
     public Action OnDeath = default;
+
+    private void Awake()
+    {
+        Handler = GetComponent<PlayerHandler>();
+        Instance = this;
+    }
 
     public void OnShot(Vector3 dir, AmmunitionData data)
     {

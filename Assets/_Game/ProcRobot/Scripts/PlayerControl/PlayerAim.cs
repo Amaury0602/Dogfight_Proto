@@ -15,6 +15,9 @@ public class PlayerAim : ShooterBase
 
     private Player _player;
 
+
+    [SerializeField] private float _weaponRotSpeed;
+
     private void Start()
     {
         _player = GetComponent<Player>();
@@ -22,9 +25,9 @@ public class PlayerAim : ShooterBase
         
         PlayerUICursor.Instance.OnProjectedPoint += FollowCursor;
 
-        MouseInput.Instance.OnRightMouseDown += OnRightMouseDown;
-        MouseInput.Instance.OnRightMouseHold += OnRightMouseHold;
-        MouseInput.Instance.OnRightMouseUp += OnRightMouseUp;
+        PlayerInputs.Instance.OnRightMouseDown += OnRightMouseDown;
+        PlayerInputs.Instance.OnRightMouseHold += OnRightMouseHold;
+        PlayerInputs.Instance.OnRightMouseUp += OnRightMouseUp;
 
         if (CurrentWeapon) CurrentWeapon.OnEquipped(this);
     }
@@ -37,7 +40,10 @@ public class PlayerAim : ShooterBase
         Vector3 end = start + CurrentWeapon.WeaponTransform.forward * 75f; ;
 
         Direction = (aimPoint - CurrentWeapon.WeaponTransform.position).normalized;
-        CurrentWeapon.WeaponTransform.forward = Direction;
+
+        Quaternion dir = Quaternion.LookRotation(Direction);
+        CurrentWeapon.transform.rotation = Quaternion.Slerp(CurrentWeapon.transform.rotation, dir, _weaponRotSpeed * Time.deltaTime);
+
         _headTransform.forward = Direction;
 
         if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: DetectionLayer))
