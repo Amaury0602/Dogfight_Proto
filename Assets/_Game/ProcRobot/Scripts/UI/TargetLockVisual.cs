@@ -18,9 +18,7 @@ public class TargetLockVisual : MonoBehaviour
         {
             _focused = true;
             _image.enabled = true;
-        } 
-
-
+        }
         transform.position = position;
     }
 

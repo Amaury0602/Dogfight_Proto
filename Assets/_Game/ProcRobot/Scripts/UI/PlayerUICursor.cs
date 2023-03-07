@@ -82,6 +82,7 @@ public class PlayerUICursor : MonoBehaviour
         {
             TargetLockVisual target = Instantiate(_targetLockPrefab, transform.position, Quaternion.identity, _targetLocksParent);
             _targetLocks[i] = target;
+            target.gameObject.name = $"TargetLock_{i}";
             target.Initialize();
         }
     }
@@ -130,16 +131,10 @@ public class PlayerUICursor : MonoBehaviour
         //unfocus target locks
         int count = Mathf.Max(0, _targetLocksCount - hits.Length);
 
-        print($"targets to unfocus {_targetLocksCount - count}");
-
-        if (hits.Length < _targetLocksCount)
+        for (int i = _targetLocksCount - 1; i >= _targetLocksCount - count; i--)
         {
-            for (int i = _targetLocksCount - 1; i > count; i--)
-            {
-                _targetLocks[i].UnFocus();
-            }
+            _targetLocks[i].UnFocus();
         }
-
 
         _playerPlane.SetNormalAndPosition(Vector3.up, _playerHeightMarker.position);
 
