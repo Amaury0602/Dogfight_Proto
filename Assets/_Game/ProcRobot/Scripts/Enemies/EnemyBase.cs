@@ -19,6 +19,9 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
     public Action<int> OnHealthGained = default;
 
 
+    [SerializeField] protected GameObject _lockableObject;
+
+
     private void Start()
     {
         _startHealth = Health;
@@ -27,6 +30,7 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
     protected virtual void Die()
     {
         _mainCollider.enabled = false;
+        _lockableObject.SetActive(false);
         OnDeath?.Invoke();
     }
 

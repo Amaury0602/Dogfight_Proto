@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 2874038405503062304}
   - component: {fileID: 1254263452653713944}
   m_Layer: 10
-  m_Name: LockableElement
+  m_Name: Lockable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -996,3 +996,4 @@ MonoBehaviour:
   <Health>k__BackingField: 300
   _state: {fileID: 898854896}
   _mainCollider: {fileID: 6269216745371586426}
+  _lockableObject: {fileID: 4444853781878967048}

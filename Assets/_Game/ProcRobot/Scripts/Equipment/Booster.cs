@@ -7,9 +7,10 @@ public class Booster : MonoBehaviour
     [SerializeField] private ParticleSystem[] _boostTrail;
     [SerializeField] private ParticleSystem _burstFX;
     [SerializeField] private float _speedBoost;
+    [SerializeField] private float _speedImpulse;
 
 
-    public Action<float> OnBoost = default;
+    public Action<float, float> OnBoost = default;
 
 
     [SerializeField] private float _shakePower;
@@ -22,7 +23,7 @@ public class Booster : MonoBehaviour
 
     private void Boost()
     {
-        OnBoost?.Invoke(_speedBoost);
+        OnBoost?.Invoke(_speedImpulse, _speedBoost);
 
         for (int i = 0; i < _baseTrail.Length; i++)
         {

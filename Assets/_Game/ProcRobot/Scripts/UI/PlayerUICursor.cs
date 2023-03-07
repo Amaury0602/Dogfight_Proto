@@ -31,10 +31,11 @@ public class PlayerUICursor : MonoBehaviour
     private Vector3 _rectWorldSize = default;
 
     [SerializeField] private Transform _aimMidPoint;
+    [SerializeField] private float _midPointFollowSpeed;
 
     private Vector3 _aimPoint = default;
 
-    public Vector3 CursorPosition { get; set; }
+    public Vector3 CursorToWorldPosition { get; set; }
 
     [SerializeField, Range(1,10)] private int _targetLocksCount;
     [SerializeField] private Transform _targetLocksParent;
@@ -100,6 +101,14 @@ public class PlayerUICursor : MonoBehaviour
         transform.position += (Vector3)movement;
         Ray ray = _cam.ScreenPointToRay(transform.position);
 
+        _playerPlane.SetNormalAndPosition(Vector3.up, _playerHeightMarker.position);
+
+        if (_playerPlane.Raycast(ray, out float rayDistance/*, out RaycastHit hit*/))
+        {
+            CursorToWorldPosition = ray.GetPoint(rayDistance);
+            _aimPoint = ray.GetPoint(rayDistance);
+        }
+
 
         RaycastHit[] hits = Physics.BoxCastAll(ray.origin, _rectWorldSize, ray.direction, _cam.transform.rotation, Mathf.Infinity, _specificAimLayer);
         //if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask: _specificAimLayer))
@@ -109,24 +118,29 @@ public class PlayerUICursor : MonoBehaviour
 
         if (hits.Length > 0)
         {
-            Vector2 mousePos = Input.mousePosition;
-            RaycastHit closest = hits[0];
+            Vector2 closest = _cam.WorldToScreenPoint(hits[0].collider.transform.position);
+            Vector3 closestWorld = hits[0].collider.transform.position;
+
             for (int i = 0; i < hits.Length; i++)
             {
-                if (i >= _targetLocksCount) break;
-
-                _targetLocks[i].Focus(_cam.WorldToScreenPoint(hits[i].collider.transform.position));
-
-                //Vector2 worldToScreenPoint = _cam.WorldToScreenPoint(hits[i].point);
-                //if ((mousePos - worldToScreenPoint).sqrMagnitude < (mousePos - (Vector2)_cam.WorldToScreenPoint(closest.point)).sqrMagnitude)
-                //{
-                //    closest = hits[i];
-                //}
+                Vector2 screenPoint = _cam.WorldToScreenPoint(hits[i].collider.transform.position);
+                if (((Vector2)_rect.position - screenPoint).sqrMagnitude < ((Vector2)_rect.position - closest).sqrMagnitude)
+                {
+                    closest = screenPoint;
+                    closestWorld = hits[i].collider.transform.position;
+                }
             }
-            _aimPoint = closest.collider.transform.position;
+
+            _targetLocks[0].Focus(closest);
+
+            //for (int i = 0; i < hits.Length; i++) // THIS IS IF YOU WANT TO TARGET MULTIPLE ENEMIES
+            //{
+            //    if (i >= _targetLocksCount) break;
+
+            //    _targetLocks[i].Focus(_cam.WorldToScreenPoint(hits[i].collider.transform.position));
+            //}
+            _aimPoint = closestWorld;
         }
-
-
 
         //unfocus target locks
         int count = Mathf.Max(0, _targetLocksCount - hits.Length);
@@ -136,16 +150,12 @@ public class PlayerUICursor : MonoBehaviour
             _targetLocks[i].UnFocus();
         }
 
-        _playerPlane.SetNormalAndPosition(Vector3.up, _playerHeightMarker.position);
-
-        if (_playerPlane.Raycast(ray, out float rayDistance/*, out RaycastHit hit*/))
-        {
-            CursorPosition = ray.GetPoint(rayDistance);
-            _aimPoint = ray.GetPoint(rayDistance);
-        }
+        
 
 
-        _aimMidPoint.position = Vector3.Lerp(_playerAim.transform.position, _aimPoint, 0.75f);
+
+        Vector3 midPoint = Vector3.Lerp(_playerAim.transform.position, _aimPoint, 0.75f);
+        _aimMidPoint.position = Vector3.Lerp(_aimMidPoint.position, midPoint, Time.deltaTime * _midPointFollowSpeed);
 
         OnProjectedPoint?.Invoke(_aimPoint);
 
@@ -153,7 +163,7 @@ public class PlayerUICursor : MonoBehaviour
         ClampPositionOnScreen();
 
 
-        _debugText.text = $"Enemies in cursor : {hits.Length} Targets to unfocus {_targetLocksCount - count}";
+        _debugText.text = $"Enemies in cursor : {hits.Length}";
     }
 
 

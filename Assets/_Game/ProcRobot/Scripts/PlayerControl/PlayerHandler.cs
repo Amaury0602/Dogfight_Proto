@@ -94,7 +94,7 @@ public class PlayerHandler : MonoBehaviour
             Direction = Vector3.zero;
         }
         
-        Vector3 aimingDir = PlayerUICursor.Instance.CursorPosition - transform.position;
+        Vector3 aimingDir = PlayerUICursor.Instance.CursorToWorldPosition - transform.position;
         aimingDir.y = 0;
         Quaternion rot = Quaternion.LookRotation(aimingDir);
         
@@ -103,8 +103,9 @@ public class PlayerHandler : MonoBehaviour
     }
 
 
-    private void OnBoost(float speedBonus)
+    private void OnBoost(float impulse, float speedBonus)
     {
+        _rb.AddForce(Direction * impulse, ForceMode.Impulse);
         _boostSpeedBonus = speedBonus;
     }
 
