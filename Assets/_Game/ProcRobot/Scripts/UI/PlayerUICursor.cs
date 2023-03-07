@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using DG.Tweening;
+using TMPro;
 
 public class PlayerUICursor : MonoBehaviour
 {
@@ -32,6 +33,15 @@ public class PlayerUICursor : MonoBehaviour
     [SerializeField] private Transform _aimMidPoint;
 
     private Vector3 _aimPoint = default;
+
+    public Vector3 CursorPosition { get; set; }
+
+    [SerializeField, Range(1,10)] private int _targetLocksCount;
+    [SerializeField] private Transform _targetLocksParent;
+    [SerializeField] private TargetLockVisual _targetLockPrefab;
+    private TargetLockVisual[] _targetLocks;
+
+    [SerializeField] private TMP_Text _debugText;
 
     private void Awake()
     {
@@ -65,6 +75,15 @@ public class PlayerUICursor : MonoBehaviour
         _rectWorldSize = new Vector3(_rectSize.x / Screen.width * _cam.orthographicSize * _cam.aspect, _rectSize.y / Screen.height * _cam.orthographicSize, 0f);
 
         _playerAim.CurrentWeapon.OnShotFired += BumpCursor;
+
+        _targetLocks = new TargetLockVisual[_targetLocksCount];
+
+        for (int i = 0; i < _targetLocksCount; i++)
+        {
+            TargetLockVisual target = Instantiate(_targetLockPrefab, transform.position, Quaternion.identity, _targetLocksParent);
+            _targetLocks[i] = target;
+            target.Initialize();
+        }
     }
 
     private void BumpCursor() // scale tweeen
@@ -87,28 +106,47 @@ public class PlayerUICursor : MonoBehaviour
         //    OnProjectedPoint?.Invoke(hit.point);
         //}
 
-        //if (hits.Length > 0)
-        //{
-        //    Vector2 mousePos = Input.mousePosition;
-        //    RaycastHit closest = hits[0];
-        //    for (int i = 0; i < hits.Length; i++)
-        //    {
-        //        Vector2 worldToScreenPoint = _cam.WorldToScreenPoint(hits[i].point);
-        //        if ((mousePos - worldToScreenPoint).sqrMagnitude < (mousePos - (Vector2)_cam.WorldToScreenPoint(closest.point)).sqrMagnitude)
-        //        {
-        //            closest = hits[i];
-        //        }
-        //    }
-        //    _aimPoint = closest.collider.transform.position;
-        //}
-        //else
+        if (hits.Length > 0)
         {
-            _playerPlane.SetNormalAndPosition(Vector3.up, _playerHeightMarker.position);
-
-            if (_playerPlane.Raycast(ray, out float rayDistance/*, out RaycastHit hit*/))
+            Vector2 mousePos = Input.mousePosition;
+            RaycastHit closest = hits[0];
+            for (int i = 0; i < hits.Length; i++)
             {
-                _aimPoint = ray.GetPoint(rayDistance);
+                if (i >= _targetLocksCount) break;
+
+                _targetLocks[i].Focus(_cam.WorldToScreenPoint(hits[i].collider.transform.position));
+
+                //Vector2 worldToScreenPoint = _cam.WorldToScreenPoint(hits[i].point);
+                //if ((mousePos - worldToScreenPoint).sqrMagnitude < (mousePos - (Vector2)_cam.WorldToScreenPoint(closest.point)).sqrMagnitude)
+                //{
+                //    closest = hits[i];
+                //}
             }
+            _aimPoint = closest.collider.transform.position;
+        }
+
+
+
+        //unfocus target locks
+        int count = Mathf.Max(0, _targetLocksCount - hits.Length);
+
+        print($"targets to unfocus {_targetLocksCount - count}");
+
+        if (hits.Length < _targetLocksCount)
+        {
+            for (int i = _targetLocksCount - 1; i > count; i--)
+            {
+                _targetLocks[i].UnFocus();
+            }
+        }
+
+
+        _playerPlane.SetNormalAndPosition(Vector3.up, _playerHeightMarker.position);
+
+        if (_playerPlane.Raycast(ray, out float rayDistance/*, out RaycastHit hit*/))
+        {
+            CursorPosition = ray.GetPoint(rayDistance);
+            _aimPoint = ray.GetPoint(rayDistance);
         }
 
 
@@ -118,6 +156,9 @@ public class PlayerUICursor : MonoBehaviour
 
 
         ClampPositionOnScreen();
+
+
+        _debugText.text = $"Enemies in cursor : {hits.Length} Targets to unfocus {_targetLocksCount - count}";
     }
 
 
