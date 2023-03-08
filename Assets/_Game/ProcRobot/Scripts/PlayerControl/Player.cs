@@ -12,7 +12,7 @@ public class Player : MonoBehaviour, IShootable
 
     public bool Alive => Health > 0;
 
-    public Action OnTakeDamage = default;
+    public Action<float> OnTakeDamage = default;
     public Action OnDeath = default;
 
     private void Awake()
@@ -24,7 +24,7 @@ public class Player : MonoBehaviour, IShootable
     public void OnShot(Vector3 dir, AmmunitionData data)
     {
         if (!Alive) return;
-        OnTakeDamage?.Invoke();
+        OnTakeDamage?.Invoke(data.Damage);
 
         Health -= data.Damage;
 

@@ -30,9 +30,11 @@ public class TargetLockVisual : MonoBehaviour
             }
 
             transform.localScale = Vector3.one * 5f;
+            transform.rotation = Quaternion.Euler(35f * Vector3.forward);
 
             _focusSequence
                 .Append(transform.DOScale(Vector3.one, 0.35f))
+                .Append(transform.DORotate(Vector3.zero, 0.35f))
                 .Append(_image.DOFade(1, 0.35f));
         }
 
@@ -44,7 +46,6 @@ public class TargetLockVisual : MonoBehaviour
         if (_focused)
         {
             _focused = false;
-            _image.enabled = false;
 
             if (_focusSequence != null && _focusSequence.IsActive())
             {
@@ -52,7 +53,7 @@ public class TargetLockVisual : MonoBehaviour
             }
 
             _focusSequence
-                .Append(transform.DOScale(Vector3.one * 5f, 0.25f))
+                .Append(transform.DOScale(Vector3.one * 3f, 0.25f))
                 .Append(_image.DOFade(0f, 0.25f));
 
         }
