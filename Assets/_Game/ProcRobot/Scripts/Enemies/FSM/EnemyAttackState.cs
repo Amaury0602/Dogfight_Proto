@@ -98,13 +98,15 @@ public class EnemyAttackState : EnemyBaseState
     {
         _targetInSight = false;
         _stateManager.Aim.OnGainSight -= HandleGainSight;
-        _stateManager.Aim.OnLostSight -= HandleLoseSight;
         if (_attackRoutine != null) StopCoroutine(_attackRoutine);
         if (_damageComputeRoutine != null) StopCoroutine(_damageComputeRoutine);
     }
 
     public override void OnShot(int damage)
     {
+
+        print($"Computed damage : {_computedDamage}");
+
         if (_damageComputeRoutine != null)
         {
             StopCoroutine(_damageComputeRoutine);

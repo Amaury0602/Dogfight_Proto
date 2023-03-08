@@ -504,7 +504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449912, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_Name
-      value: MechaEnemy
+      value: MechaEnemy (3)
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449912, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_Layer
@@ -516,7 +516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449913, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 18.1
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449913, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -524,7 +524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449913, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -15.7
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449913, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -890,7 +890,7 @@ MonoBehaviour:
   _rotationSpeed: 5
   _navigationRotSpeed: 0
   _lookTransform: {fileID: 0}
-  _navHitRadius: 2.5
+  _navHitRadius: 3
 --- !u!195 &898854898
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -901,11 +901,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 3
-  m_Speed: 15
+  m_Speed: 30
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 0
-  m_StoppingDistance: 0.5
+  m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
@@ -942,11 +942,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _numberOfRays: 15
   _angle: 110
-  _rayDistance: 50
+  _rayDistance: 90
   _hideMask:
     serializedVersion: 2
     m_Bits: 256
-  _navHitRadius: 2.5
 --- !u!114 &898854901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -960,8 +959,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _refreshDamageCD: 2
-  _damageThreshold: 30
-  aggressiveness: 0
+  _damageThreshold: 50
+  aggressiveness: 1.1
 --- !u!114 &6143695838815724608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -979,13 +978,13 @@ MonoBehaviour:
     m_Bits: 264
   _headTransform: {fileID: 6269216747126596046}
   <CurrentWeapon>k__BackingField: {fileID: 6269216745816014324}
-  _aimingSpeed: 50
+  _aimingSpeed: 70
   _aimRadius: 1
   _playerLayer:
     serializedVersion: 2
     m_Bits: 264
   _sightAngle: 90
-  _sightDistance: 50
+  _sightDistance: 80
   _debug: {fileID: 0}
 --- !u!114 &6993234122296736203
 MonoBehaviour:

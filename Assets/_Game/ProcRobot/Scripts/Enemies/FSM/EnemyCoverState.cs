@@ -9,7 +9,6 @@ public class EnemyCoverState : EnemyBaseState
     [SerializeField] private float _angle;
     [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _hideMask;
-    [SerializeField] private float _navHitRadius = 1f;
     private List<Vector3> _hitPoints = new List<Vector3>();
 
     private Coroutine _afterCoverRoutine = null;
@@ -20,10 +19,6 @@ public class EnemyCoverState : EnemyBaseState
     {
         _stateManager.Aim.OnGainSight += GetOutOfCover;
         _isCovered = false;
-        if (previous is EnemyAttackState)
-        {
-            //_stateManager.Aim.AimAt(_stateManager.Target.position);
-        }
         GetToCover();
     }
 
@@ -42,6 +37,7 @@ public class EnemyCoverState : EnemyBaseState
 
     private void GetToCover()
     {
+        print($"{gameObject.name} START GET TO COVER");
 
         Vector3 start = _stateManager.Player.Position;
 
@@ -62,13 +58,22 @@ public class EnemyCoverState : EnemyBaseState
                 if (Physics.Linecast(newStart, hit.point, out RaycastHit hitt, layerMask: _hideMask))
                 {
                     Vector3 dirToColliderCenter = (hitt.collider.bounds.center - hitt.point).normalized;
+
+                    print($"{hitt.point} at index {i}");
+
+
                     _hitPoints.Add(hitt.point + dir.normalized * 2f + dirToColliderCenter * 3f);
                 }
             }
         }
 
-        if (_hitPoints.Count <= 0) return;
+        if (_hitPoints.Count <= 0) 
+        {
+            _stateManager.SetState(_stateManager.AttackState);
+            return;
+        }
 
+        //get closest cover position;
         int closest = 0;
         for (int j = 0; j < _hitPoints.Count; j++)
         {
@@ -78,8 +83,10 @@ public class EnemyCoverState : EnemyBaseState
             }
         }
 
+        //can I get to this position ? 
         if (_stateManager.Mover.TryFindPositionCloseToPoint(_hitPoints[closest], out Vector3 pos))
         {
+            print($"{gameObject.name} FOUND COVER POSITION");
             _stateManager.Mover.SetDestination(pos, OnCovered);
         }
     }
@@ -95,8 +102,7 @@ public class EnemyCoverState : EnemyBaseState
     private void GetOutOfCover()
     {
         if (!_isCovered) return;
-        print("On gain sight while cover");
-        if (_afterCoverRoutine != null) StopCoroutine(_afterCoverRoutine);
+        print($"{gameObject.name} GAINED SIGHT WHILE COVERED");
         _stateManager.SetState(_stateManager.AttackState);
     }
 
@@ -108,7 +114,9 @@ public class EnemyCoverState : EnemyBaseState
 
     private IEnumerator GoBackToAttackMode() 
     {
-        yield return new WaitForSeconds(Random.Range(4f, 8f));
+        print($"{gameObject.name} WAIT TO GA BACK TO ATTACK MODE");
+
+        yield return new WaitForSeconds(Random.Range(3f, 6f));
         _stateManager.SetState(_stateManager.AttackState);
     }
 
@@ -125,7 +133,7 @@ public class EnemyCoverState : EnemyBaseState
 
         for (int i = 0; i < _numberOfRays; i++)
         {
-            Vector3 rotateVector = Quaternion.AngleAxis(anglePerRay * i - _angle / 2f, Vector3.up) * _stateManager.Player.Position;
+            Vector3 rotateVector = Quaternion.AngleAxis(anglePerRay * i - _angle / 2f, Vector3.up) * _stateManager.Player.transform.forward;
             Vector3 end = _stateManager.Player.Position + _rayDistance * rotateVector;
             Debug.DrawLine(start, end, Color.yellow);
 
