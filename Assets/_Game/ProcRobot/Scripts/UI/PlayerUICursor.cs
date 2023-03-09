@@ -40,9 +40,12 @@ public class PlayerUICursor : MonoBehaviour
     [SerializeField, Range(1,10)] private int _targetLocksCount;
     [SerializeField] private Transform _targetLocksParent;
     [SerializeField] private TargetLockVisual _targetLockPrefab;
-    private TargetLockVisual[] _targetLocks;
+    
 
     [SerializeField] private TMP_Text _debugText;
+    public TargetLockVisual[] TargetLocks { get; private set; }
+    public bool AtLeastOneTargetLocked => IsAtLeastOneTargetLocked();
+    public int MaxLockableTargets => _targetLocksCount;
 
     private void Awake()
     {
@@ -57,6 +60,7 @@ public class PlayerUICursor : MonoBehaviour
         //PlayerInputs.Instance.OnRightMouseDown += SwitchToSecondaryCursor;
         //PlayerInputs.Instance.OnRightMouseUp += SwitchToBaseCursor;
     }
+
 
     private void SwitchToBaseCursor()
     {
@@ -77,12 +81,12 @@ public class PlayerUICursor : MonoBehaviour
 
         _playerAim.CurrentWeapon.OnShotFired += BumpCursor;
 
-        _targetLocks = new TargetLockVisual[_targetLocksCount];
+        TargetLocks = new TargetLockVisual[_targetLocksCount];
 
         for (int i = 0; i < _targetLocksCount; i++)
         {
             TargetLockVisual target = Instantiate(_targetLockPrefab, transform.position, Quaternion.identity, _targetLocksParent);
-            _targetLocks[i] = target;
+            TargetLocks[i] = target;
             target.gameObject.name = $"TargetLock_{i}";
             target.Initialize();
         }
@@ -95,6 +99,17 @@ public class PlayerUICursor : MonoBehaviour
         transform.localScale = Vector3.one;
         scaleTween = transform.DOScale(1.15f, 0.05f).SetLoops(2, LoopType.Yoyo);
     } 
+
+
+    private bool IsAtLeastOneTargetLocked()
+    {
+        for (int i = 0; i < TargetLocks.Length; i++)
+        {
+            if (TargetLocks[i].Locked) return true;
+        }
+
+        return false;
+    }
 
     private void Move(Vector2 movement)
     {
@@ -119,7 +134,7 @@ public class PlayerUICursor : MonoBehaviour
         if (hits.Length > 0)
         {
             Vector2 closest = _cam.WorldToScreenPoint(hits[0].collider.transform.position);
-            Vector3 closestWorld = hits[0].collider.transform.position;
+            Transform worldTarget = hits[0].collider.transform;
 
             for (int i = 0; i < hits.Length; i++)
             {
@@ -127,11 +142,11 @@ public class PlayerUICursor : MonoBehaviour
                 if (((Vector2)_rect.position - screenPoint).sqrMagnitude < ((Vector2)_rect.position - closest).sqrMagnitude)
                 {
                     closest = screenPoint;
-                    closestWorld = hits[i].collider.transform.position;
+                    worldTarget = hits[i].collider.transform;
                 }
             }
 
-            _targetLocks[0].Focus(closest);
+            TargetLocks[0].Focus(closest, worldTarget);
 
             //for (int i = 0; i < hits.Length; i++) // THIS IS IF YOU WANT TO TARGET MULTIPLE ENEMIES
             //{
@@ -139,7 +154,7 @@ public class PlayerUICursor : MonoBehaviour
 
             //    _targetLocks[i].Focus(_cam.WorldToScreenPoint(hits[i].collider.transform.position));
             //}
-            _aimPoint = closestWorld;
+            _aimPoint = worldTarget.position;
         }
 
         //unfocus target locks
@@ -147,7 +162,7 @@ public class PlayerUICursor : MonoBehaviour
 
         for (int i = _targetLocksCount - 1; i >= _targetLocksCount - count; i--)
         {
-            _targetLocks[i].UnFocus();
+            TargetLocks[i].UnFocus();
         }
 
         

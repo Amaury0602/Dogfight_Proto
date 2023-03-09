@@ -11,6 +11,7 @@ public class EnemyAim : ShooterBase
     public Vector3 Direction { get; private set; }
     [field: SerializeField] public WeaponBase CurrentWeapon { get; private set; } = default;
     public override Action<RaycastHit> OnShoot { get; set; }
+    public override Action<Transform> OnShotHoming { get ; set ; }
 
     [SerializeField] private float _aimingSpeed;
     [SerializeField] private float _aimRadius;

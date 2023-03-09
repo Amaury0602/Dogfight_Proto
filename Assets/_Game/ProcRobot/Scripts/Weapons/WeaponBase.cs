@@ -15,7 +15,7 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected float _recoil;
     [SerializeField] protected int _muzzleFlashParticleCount;
 
-    [SerializeField] protected AmmunitionData Data;
+    [field: SerializeField] public AmmunitionData Data { get; private set; }
 
     protected bool _canShoot;
     private float _currentCD;
@@ -33,9 +33,15 @@ public abstract class WeaponBase : MonoBehaviour
     {
         _canShoot = true;
         shooter.OnShoot += TryShoot;
+        shooter.OnShotHoming += OnShotHoming;
         shooter.OnShootInDirection += TryShootInDirection;
 
         _currentCD = _fireCD;
+    }
+
+    private void OnShotHoming(Transform obj)
+    {
+        throw new NotImplementedException();
     }
 
     public virtual void TryShootInDirection(Vector3 dir)
@@ -65,7 +71,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected virtual void Shoot(RaycastHit hit)
     {
-        OnShotFired?.Invoke();
+        OnShotFired?.Invoke(); // only for feedback reasons
 
         if (_muzzleFlash) _muzzleFlash.Emit(_muzzleFlashParticleCount);
 
@@ -78,7 +84,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected virtual void PlayerShootInDirection(Vector3 dir)
     {
-        OnShotFired?.Invoke();
+        OnShotFired?.Invoke(); // only for feedback reasons
 
         if (_muzzleFlash) _muzzleFlash.Emit(_muzzleFlashParticleCount);
 

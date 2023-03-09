@@ -8,12 +8,16 @@ public class PlayerAim : ShooterBase
     
     [SerializeField] private Transform _headTransform;
     [SerializeField] private AimVisuals _visuals;
+    [SerializeField] private PlayerUICursor _cursor;
     public Vector3 Direction { get; private set; }
 
     public override Action<RaycastHit> OnShoot { get; set; }
     public override Action<Vector3> OnShootInDirection { get; set; }
+    public override Action<Transform> OnShotHoming { get ; set ; }
 
     private Player _player;
+
+    private Transform[] _lockedTargets;
 
 
     [SerializeField] private float _weaponRotSpeed;
@@ -30,6 +34,9 @@ public class PlayerAim : ShooterBase
         PlayerInputs.Instance.OnRightMouseUp += OnRightMouseUp;
 
         if (CurrentWeapon) CurrentWeapon.OnEquipped(this);
+
+
+        _lockedTargets = new Transform[_cursor.MaxLockableTargets];
     }
 
     
@@ -83,6 +90,18 @@ public class PlayerAim : ShooterBase
 
     private void ShootRayFromArm()
     {
+        if (CurrentWeapon.Data.Homing && _cursor.AtLeastOneTargetLocked)
+        {
+            for (int i = 0; i < _cursor.TargetLocks.Length; i++)
+            {
+                if (_cursor.TargetLocks[i].Locked)
+                {
+                    OnShotHoming?.Invoke(_cursor.TargetLocks[i].Target);
+                }
+            }
+            return;
+        }
+
         if (Physics.Raycast(CurrentWeapon.WeaponTransform.position, Direction, out RaycastHit hit, Mathf.Infinity, layerMask: DetectionLayer))
         {
             OnShoot?.Invoke(hit);

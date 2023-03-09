@@ -112,7 +112,7 @@ MonoBehaviour:
   _fireCD: 0.25
   _recoil: 3
   _muzzleFlashParticleCount: 3
-  Data: {fileID: 11400000, guid: ada6affdba9bd6f4b9252fc0e0920636, type: 2}
+  <Data>k__BackingField: {fileID: 11400000, guid: ada6affdba9bd6f4b9252fc0e0920636, type: 2}
   _projectile: {fileID: 1813744878465740766, guid: ab76d12acf5f123458b7a9fff5f6f3ff, type: 3}
   _shooterLayer:
     serializedVersion: 2
@@ -270,7 +270,7 @@ MonoBehaviour:
   _fireCD: 0.1
   _recoil: 0.5
   _muzzleFlashParticleCount: 3
-  Data: {fileID: 11400000, guid: 1af95d499d872bd4f9e4eea0bcc3b88f, type: 2}
+  <Data>k__BackingField: {fileID: 11400000, guid: 1af95d499d872bd4f9e4eea0bcc3b88f, type: 2}
 --- !u!114 &4253063385549384875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,7 +289,7 @@ MonoBehaviour:
   _fireCD: 0.75
   _recoil: 3
   _muzzleFlashParticleCount: 24
-  Data: {fileID: 11400000, guid: 6adcb202b3f0ad841b6412121ea5eb48, type: 2}
+  <Data>k__BackingField: {fileID: 11400000, guid: 6adcb202b3f0ad841b6412121ea5eb48, type: 2}
   _chargeBeamFX: {fileID: 4253063385676916349}
   _debugBeam: {fileID: 0}
   _timeToFullCharge: 3
@@ -653,6 +653,7 @@ MonoBehaviour:
   <SecondaryWeapon>k__BackingField: {fileID: 4253063385549384875}
   _headTransform: {fileID: 4253063386856042640}
   _visuals: {fileID: 4253063386062416554}
+  _cursor: {fileID: 0}
   _weaponRotSpeed: 0
 --- !u!136 &4253063386027449892
 CapsuleCollider:

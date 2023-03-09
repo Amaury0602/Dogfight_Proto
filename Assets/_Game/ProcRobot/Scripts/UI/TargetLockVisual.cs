@@ -6,7 +6,9 @@ public class TargetLockVisual : MonoBehaviour
 {
     [SerializeField] private Image _image = default;
 
-    private bool _focused = false;
+    public bool Locked { get; private set; } = false;
+    public Transform Target { get; private set; }
+
 
     private Tween _focusTween;
     private Sequence _focusSequence;
@@ -17,11 +19,13 @@ public class TargetLockVisual : MonoBehaviour
         _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, 0f);
     }
 
-    public void Focus(Vector3 position)
+    public void Focus(Vector3 position, Transform target)
     {
-        if (!_focused) 
+        if (!Locked) 
         {
-            _focused = true;
+            Target = target;
+
+            Locked = true;
             _image.enabled = true;
 
             if (_focusSequence != null && _focusSequence.IsActive())
@@ -43,9 +47,11 @@ public class TargetLockVisual : MonoBehaviour
 
     public void UnFocus()
     {
-        if (_focused)
+        if (Locked)
         {
-            _focused = false;
+            Target = null;
+
+            Locked = false;
 
             if (_focusSequence != null && _focusSequence.IsActive())
             {
