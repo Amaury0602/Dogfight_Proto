@@ -98,7 +98,6 @@ public class EnemyCoverState : EnemyBaseState
     private void GetOutOfCover()
     {
         if (!_isCovered) return;
-        print($"{gameObject.name} GAINED SIGHT WHILE COVERED");
         _stateManager.SetState(_stateManager.AttackState);
     }
 

@@ -24,6 +24,9 @@ public class Player : MonoBehaviour, IShootable
     public void OnShot(Vector3 dir, AmmunitionData data)
     {
         if (!Alive) return;
+
+        VirtualCameraHandler.Instance.Shake(0.25f, 0.25f, 0.1f);
+
         OnTakeDamage?.Invoke(data.Damage);
 
         Health -= data.Damage;

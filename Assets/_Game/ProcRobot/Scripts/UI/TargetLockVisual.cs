@@ -21,6 +21,8 @@ public class TargetLockVisual : MonoBehaviour
 
     public void Focus(Vector3 position, Transform target)
     {
+        if (target != Target) Target = target;
+
         if (!Locked) 
         {
             Target = target;

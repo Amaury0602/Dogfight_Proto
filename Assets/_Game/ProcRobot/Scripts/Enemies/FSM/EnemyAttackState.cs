@@ -81,10 +81,10 @@ public class EnemyAttackState : EnemyBaseState
 
     private IEnumerator ChaseTarget()
     {
-        while(_targetInSight)
+        //while(_targetInSight)
         {
-            float distToPlayer = 30f;
-            if (Random.Range(0f, 1f) < aggressiveness) distToPlayer = 15f;
+            float distToPlayer = 50f;
+            if (Random.Range(0f, 1f) < aggressiveness) distToPlayer = 25f;
 
             if (CanFindPosAroundPoint(_stateManager.Player.Position, distToPlayer, out Vector3 pos))
             {
@@ -104,9 +104,6 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void OnShot(int damage)
     {
-
-        print($"Computed damage : {_computedDamage}");
-
         if (_damageComputeRoutine != null)
         {
             StopCoroutine(_damageComputeRoutine);

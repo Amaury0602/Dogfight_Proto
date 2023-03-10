@@ -26,12 +26,14 @@ public class HomingProjectileBase : ProjectileBase
         Vector3 dir = target.position - transform.position;
         while (_timer >= 0)
         {
-            dir = target.position - transform.position;
+            dir = (target.position - transform.position).normalized;
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), _rotationSpeed * Time.deltaTime);
+            float dProduct = Vector3.Dot(transform.forward, dir);
+
+            if (dProduct > 0.2f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), _rotationSpeed * Time.deltaTime);
 
             _lastPos = transform.position;
-            transform.position += dir.normalized * _moveSpeed * Time.deltaTime;
+            transform.position += transform.forward * _moveSpeed * Time.deltaTime;
             if (Physics.Linecast(_lastPos, transform.position, out RaycastHit hit, _mask))
             {
                 ReachedTarget();

@@ -18,6 +18,7 @@ public class EnemyAim : ShooterBase
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private float _sightAngle;
     [SerializeField] private float _sightDistance;
+    [SerializeField] private float _shootDistance;
 
     public Action OnGainSight = default;
     public Action<Vector3> OnLostSight = default; // Vector3 is last known position
@@ -48,22 +49,22 @@ public class EnemyAim : ShooterBase
         CurrentWeapon.OnEquipped(this);
     }
 
-    public void AimAt(Vector3 position, Vector3 movement)
+    public void AimAt(Vector3 targetPosition, Vector3 targetMovement)
     {
-        if ((position - transform.position).sqrMagnitude > _sightDistance * _sightDistance) return; 
+        if ((targetPosition - transform.position).sqrMagnitude > _sightDistance * _sightDistance) return; 
 
-        position.y = transform.position.y;   
-        Direction = (position - CurrentWeapon.WeaponTransform.position).normalized;
+        targetPosition.y = transform.position.y;   
+        Direction = (targetPosition - CurrentWeapon.WeaponTransform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(Direction);
         CurrentWeapon.WeaponTransform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, _aimingSpeed * Time.deltaTime);
-        _headTransform.forward = Direction;
+        if (_headTransform != null) _headTransform.forward = Direction;
 
         int visibleObjects = Physics.SphereCastNonAlloc(transform.position, 5f, transform.forward, _visionHits, Mathf.Infinity, layerMask: _playerLayer);
 
 
         bool obstacle = false;
         
-        Vector3 dir = (position - transform.position).normalized;
+        Vector3 dir = (targetPosition - transform.position).normalized;
         float dProduct = Vector3.Dot(dir, transform.forward);
         
         bool inSight = dProduct >= Mathf.Cos(_sightAngle);
@@ -78,7 +79,7 @@ public class EnemyAim : ShooterBase
         {
             if (h.collider.gameObject.layer != LayerMask.NameToLayer("PLAYER"))
             {
-                if ((h.point - transform.position).sqrMagnitude < (position - transform.position).sqrMagnitude)
+                if ((h.point - transform.position).sqrMagnitude < (targetPosition - transform.position).sqrMagnitude)
                 {
                     obstacle = true;
                 }
@@ -88,7 +89,7 @@ public class EnemyAim : ShooterBase
         // GAIN AND LOSE SIGHT EVENTS
         if (!obstacle && inSight) // IN SIGHT
         {
-            _lastKnownPosition = position;
+            _lastKnownPosition = targetPosition;
             if (!_targetInSight)
             {
                 _targetInSight = true;
@@ -104,13 +105,13 @@ public class EnemyAim : ShooterBase
             }
         }
 
-        HandleShooting(position, movement);
+        HandleShooting(targetPosition, targetMovement);
         
     }
 
     private void HandleShooting(Vector3 pos, Vector3 dir)
     {
-        if (Physics.SphereCast(CurrentWeapon.transform.position, _aimRadius, CurrentWeapon.transform.forward, out RaycastHit hit, maxDistance: 50f, layerMask: _playerLayer))
+        if (Physics.SphereCast(CurrentWeapon.transform.position, _aimRadius, CurrentWeapon.transform.forward, out RaycastHit hit, maxDistance: _shootDistance, layerMask: _playerLayer))
         {
             //player in sight
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("PLAYER"))

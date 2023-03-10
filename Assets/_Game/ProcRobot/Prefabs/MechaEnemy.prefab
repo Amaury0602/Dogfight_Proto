@@ -504,7 +504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449912, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_Name
-      value: MechaEnemy (3)
+      value: MechaEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449912, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_Layer
@@ -984,7 +984,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   _sightAngle: 90
-  _sightDistance: 80
+  _sightDistance: 150
+  _shootDistance: 150
   _debug: {fileID: 0}
 --- !u!114 &6993234122296736203
 MonoBehaviour:

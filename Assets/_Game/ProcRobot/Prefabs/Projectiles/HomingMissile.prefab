@@ -147,7 +147,7 @@ MonoBehaviour:
   _mask:
     serializedVersion: 2
     m_Bits: 0
-  _rotationSpeed: 15
+  _rotationSpeed: 7
 --- !u!1001 &7299469093156082341
 PrefabInstance:
   m_ObjectHideFlags: 0
