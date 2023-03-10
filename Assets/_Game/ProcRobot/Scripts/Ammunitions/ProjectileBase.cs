@@ -9,13 +9,13 @@ public class ProjectileBase : AmmunitionBase
 
     protected Collider[] _hitColliders = default;
 
-    private Vector3 _lastPos = default;
-    private float _timer;
+    protected Vector3 _lastPos = default;
+    protected float _timer;
 
-    private Coroutine _flyRoutine = null;
+    protected Coroutine _flyRoutine = null;
 
-    [SerializeField] private LayerMask _mask;
-    private AmmunitionData _data;
+    [SerializeField] protected LayerMask _mask;
+    protected AmmunitionData _data;
 
     private void Awake()
     {
@@ -40,6 +40,8 @@ public class ProjectileBase : AmmunitionBase
         } 
         _flyRoutine = StartCoroutine(FlyTowardsTarget(target));
     }
+
+    public virtual void OnWeaponFire(Transform target) { }
 
     protected virtual IEnumerator FlyTowardsTarget(Vector3 target)
     {

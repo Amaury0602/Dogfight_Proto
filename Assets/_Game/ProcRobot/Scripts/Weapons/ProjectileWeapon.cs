@@ -11,6 +11,18 @@ public class ProjectileWeapon : WeaponBase
         _shooterLayer = shooter.DetectionLayer;
     }
 
+
+    protected override void ShootHoming(Transform target)
+    {
+        base.ShootHoming(target);
+
+        ProjectileBase proj = Instantiate(_projectile, Cannon.position, Quaternion.LookRotation(WeaponTransform.forward));
+
+        proj.Initialize(_shooterLayer, Data);
+
+        proj.OnWeaponFire(target);
+    }
+
     protected override void Shoot(RaycastHit hit)
     {
         base.Shoot(hit);

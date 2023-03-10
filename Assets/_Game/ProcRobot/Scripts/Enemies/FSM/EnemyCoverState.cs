@@ -58,10 +58,6 @@ public class EnemyCoverState : EnemyBaseState
                 if (Physics.Linecast(newStart, hit.point, out RaycastHit hitt, layerMask: _hideMask))
                 {
                     Vector3 dirToColliderCenter = (hitt.collider.bounds.center - hitt.point).normalized;
-
-                    print($"{hitt.point} at index {i}");
-
-
                     _hitPoints.Add(hitt.point + dir.normalized * 2f + dirToColliderCenter * 3f);
                 }
             }
@@ -114,7 +110,7 @@ public class EnemyCoverState : EnemyBaseState
 
     private IEnumerator GoBackToAttackMode() 
     {
-        print($"{gameObject.name} WAIT TO GA BACK TO ATTACK MODE");
+        print($"{gameObject.name} WAIT TO GO BACK TO ATTACK MODE");
 
         yield return new WaitForSeconds(Random.Range(3f, 6f));
         _stateManager.SetState(_stateManager.AttackState);

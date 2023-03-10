@@ -33,16 +33,13 @@ public abstract class WeaponBase : MonoBehaviour
     {
         _canShoot = true;
         shooter.OnShoot += TryShoot;
-        shooter.OnShotHoming += OnShotHoming;
+        shooter.OnShotHoming += TryShootHoming;
         shooter.OnShootInDirection += TryShootInDirection;
 
         _currentCD = _fireCD;
     }
 
-    private void OnShotHoming(Transform obj)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     public virtual void TryShootInDirection(Vector3 dir)
     {
@@ -67,6 +64,28 @@ public abstract class WeaponBase : MonoBehaviour
             Shoot(hit);
             StartCoroutine(ResetFireCoolDown());
         }
+    }
+    
+    private void TryShootHoming(Transform target)
+    {
+        if (_canShoot)
+        {
+            ShootHoming(target);
+            StartCoroutine(ResetFireCoolDown());
+        }
+    }
+
+    protected virtual void ShootHoming(Transform target)
+    {
+        OnShotFired?.Invoke(); // only for feedback reasons
+
+        if (_muzzleFlash) _muzzleFlash.Emit(_muzzleFlashParticleCount);
+
+        WeaponTransform.DOKill();
+        WeaponTransform.localPosition = _startLocalPosition;
+        WeaponTransform
+            .DOLocalMoveZ(WeaponTransform.localPosition.z - _recoil, 0.05f)
+            .SetLoops(2, LoopType.Yoyo);
     }
 
     protected virtual void Shoot(RaycastHit hit)
