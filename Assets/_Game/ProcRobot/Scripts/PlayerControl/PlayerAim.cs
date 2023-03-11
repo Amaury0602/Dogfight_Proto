@@ -49,7 +49,7 @@ public class PlayerAim : ShooterBase
         Direction = (aimPoint - CurrentWeapon.WeaponTransform.position).normalized;
 
         Quaternion dir = Quaternion.LookRotation(Direction);
-        CurrentWeapon.transform.rotation = Quaternion.Slerp(CurrentWeapon.transform.rotation, dir, _weaponRotSpeed * Time.deltaTime);
+        CurrentWeapon.WeaponTransform.rotation = Quaternion.Slerp(CurrentWeapon.transform.rotation, dir, _weaponRotSpeed * Time.deltaTime);
 
         _headTransform.forward = Direction;
 

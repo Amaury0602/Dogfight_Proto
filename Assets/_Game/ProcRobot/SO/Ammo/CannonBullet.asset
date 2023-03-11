@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 522478d653ef5494a8805e4bdd56a6fe, type: 3}
-  m_Name: Rocket
+  m_Name: CannonBullet
   m_EditorClassIdentifier: 
   Type: 1
-  Damage: 30
+  Damage: 10
   Homing: 0
-  Effect: 1
+  Effect: 0

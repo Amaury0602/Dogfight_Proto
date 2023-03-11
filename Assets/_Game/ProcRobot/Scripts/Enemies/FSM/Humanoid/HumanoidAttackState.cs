@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEngine;
 
 public class HumanoidAttackState : EnemyAttackState
 {
@@ -10,7 +9,6 @@ public class HumanoidAttackState : EnemyAttackState
         HumanoidEnemy enemy = _stateManager.Enemy as HumanoidEnemy;
         _leader = enemy.SquadLeader;
     }
-
     protected override IEnumerator AttackTarget()
     {
         while (_leader != null && _leader.Alive)
@@ -19,13 +17,6 @@ public class HumanoidAttackState : EnemyAttackState
             yield return null;
         }
     }
-    protected override void HandleLoseSight(Vector3 lastKnownPos)
-    {
-        if (_attackRoutine != null) StopCoroutine(_attackRoutine);
-    }
-
-    public override void OnShot(int damage)
-    {
-    }
-
+    protected override void HandleGainSight() {}
+    public override void OnShot(int damage) {}
 }
