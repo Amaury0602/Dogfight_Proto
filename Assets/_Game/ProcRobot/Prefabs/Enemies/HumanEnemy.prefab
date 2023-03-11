@@ -74,11 +74,11 @@ GameObject:
   - component: {fileID: 1777289791207366188}
   - component: {fileID: 1777289791207366191}
   - component: {fileID: 1777289791207366190}
-  - component: {fileID: 1777289791207366185}
-  - component: {fileID: 1777289791207366187}
   - component: {fileID: 1777289791207366354}
   - component: {fileID: 1777289791207366189}
   - component: {fileID: 1900892878013033534}
+  - component: {fileID: 7372232190198187947}
+  - component: {fileID: 8826909864590142560}
   m_Layer: 7
   m_Name: HumanEnemy
   m_TagString: Untagged
@@ -172,8 +172,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Health>k__BackingField: 20
   _state: {fileID: 1777289791207366190}
-  _mainCollider: {fileID: 1900892878013033534}
   _lockableObject: {fileID: 7960298219552619808}
+  <SquadLeader>k__BackingField: {fileID: 0}
 --- !u!195 &1777289791207366188
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -231,36 +231,6 @@ MonoBehaviour:
   <Aim>k__BackingField: {fileID: 1777289791207366354}
   <Enemy>k__BackingField: {fileID: 1777289791207366186}
   <Player>k__BackingField: {fileID: 0}
---- !u!114 &1777289791207366185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1777289791207366180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452001884ebdb7443be26fe5ccceeb38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pointA: {fileID: 0}
-  _pointB: {fileID: 0}
-  _playerDetector: {fileID: 48953888}
---- !u!114 &1777289791207366187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1777289791207366180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6367aecc9a582d84cb8e3359a71db21a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _refreshDamageCD: 2
-  _damageThreshold: 30
-  aggressiveness: 0
 --- !u!114 &1777289791207366354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,14 +248,14 @@ MonoBehaviour:
     m_Bits: 264
   _headTransform: {fileID: 0}
   <CurrentWeapon>k__BackingField: {fileID: 1777289792361461406}
-  _aimingSpeed: 10
+  _aimingSpeed: 30
   _aimRadius: 1
   _playerLayer:
     serializedVersion: 2
     m_Bits: 264
   _sightAngle: 90
-  _sightDistance: 30
-  _shootDistance: 0
+  _sightDistance: 50
+  _shootDistance: 50
   _debug: {fileID: 0}
 --- !u!54 &1777289791207366189
 Rigidbody:
@@ -317,6 +287,36 @@ CapsuleCollider:
   m_Height: 2.0826283
   m_Direction: 1
   m_Center: {x: 0, y: 1.0042512, z: 0}
+--- !u!114 &7372232190198187947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777289791207366180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 930c9fa0b7f5b34409c8435bb9f565a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointA: {fileID: 0}
+  _pointB: {fileID: 0}
+  _playerDetector: {fileID: 48953888}
+--- !u!114 &8826909864590142560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777289791207366180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 116cc3b556cd1c94497ce362ceb57a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _refreshDamageCD: 2
+  _damageThreshold: 30
+  aggressiveness: 0
 --- !u!1 &1777289792361461400
 GameObject:
   m_ObjectHideFlags: 0

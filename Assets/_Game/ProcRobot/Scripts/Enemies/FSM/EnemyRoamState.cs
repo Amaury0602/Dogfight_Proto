@@ -5,9 +5,9 @@ public class EnemyRoamState : EnemyBaseState
     [SerializeField] private Transform _pointA;
     [SerializeField] private Transform _pointB;
 
-    private Transform _currentTarget;
+    protected Transform _currentTarget;
 
-    [SerializeField] private Detector _playerDetector;
+    [SerializeField] protected Detector _playerDetector;
 
     public override void EnterState(EnemyBaseState previous)
     {
@@ -18,7 +18,7 @@ public class EnemyRoamState : EnemyBaseState
         _playerDetector.TriggerEnter += OnPlayerTriggerEnter;
     }
 
-    private void OnPlayerTriggerEnter(Collider obj)
+    protected virtual void OnPlayerTriggerEnter(Collider obj)
     {
         _playerDetector.TriggerEnter -= OnPlayerTriggerEnter;
         _stateManager.SetState(_stateManager.AttackState);

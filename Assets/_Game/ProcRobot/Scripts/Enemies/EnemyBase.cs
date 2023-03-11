@@ -10,7 +10,7 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
 
     [SerializeField] private EnemyStateManager _state;
 
-    [SerializeField] protected Collider _mainCollider;
+    private Squad _squad;
 
     public bool Alive => Health > 0;
 
@@ -25,11 +25,21 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
     private void Start()
     {
         _startHealth = Health;
+
+    }
+    public void Initialize(Squad squad)
+    {
+        _squad = squad;
+        _squad.AttackAlert += OnAttackAlert;
+    }
+
+    private void OnAttackAlert()
+    {
+        _state.SetState(_state.AttackState);
     }
 
     protected virtual void Die()
     {
-        _mainCollider.enabled = false;
         _lockableObject.SetActive(false);
         OnDeath?.Invoke();
     }
