@@ -63,7 +63,7 @@ public class PlayerHandler : MonoBehaviour
     private void Move()
     {
 
-        if (_rb.velocity.sqrMagnitude <= 0.15f)
+        if (_rb.velocity.sqrMagnitude <= _rbMoveSpeed * 1.75f)
         {
             if (_isMoving)
             {
