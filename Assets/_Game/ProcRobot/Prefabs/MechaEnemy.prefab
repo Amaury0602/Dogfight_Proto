@@ -512,7 +512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449912, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_Name
-      value: MechaEnemy (3)
+      value: MechaEnemy (5)
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449912, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_Layer
@@ -524,7 +524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449913, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.4
+      value: 37.4
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449913, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -532,7 +532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449913, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.8999996
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449913, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -779,15 +779,15 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 3335589212890311089, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
   m_PrefabInstance: {fileID: 7783717655175696734}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4292960478103847628 stripped
+--- !u!114 &667911479376375358 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6311505950486614930, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7296310800741662560, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
   m_PrefabInstance: {fileID: 7783717655175696734}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d415b39f618b15469bf5e7f443022c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ac96a24771b7c745b0cab85f45bc4b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!23 &6269216745621201622 stripped
@@ -988,9 +988,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   _headTransform: {fileID: 6269216747126596046}
-  <CurrentWeapon>k__BackingField: {fileID: 4292960478103847628}
+  <CurrentWeapon>k__BackingField: {fileID: 667911479376375358}
   _aimingSpeed: 150
-  _aimRadius: 3
+  _aimRadius: 1
   _playerLayer:
     serializedVersion: 2
     m_Bits: 264
@@ -1010,6 +1010,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4b37bae203cae4e8537a3ccfcc4b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 300
+  <Health>k__BackingField: 150
   _state: {fileID: 898854896}
   _lockableObject: {fileID: 4444853781878967048}
