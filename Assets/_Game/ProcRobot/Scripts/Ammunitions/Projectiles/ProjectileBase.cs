@@ -9,13 +9,13 @@ public class ProjectileBase : AmmunitionBase
 
     protected Collider[] _hitColliders = default;
 
-    private Vector3 _lastPos = default;
-    private float _timer;
+    protected Vector3 _lastPos = default;
+    protected float _timer;
 
-    private Coroutine _flyRoutine = null;
+    protected Coroutine _flyRoutine = null;
 
-    [SerializeField] private LayerMask _mask;
-    private AmmunitionData _data;
+    [SerializeField] protected LayerMask _mask;
+    protected AmmunitionData _data;
 
     private void Awake()
     {
@@ -41,25 +41,23 @@ public class ProjectileBase : AmmunitionBase
         _flyRoutine = StartCoroutine(FlyTowardsTarget(target));
     }
 
+    public virtual void OnWeaponFire(Transform target) { }
+
     protected virtual IEnumerator FlyTowardsTarget(Vector3 target)
     {
-        _timer = 2f;
+        _timer = 4f;
         _lastPos = transform.position;
         Vector3 dir = target - transform.position;
         while (_timer >= 0)
         {
+            _lastPos = transform.position;
             transform.position += dir.normalized * _moveSpeed * Time.deltaTime;
-
             if (Physics.Linecast(_lastPos, transform.position, out RaycastHit hit, _mask))
             {
                 ReachedTarget();
                 yield break;
             }
-
             _timer -= Time.deltaTime;
-
-            _lastPos = transform.position;
-
             yield return null;
         }
 
@@ -87,9 +85,10 @@ public class ProjectileBase : AmmunitionBase
         }
     }
 
+
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, _effectRadius);
+        Gizmos.DrawWireCube(_lastPos, 2f * Vector3.one);
     }
 
     protected virtual void OnTriggerEnter(Collider other)

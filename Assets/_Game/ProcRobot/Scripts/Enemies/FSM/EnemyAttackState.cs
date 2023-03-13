@@ -6,7 +6,7 @@ public class EnemyAttackState : EnemyBaseState
 
     private bool _targetInSight = false;
 
-    private Coroutine _attackRoutine = default;
+    protected Coroutine _attackRoutine = default;
 
     [SerializeField] private float _refreshDamageCD = 2f;
     [SerializeField] private float _damageThreshold = 30f;
@@ -22,16 +22,15 @@ public class EnemyAttackState : EnemyBaseState
         _stateManager.Aim.OnGainSight += HandleGainSight;
         _stateManager.Aim.OnLostSight += HandleLoseSight;
 
-        _attackRoutine = StartCoroutine(ChaseTarget());
+        _attackRoutine = StartCoroutine(AttackTarget());
     }
-    private void HandleGainSight()
+    protected virtual void HandleGainSight()
     {
         _targetInSight = true;
-
-        _attackRoutine = StartCoroutine(ChaseTarget());
+        _attackRoutine = StartCoroutine(AttackTarget());
     }
 
-    private void HandleLoseSight(Vector3 lastKnownPos)
+    protected virtual void HandleLoseSight(Vector3 lastKnownPos)
     {
         lastKnownPosition = lastKnownPos;
         if (_attackRoutine != null) StopCoroutine(_attackRoutine);
@@ -79,12 +78,12 @@ public class EnemyAttackState : EnemyBaseState
         }
     }
 
-    private IEnumerator ChaseTarget()
+    protected virtual IEnumerator AttackTarget()
     {
-        while(_targetInSight)
+        //while(_targetInSight)
         {
-            float distToPlayer = 30f;
-            if (Random.Range(0f, 1f) < aggressiveness) distToPlayer = 15f;
+            float distToPlayer = 50f;
+            if (Random.Range(0f, 1f) < aggressiveness) distToPlayer = 25f;
 
             if (CanFindPosAroundPoint(_stateManager.Player.Position, distToPlayer, out Vector3 pos))
             {

@@ -41,6 +41,8 @@ public class EnemyStateManager : MonoBehaviour
 
     public void SetState(EnemyBaseState state)
     {
+        if (state == CurrentState) return;
+
         if (CurrentState != null) 
         {
             CurrentState.ExitState();

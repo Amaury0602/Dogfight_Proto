@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Rocket
   m_EditorClassIdentifier: 
   Type: 1
-  Damage: 10
+  Damage: 30
+  Homing: 0
   Effect: 1

@@ -15,7 +15,7 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected float _recoil;
     [SerializeField] protected int _muzzleFlashParticleCount;
 
-    [SerializeField] protected AmmunitionData Data;
+    [field: SerializeField] public AmmunitionData Data { get; private set; }
 
     protected bool _canShoot;
     private float _currentCD;
@@ -33,10 +33,13 @@ public abstract class WeaponBase : MonoBehaviour
     {
         _canShoot = true;
         shooter.OnShoot += TryShoot;
+        shooter.OnShotHoming += TryShootHoming;
         shooter.OnShootInDirection += TryShootInDirection;
 
         _currentCD = _fireCD;
     }
+
+    
 
     public virtual void TryShootInDirection(Vector3 dir)
     {
@@ -62,10 +65,32 @@ public abstract class WeaponBase : MonoBehaviour
             StartCoroutine(ResetFireCoolDown());
         }
     }
+    
+    private void TryShootHoming(Transform target)
+    {
+        if (_canShoot)
+        {
+            ShootHoming(target);
+            StartCoroutine(ResetFireCoolDown());
+        }
+    }
+
+    protected virtual void ShootHoming(Transform target)
+    {
+        OnShotFired?.Invoke(); // only for feedback reasons
+
+        if (_muzzleFlash) _muzzleFlash.Emit(_muzzleFlashParticleCount);
+
+        WeaponTransform.DOKill();
+        WeaponTransform.localPosition = _startLocalPosition;
+        WeaponTransform
+            .DOLocalMoveZ(WeaponTransform.localPosition.z - _recoil, 0.05f)
+            .SetLoops(2, LoopType.Yoyo);
+    }
 
     protected virtual void Shoot(RaycastHit hit)
     {
-        OnShotFired?.Invoke();
+        OnShotFired?.Invoke(); // only for feedback reasons
 
         if (_muzzleFlash) _muzzleFlash.Emit(_muzzleFlashParticleCount);
 
@@ -78,7 +103,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected virtual void PlayerShootInDirection(Vector3 dir)
     {
-        OnShotFired?.Invoke();
+        OnShotFired?.Invoke(); // only for feedback reasons
 
         if (_muzzleFlash) _muzzleFlash.Emit(_muzzleFlashParticleCount);
 

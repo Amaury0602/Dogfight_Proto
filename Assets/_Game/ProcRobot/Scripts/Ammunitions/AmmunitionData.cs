@@ -5,6 +5,7 @@ public class AmmunitionData : ScriptableObject
 {
     public AmmunitionType Type;
     public int Damage;
+    public bool Homing;
     public AmmunitionEffect Effect;
 }
 

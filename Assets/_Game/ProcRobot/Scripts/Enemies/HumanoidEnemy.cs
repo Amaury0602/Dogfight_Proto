@@ -3,6 +3,8 @@ public class HumanoidEnemy : EnemyBase
 {
     private Rigidbody _rb;
 
+    [field: SerializeField] public EnemyBase SquadLeader { get; private set; }
+
 
     private void Awake()
     {

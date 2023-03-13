@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: BaseBullet
   m_EditorClassIdentifier: 
   Type: 0
-  Damage: 5
+  Damage: 3
+  Homing: 0
   Effect: 0
