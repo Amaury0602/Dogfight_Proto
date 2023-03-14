@@ -19,7 +19,7 @@ public class PlayerHandler : MonoBehaviour
     private PlayerAim _aim;
     private Player _player;
 
-    private Booster _booster;
+    public Booster Booster { get; private set; }
     private float _boostSpeedBonus = 0;
 
     private Rigidbody _rb;
@@ -40,13 +40,13 @@ public class PlayerHandler : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _aim = GetComponent<PlayerAim>();
         _player = GetComponent<Player>();
-        _booster = GetComponent<Booster>();
+        Booster = GetComponent<Booster>();
         _cam = Camera.main;
         _canMove = true;
 
         _player.OnDeath += OnDeath;
-        _booster.OnBoost += OnBoost;
-        _booster.EnergyFullyConsumed += OnBoostStopped;
+        Booster.OnBoost += OnBoost;
+        Booster.EnergyFullyConsumed += OnBoostStopped;
 
     }
     void Update()
@@ -106,6 +106,11 @@ public class PlayerHandler : MonoBehaviour
 
     private void OnBoost(float impulse, float speedBonus)
     {
+        if (Direction == Vector3.zero)
+        {
+            OnMovementStopped?.Invoke();
+            return;
+        }
         _rb.AddForce(Direction * impulse, ForceMode.Impulse);
         _boostSpeedBonus = speedBonus;
     }

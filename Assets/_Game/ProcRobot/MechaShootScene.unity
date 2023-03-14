@@ -671,10 +671,10 @@ MonoBehaviour:
   _speedBoost: 1.25
   _speedImpulse: 175
   _maxEnergy: 100
-  _energyConsumeSpeed: 10
-  _energyRegainSpeed: 5
-  _energyConsumedByDash: 10
-  _dashThreshold: 0.5
+  _energyConsumeSpeed: 20
+  _energyRegainSpeed: 10
+  _energyConsumedByDash: 30
+  _dashThreshold: 0.2
   _shakePower: 15
 --- !u!1 &310331403
 GameObject:
@@ -1392,6 +1392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthFillBar: {fileID: 1663539125}
   _secondHealthBar: {fileID: 189669928}
+  _boostFillBar: {fileID: 1317538676}
   _healthBarParent: {fileID: 1048400348}
 --- !u!1 &828236930
 GameObject:
@@ -2862,7 +2863,7 @@ Camera:
   far clip plane: 200
   field of view: 35
   orthographic: 1
-  orthographic size: 30
+  orthographic size: 23.2
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2886,7 +2887,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458651701}
   m_LocalRotation: {x: 0.37387016, y: 0.000000010871792, z: -0.00000000438245, w: 0.92748106}
-  m_LocalPosition: {x: -3.4117079, y: 14.467003, z: -87.17149}
+  m_LocalPosition: {x: -3.4117088, y: 12.506607, z: -85.13497}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1518563028}
@@ -3980,7 +3981,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080085104}
   m_LocalRotation: {x: 0.37387016, y: 0.000000010871792, z: -0.00000000438245, w: 0.92748106}
-  m_LocalPosition: {x: -3.4117079, y: 14.467003, z: -87.17149}
+  m_LocalPosition: {x: -3.4117088, y: 12.506607, z: -85.13497}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1132304752}

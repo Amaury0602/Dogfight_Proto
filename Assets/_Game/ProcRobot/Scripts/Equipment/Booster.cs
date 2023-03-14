@@ -45,11 +45,10 @@ public class Booster : MonoBehaviour
 
     private void Boost()
     {
-        //if (EnergyRatio < _dashThreshold) return;
+        if (EnergyRatio <= _dashThreshold) return;
+
         _active = true;
 
-        if (_energyFillRoutine != null) StopCoroutine(_energyFillRoutine);
-        _energyFillRoutine = StartCoroutine(ConsumeBoost());
 
 
         OnBoost?.Invoke(_speedImpulse, _speedBoost);
@@ -64,23 +63,34 @@ public class Booster : MonoBehaviour
         }
 
         _burstFX.Play();
-
         VirtualCameraHandler.Instance.Shake(_shakePower, _shakePower, 0.1f);
+
+        _actualEnergy -= _energyConsumedByDash;
+
+        if (_energyFillRoutine != null) StopCoroutine(_energyFillRoutine);
+
+        if (_actualEnergy > 0)
+        {
+            _energyFillRoutine = StartCoroutine(ConsumeBoost());
+        }
+        else
+        {
+            OnStopped();
+        }
+
     }
 
     private IEnumerator ConsumeBoost()
     {
+        _active = true;
+
         while(_actualEnergy >= 0)
         {
-
-            print(" CONSUMIIIIIIIING ");
-
             _actualEnergy -= _energyConsumeSpeed * Time.deltaTime;
             BoostConsumed?.Invoke(EnergyRatio);
             yield return null;
         }
 
-        EnergyFullyConsumed?.Invoke();
 
         _actualEnergy = 0;
         OnStopped();
@@ -88,10 +98,8 @@ public class Booster : MonoBehaviour
     
     private IEnumerator RegainBoost()
     {
-        while(!_active && _actualEnergy < _maxEnergy)
+        while(_actualEnergy < _maxEnergy)
         {
-            print("Regain boost" + _actualEnergy);
-
             _actualEnergy += _energyRegainSpeed * Time.deltaTime;
             BoostConsumed?.Invoke(EnergyRatio);
             yield return null;
@@ -102,15 +110,12 @@ public class Booster : MonoBehaviour
 
     private void OnStopped()
     {
+        if (!_active) return;
 
-        print("ON STOPPED BOOST");
+        _active = false;
 
-        //if (!_active) return;
-
-        //_active = false;
-
-        if (_energyFillRoutine != null) StopCoroutine(_energyFillRoutine);
-        _energyFillRoutine = StartCoroutine(RegainBoost());
+        BoostConsumed?.Invoke(EnergyRatio);
+        EnergyFullyConsumed?.Invoke();
 
         for (int i = 0; i < _baseTrail.Length; i++)
         {
@@ -120,5 +125,9 @@ public class Booster : MonoBehaviour
         {
             _boostTrail[i].Stop();
         }
+
+        if (_energyFillRoutine != null) StopCoroutine(_energyFillRoutine);
+        _energyFillRoutine = StartCoroutine(RegainBoost());
+
     }
 }
