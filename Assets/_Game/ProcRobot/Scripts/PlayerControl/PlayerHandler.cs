@@ -46,6 +46,7 @@ public class PlayerHandler : MonoBehaviour
 
         _player.OnDeath += OnDeath;
         _booster.OnBoost += OnBoost;
+        _booster.EnergyFullyConsumed += OnBoostStopped;
 
     }
     void Update()
@@ -107,6 +108,11 @@ public class PlayerHandler : MonoBehaviour
     {
         _rb.AddForce(Direction * impulse, ForceMode.Impulse);
         _boostSpeedBonus = speedBonus;
+    }
+
+    private void OnBoostStopped()
+    {
+        _boostSpeedBonus = 0f;
     }
 
 

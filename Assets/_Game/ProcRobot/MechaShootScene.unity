@@ -670,6 +670,11 @@ MonoBehaviour:
   _burstFX: {fileID: 1681275828}
   _speedBoost: 1.25
   _speedImpulse: 175
+  _maxEnergy: 100
+  _energyConsumeSpeed: 10
+  _energyRegainSpeed: 5
+  _energyConsumedByDash: 10
+  _dashThreshold: 0.5
   _shakePower: 15
 --- !u!1 &310331403
 GameObject:
@@ -2881,7 +2886,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458651701}
   m_LocalRotation: {x: 0.37387016, y: 0.000000010871792, z: -0.00000000438245, w: 0.92748106}
-  m_LocalPosition: {x: -3.4117079, y: 14.467003, z: -87.1715}
+  m_LocalPosition: {x: -3.4117079, y: 14.467003, z: -87.17149}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1518563028}
@@ -3975,7 +3980,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080085104}
   m_LocalRotation: {x: 0.37387016, y: 0.000000010871792, z: -0.00000000438245, w: 0.92748106}
-  m_LocalPosition: {x: -3.4117079, y: 14.467003, z: -87.1715}
+  m_LocalPosition: {x: -3.4117079, y: 14.467003, z: -87.17149}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1132304752}
