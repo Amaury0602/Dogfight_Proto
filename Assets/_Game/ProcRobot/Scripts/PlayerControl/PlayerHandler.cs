@@ -32,6 +32,8 @@ public class PlayerHandler : MonoBehaviour
     public Action OnMovementStopped = default;
     private bool _isMoving = false;
 
+    private bool _inputDown = false;
+
 
     private Vector3 _inputDirection;
 
@@ -82,6 +84,8 @@ public class PlayerHandler : MonoBehaviour
         {
             if (!_isMoving) _isMoving = true;
 
+            if (!_inputDown) _inputDown = true;
+
             Vector3 forward = _cam.transform.forward * _inputDirection.z;
             Vector3 right = _cam.transform.right * _inputDirection.x;
             Vector3 mov = (forward + right).normalized;
@@ -92,6 +96,11 @@ public class PlayerHandler : MonoBehaviour
         }
         else
         {
+            if (_inputDown) 
+            {
+                _inputDown = false;
+                _rb.velocity = Vector3.zero;
+            } 
             Direction = Vector3.zero;
         }
         

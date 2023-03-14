@@ -22,4 +22,9 @@ public class HumanRoamState : EnemyRoamState
     {
         _stateManager.Mover.SetDestination(_leader.transform.position);
     }
+
+    public override void OnShot(int damage)
+    {
+        _stateManager.SetState(_stateManager.AttackState);
+    }
 }
