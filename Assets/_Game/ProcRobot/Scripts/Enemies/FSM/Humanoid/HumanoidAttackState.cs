@@ -9,8 +9,7 @@ public class HumanoidAttackState : EnemyAttackState
 
     private void Start()
     {
-        HumanoidEnemy enemy = _stateManager.Enemy as HumanoidEnemy;
-        _leader = enemy.SquadLeader;
+        _leader = _stateManager.Enemy.Squad.Leader;
     }
 
 
@@ -30,18 +29,18 @@ public class HumanoidAttackState : EnemyAttackState
         }
     }
 
-    private void ChasePlayer()
-    {
-        if (CanFindPosAroundPoint(_stateManager.Player.Position, _distanceToPlayerChase, out Vector3 pos))
-        {
-            _stateManager.Mover.SetDestination(pos, OnReachedChasePosition);
-        }
-    }
+    //private void ChasePlayer()
+    //{
+    //    if (CanFindPosAroundPoint(_stateManager.Player.Position, _distanceToPlayerChase, out Vector3 pos))
+    //    {
+    //        _stateManager.Mover.SetDestination(pos, OnReachedChasePosition);
+    //    }
+    //}
 
-    private void OnReachedChasePosition()
-    {
+    //private void OnReachedChasePosition()
+    //{
 
-    }
+    //}
 
     protected override void HandleGainSight() {}
 

@@ -35,7 +35,7 @@ public class MechaInfoCanvas : MonoBehaviour
 
         _fillBar.fillAmount = (float)_currentHealth / (float)_startHealth;
     }
-    private void OnDeath()
+    private void OnDeath(EnemyBase e)
     {
         transform.DOKill();
         gameObject.SetActive(false);

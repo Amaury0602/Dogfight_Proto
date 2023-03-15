@@ -86,7 +86,6 @@ public class EnemyAttackState : EnemyBaseState
 
             if (CanFindPosAroundPoint(_stateManager.Player.Position, distToPlayer, out Vector3 pos))
             {
-                print("MOVEZ TO POS : " + pos);
                 _stateManager.Mover.SetDestination(pos);
             }
             yield return new WaitForSeconds(Random.Range(3f, 6f));  

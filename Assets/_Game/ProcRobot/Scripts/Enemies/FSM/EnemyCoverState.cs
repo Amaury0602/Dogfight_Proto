@@ -37,8 +37,6 @@ public class EnemyCoverState : EnemyBaseState
 
     private void GetToCover()
     {
-        print($"{gameObject.name} START GET TO COVER");
-
         Vector3 start = _stateManager.Player.Position;
 
         float anglePerRay = _angle / (float)_numberOfRays;
@@ -82,7 +80,6 @@ public class EnemyCoverState : EnemyBaseState
         //can I get to this position ? 
         if (_stateManager.Mover.TryFindPositionCloseToPoint(_hitPoints[closest], out Vector3 pos))
         {
-            print($"{gameObject.name} FOUND COVER POSITION");
             _stateManager.Mover.SetDestination(pos, OnCovered);
         }
     }
@@ -109,8 +106,6 @@ public class EnemyCoverState : EnemyBaseState
 
     private IEnumerator GoBackToAttackMode() 
     {
-        print($"{gameObject.name} WAIT TO GO BACK TO ATTACK MODE");
-
         yield return new WaitForSeconds(Random.Range(3f, 6f));
         _stateManager.SetState(_stateManager.AttackState);
     }
