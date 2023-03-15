@@ -10,11 +10,11 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
 
     [SerializeField] private EnemyStateManager _state;
 
-    private Squad _squad;
+    [field: SerializeField] public Squad Squad { get; set; }
 
     public bool Alive => Health > 0;
 
-    public Action OnDeath = default;
+    public Action<EnemyBase> OnDeath = default;
     public Action<int> OnDamageTaken = default;
     public Action<int> OnHealthGained = default;
 
@@ -25,12 +25,7 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
     private void Start()
     {
         _startHealth = Health;
-
-    }
-    public void Initialize(Squad squad)
-    {
-        _squad = squad;
-        _squad.AttackAlert += OnAttackAlert;
+        Squad.AttackAlert += OnAttackAlert;
     }
 
     private void OnAttackAlert()
@@ -41,7 +36,7 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
     protected virtual void Die()
     {
         _lockableObject.SetActive(false);
-        OnDeath?.Invoke();
+        OnDeath?.Invoke(this);
     }
 
     public virtual void TakeDamage(int damage, AmmunitionEffect effect = AmmunitionEffect.None)

@@ -1,15 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class HumanRoamState : EnemyRoamState
 {
     private EnemyBase _leader;
 
     private void Start()
     {
-        HumanoidEnemy h = _stateManager.Enemy as HumanoidEnemy;
-        _leader = h.SquadLeader;
+        _leader = _stateManager.Enemy.Squad.Leader;
     }
 
     public override void EnterState(EnemyBaseState previous)
@@ -20,6 +15,12 @@ public class HumanRoamState : EnemyRoamState
 
     public override void UpdateState()
     {
+        if (_leader == null) return;
         _stateManager.Mover.SetDestination(_leader.transform.position);
+    }
+
+    public override void OnShot(int damage)
+    {
+        _stateManager.SetState(_stateManager.AttackState);
     }
 }

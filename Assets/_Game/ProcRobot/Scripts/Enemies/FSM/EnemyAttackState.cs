@@ -15,7 +15,6 @@ public class EnemyAttackState : EnemyBaseState
 
     [SerializeField, Range(-0.1f, 1.1f)] private float aggressiveness;
 
-
     private Vector3 lastKnownPosition = default;
     public override void EnterState(EnemyBaseState previous)
     {
@@ -52,7 +51,7 @@ public class EnemyAttackState : EnemyBaseState
 
     }
 
-    private bool CanFindPosAroundPoint(Vector3 point, float radius, out Vector3 pos)
+    protected bool CanFindPosAroundPoint(Vector3 point, float radius, out Vector3 pos)
     {
         pos = Vector3.zero;
         for (int i = 0; i < 10; i++)
@@ -80,7 +79,7 @@ public class EnemyAttackState : EnemyBaseState
 
     protected virtual IEnumerator AttackTarget()
     {
-        //while(_targetInSight)
+        while(_stateManager.Enemy.Alive)
         {
             float distToPlayer = 50f;
             if (Random.Range(0f, 1f) < aggressiveness) distToPlayer = 25f;

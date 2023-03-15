@@ -19,7 +19,7 @@ public class PlayerHandler : MonoBehaviour
     private PlayerAim _aim;
     private Player _player;
 
-    private Booster _booster;
+    public Booster Booster { get; private set; }
     private float _boostSpeedBonus = 0;
 
     private Rigidbody _rb;
@@ -32,6 +32,8 @@ public class PlayerHandler : MonoBehaviour
     public Action OnMovementStopped = default;
     private bool _isMoving = false;
 
+    private bool _inputDown = false;
+
 
     private Vector3 _inputDirection;
 
@@ -40,13 +42,13 @@ public class PlayerHandler : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _aim = GetComponent<PlayerAim>();
         _player = GetComponent<Player>();
-        _booster = GetComponent<Booster>();
+        Booster = GetComponent<Booster>();
         _cam = Camera.main;
         _canMove = true;
 
         _player.OnDeath += OnDeath;
-        _booster.OnBoost += OnBoost;
-        _booster.EnergyFullyConsumed += OnBoostStopped;
+        Booster.OnBoost += OnBoost;
+        Booster.EnergyFullyConsumed += OnBoostStopped;
 
     }
     void Update()
@@ -82,6 +84,8 @@ public class PlayerHandler : MonoBehaviour
         {
             if (!_isMoving) _isMoving = true;
 
+            if (!_inputDown) _inputDown = true;
+
             Vector3 forward = _cam.transform.forward * _inputDirection.z;
             Vector3 right = _cam.transform.right * _inputDirection.x;
             Vector3 mov = (forward + right).normalized;
@@ -92,6 +96,11 @@ public class PlayerHandler : MonoBehaviour
         }
         else
         {
+            if (_inputDown) 
+            {
+                _inputDown = false;
+                _rb.velocity = Vector3.zero;
+            } 
             Direction = Vector3.zero;
         }
         
@@ -106,6 +115,11 @@ public class PlayerHandler : MonoBehaviour
 
     private void OnBoost(float impulse, float speedBonus)
     {
+        if (Direction == Vector3.zero)
+        {
+            OnMovementStopped?.Invoke();
+            return;
+        }
         _rb.AddForce(Direction * impulse, ForceMode.Impulse);
         _boostSpeedBonus = speedBonus;
     }

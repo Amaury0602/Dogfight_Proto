@@ -12,6 +12,7 @@ public class PlayerUIStatus : MonoBehaviour
 
     [SerializeField] private Image _healthFillBar;
     [SerializeField] private Image _secondHealthBar;
+    [SerializeField] private Image _boostFillBar;
     [SerializeField] private Transform _healthBarParent;
 
     private Vector3 _healthBarStartPosition;
@@ -26,6 +27,12 @@ public class PlayerUIStatus : MonoBehaviour
         _currentHealth = _startHealth;
         Player.Instance.OnTakeDamage += OnPlayerTookDamage;
         Player.Instance.OnDeath += OnPlayerDeath;
+        Player.Instance.Handler.Booster.BoostConsumed += OnBoostUpdate;
+    }
+
+    private void OnBoostUpdate(float value)
+    {
+        _boostFillBar.fillAmount = value;
     }
 
     private void OnPlayerTookDamage(float obj)

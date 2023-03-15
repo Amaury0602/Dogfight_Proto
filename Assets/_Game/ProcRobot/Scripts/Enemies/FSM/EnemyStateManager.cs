@@ -62,7 +62,7 @@ public class EnemyStateManager : MonoBehaviour
         CurrentState.EnterState(PreviousState);
     }
 
-    private void OnDeath()
+    private void OnDeath(EnemyBase e)
     {
         Enemy.OnDeath -= OnDeath;
         CurrentState.ExitState();

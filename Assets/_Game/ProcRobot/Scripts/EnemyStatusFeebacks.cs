@@ -31,7 +31,7 @@ public class EnemyStatusFeebacks : MonoBehaviour
         InitializeRenderers();
     }
 
-    private void OnDeath()
+    private void OnDeath(EnemyBase e)
     {
         if (_parts.Length == 0) return;
 
