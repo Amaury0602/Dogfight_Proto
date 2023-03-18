@@ -114,14 +114,18 @@ public class PlayerUICursor : MonoBehaviour
     private void Move(Vector2 movement)
     {
         transform.position += (Vector3)movement;
-        Ray ray = _cam.ScreenPointToRay(transform.position);
+        Ray ray = _cam.ScreenPointToRay(_rect.position);
 
-        _playerPlane.SetNormalAndPosition(Vector3.up, _playerHeightMarker.position);
+        //Vector3 mouse = Input.mousePosition;
+        //mouse.z = _playerHeightMarker.position.z - _cam.transform.position.z;
+
+        //CursorToWorldPosition = _cam.ScreenToWorldPoint(mouse);
+        //_aimPoint = CursorToWorldPosition;
 
         if (_playerPlane.Raycast(ray, out float rayDistance/*, out RaycastHit hit*/))
         {
             CursorToWorldPosition = ray.GetPoint(rayDistance);
-            _aimPoint = ray.GetPoint(rayDistance);
+            _aimPoint = CursorToWorldPosition;
         }
 
 
@@ -164,11 +168,7 @@ public class PlayerUICursor : MonoBehaviour
         {
             TargetLocks[i].UnFocus();
         }
-
         
-
-
-
         Vector3 midPoint = Vector3.Lerp(_playerAim.transform.position, _aimPoint, 0.75f);
         _aimMidPoint.position = Vector3.Lerp(_aimMidPoint.position, midPoint, Time.deltaTime * _midPointFollowSpeed);
 

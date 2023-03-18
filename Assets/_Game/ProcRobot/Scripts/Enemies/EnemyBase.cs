@@ -21,6 +21,10 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
 
     [SerializeField] protected GameObject _lockableObject;
 
+    [SerializeField] private CapsuleCollider _mainCollider;
+
+    [SerializeField] private ParticleSystem _deathFX;
+
 
     private void Start()
     {
@@ -35,6 +39,8 @@ public abstract class EnemyBase : MonoBehaviour, IShootable
 
     protected virtual void Die()
     {
+        if (_mainCollider) _mainCollider.enabled = false;
+        if (_deathFX) _deathFX.Play();
         _lockableObject.SetActive(false);
         OnDeath?.Invoke(this);
     }
