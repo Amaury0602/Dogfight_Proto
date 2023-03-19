@@ -528,6 +528,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1840717889992825190, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3335589212890311089, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369995436725700819, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 4253063385300172179, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -800,10 +812,30 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 6224829889986263092, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6311505950486614930, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: _projectile
       value: 
       objectReference: {fileID: 2988629236170161327, guid: 4b403a54b7783f5408ce30737828b46e, type: 3}
+    - target: {fileID: 7148388601752334911, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718294335080295769, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666884587258818751, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725267689008070877, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4253063386027449894, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
     - {fileID: 4253063386027449914, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
@@ -936,7 +968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a8743de164cf640b3e0eca734e88f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deathExplosionForce: 1500
+  _deathExplosionForce: 200
   _deathExplosionRadius: 10
   _blinkCurve:
     serializedVersion: 2
