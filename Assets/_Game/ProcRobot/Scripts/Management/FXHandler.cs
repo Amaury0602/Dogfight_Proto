@@ -8,6 +8,7 @@ public class FXHandler : MonoBehaviour
     [SerializeField] private ParticleSystem _baseBulletFX;
     [SerializeField] private ParticleSystem _bigBulletFX;
     [SerializeField] private ParticleSystem _explosionFX;
+    [SerializeField] private ParticleSystem _debrisFX;
 
     [Header("Weapon FX")]
     [SerializeField] private TrailRenderer _bulletTrail;
@@ -23,6 +24,7 @@ public class FXHandler : MonoBehaviour
         PoolParty.SetPoolSize(_baseBulletFX, 20);
         PoolParty.SetPoolSize(_bigBulletFX, 20);
         PoolParty.SetPoolSize(_explosionFX, 10);
+        PoolParty.SetPoolSize(_debrisFX, 10);
 
 
         PoolParty.SetPoolSize(_bulletTrail, 20);
@@ -33,6 +35,12 @@ public class FXHandler : MonoBehaviour
         //ParticleSystem p = big ? _bigBulletFX : _baseBulletFX;
         ParticleSystem fx = PoolParty.Instantiate(_baseBulletFX, position, rotation);
         PoolParty.Destroy(fx, 2f);
+    }
+    public void PlayDebris(Vector3 position, Quaternion rotation)
+    {
+        //ParticleSystem p = big ? _bigBulletFX : _baseBulletFX;
+        ParticleSystem fx = PoolParty.Instantiate(_debrisFX, position, rotation);
+        PoolParty.Destroy(fx, 10f);
     }
     
     public void RocketExplosion(Vector3 position)

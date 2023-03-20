@@ -8,4 +8,10 @@ public class MechaEnemy : EnemyBase
     {
         _rb = GetComponent<Rigidbody>();
     }
+
+    protected override void Die()
+    {
+        base.Die();
+        VirtualCameraHandler.Instance.Shake(2f, 2f, 0.5f);
+    }
 }
