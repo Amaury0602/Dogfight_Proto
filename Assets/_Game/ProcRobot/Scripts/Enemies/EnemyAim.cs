@@ -113,9 +113,20 @@ public class EnemyAim : ShooterBase
     {
         if (Physics.SphereCast(CurrentWeapon.transform.position, _aimRadius, CurrentWeapon.transform.forward, out RaycastHit hit, maxDistance: _shootDistance, layerMask: _playerLayer))
         {
+
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("OBSTACLE")) return;
             //player in sight
+
+            
+
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("PLAYER"))
             {
+                if (CurrentWeapon.Data.Homing)
+                {
+                    OnShotHoming?.Invoke(Player.Instance.Body);
+                    return;
+                }
+
                 if (CurrentWeapon is HitscanWeapon)
                 {
                     OnShoot?.Invoke(hit);

@@ -616,6 +616,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4253063386027449892, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4253063386027449893, guid: b469f07fff96257428c1329b5cd76de7, type: 3}
       propertyPath: m_Interpolate
       value: 0
@@ -1151,7 +1155,7 @@ MonoBehaviour:
   _headTransform: {fileID: 6269216747126596046}
   <CurrentWeapon>k__BackingField: {fileID: 667911479376375358}
   _aimingSpeed: 150
-  _aimRadius: 1
+  _aimRadius: 3
   _playerLayer:
     serializedVersion: 2
     m_Bits: 264

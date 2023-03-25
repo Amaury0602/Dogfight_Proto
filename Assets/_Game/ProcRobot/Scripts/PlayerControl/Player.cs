@@ -10,6 +10,8 @@ public class Player : MonoBehaviour, IShootable
 
     public static Player Instance;
 
+    [field: SerializeField] public Transform Body { get; private set; }
+
     public bool Alive => Health > 0;
 
     public Action<float> OnTakeDamage = default;
