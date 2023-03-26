@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: HomingMissile
   m_EditorClassIdentifier: 
   Type: 1
-  Damage: 10
+  Damage: 20
   Homing: 1
   Effect: 1

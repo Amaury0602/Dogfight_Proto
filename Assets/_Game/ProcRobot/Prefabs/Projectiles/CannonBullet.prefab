@@ -126,9 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f80293c625d1a54292ff1f946f2741b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 200
-  _effectRadius: 5
-  _maxColliders: 10
+  _moveSpeed: 300
+  _effectRadius: 0
+  _maxColliders: 0
+  _splashDamage: 0
   _mask:
     serializedVersion: 2
     m_Bits: 0

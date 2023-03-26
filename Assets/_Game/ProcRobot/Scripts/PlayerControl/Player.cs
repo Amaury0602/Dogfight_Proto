@@ -27,7 +27,7 @@ public class Player : MonoBehaviour, IShootableEntity
     {
         if (!Alive) return;
 
-        VirtualCameraHandler.Instance.Shake(0.25f, 0.25f, 0.1f);
+        VirtualCameraHandler.Instance.Shake(0.25f * data.Damage, 0.25f * data.Damage, 0.1f);
 
         OnTakeDamage?.Invoke(data.Damage);
 
