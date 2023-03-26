@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class Player : MonoBehaviour, IShootable
+public class Player : MonoBehaviour, IShootableEntity
 {
     [field: SerializeField] public int Health { get; private set; }
 

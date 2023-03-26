@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public abstract class EnemyBase : MonoBehaviour, IShootable
+public abstract class EnemyBase : MonoBehaviour, IShootableEntity
 {
     [field: SerializeField] public int Health { get; private set; }
     public float RemainingHealth => (float)Health / (float)_startHealth;
