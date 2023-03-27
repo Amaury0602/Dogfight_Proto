@@ -87,7 +87,9 @@ public class PlayerUICursor : MonoBehaviour
         {
             TargetLockVisual target = Instantiate(_targetLockPrefab, transform.position, Quaternion.identity, _targetLocksParent);
             TargetLocks[i] = target;
+#if UNITY_EDITOR
             target.gameObject.name = $"TargetLock_{i}";
+#endif
             target.Initialize();
         }
     }
@@ -116,18 +118,12 @@ public class PlayerUICursor : MonoBehaviour
         transform.position += (Vector3)movement;
         Ray ray = _cam.ScreenPointToRay(_rect.position);
 
-        //Vector3 mouse = Input.mousePosition;
-        //mouse.z = _playerHeightMarker.position.z - _cam.transform.position.z;
-
-        //CursorToWorldPosition = _cam.ScreenToWorldPoint(mouse);
-        //_aimPoint = CursorToWorldPosition;
-
         if (_playerPlane.Raycast(ray, out float rayDistance/*, out RaycastHit hit*/))
         {
             CursorToWorldPosition = ray.GetPoint(rayDistance);
             _aimPoint = CursorToWorldPosition;
-        }
 
+        }
 
         RaycastHit[] hits = Physics.BoxCastAll(ray.origin, _rectWorldSize, ray.direction, _cam.transform.rotation, Mathf.Infinity, _specificAimLayer);
         //if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask: _specificAimLayer))
@@ -176,9 +172,6 @@ public class PlayerUICursor : MonoBehaviour
 
 
         ClampPositionOnScreen();
-
-
-        _debugText.text = $"Enemies in cursor : {hits.Length}";
     }
 
 

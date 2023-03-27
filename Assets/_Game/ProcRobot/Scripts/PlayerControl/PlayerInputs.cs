@@ -59,6 +59,8 @@ public class PlayerInputs : MonoBehaviour
         {
             OnSpaceDown?.Invoke();
         }
+
+
     }
 
     private void LateUpdate()

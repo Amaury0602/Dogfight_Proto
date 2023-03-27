@@ -103,12 +103,12 @@ public class PlayerHandler : MonoBehaviour
             } 
             Direction = Vector3.zero;
         }
-        
+
         Vector3 aimingDir = PlayerUICursor.Instance.CursorToWorldPosition - transform.position;
         aimingDir.y = 0;
         Quaternion rot = Quaternion.LookRotation(aimingDir);
-        
-        
+
+
         transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * _rotSpeed);
     }
 
