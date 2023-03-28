@@ -6,6 +6,7 @@ public class ProjectileBase : AmmunitionBase
     [SerializeField] protected float _moveSpeed;
     [SerializeField] protected float _effectRadius;
     [SerializeField] protected int _maxColliders;
+    [SerializeField] protected bool _splashDamage;
 
     protected Collider[] _hitColliders = default;
 
@@ -17,6 +18,9 @@ public class ProjectileBase : AmmunitionBase
     [SerializeField] protected LayerMask _mask;
     protected AmmunitionData _data;
 
+
+    private IShootableEntity _directShotEntity = null;
+
     private void Awake()
     {
         if (_hitColliders == null) _hitColliders = new Collider[_maxColliders];
@@ -24,6 +28,7 @@ public class ProjectileBase : AmmunitionBase
 
     public void Initialize(LayerMask mask, AmmunitionData data)
     {
+        _directShotEntity = null;
         _mask = mask;
         _data = data;
         _data.Type = AmmunitionType.Projectile;
@@ -54,6 +59,12 @@ public class ProjectileBase : AmmunitionBase
             transform.position += dir.normalized * _moveSpeed * Time.deltaTime;
             if (Physics.Linecast(_lastPos, transform.position, out RaycastHit hit, _mask))
             {
+                IShootableEntity direct = hit.collider.GetComponent<IShootableEntity>();
+                if (direct != null) 
+                {
+                    _directShotEntity = direct;
+                    _directShotEntity.OnShot((hit.collider.transform.position - transform.position).normalized, _data);
+                }
                 ReachedTarget();
                 yield break;
             }
@@ -67,7 +78,7 @@ public class ProjectileBase : AmmunitionBase
     protected virtual void ReachedTarget()
     {
         if (_flyRoutine != null) StopCoroutine(_flyRoutine);
-        DamageSurroundings();
+        if (_splashDamage) DamageSurroundings();
         Destroy(gameObject);
     }
 
@@ -76,9 +87,11 @@ public class ProjectileBase : AmmunitionBase
         int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _effectRadius, _hitColliders);
         for (int i = 0; i < numColliders; i++)
         {
-            IShootable shootable = _hitColliders[i].GetComponent<IShootable>();
+            IShootableEntity shootable = _hitColliders[i].GetComponent<IShootableEntity>();
             if (shootable != null)
             {
+                if (shootable == _directShotEntity) continue;
+
                 Vector3 dir = _hitColliders[i].transform.position - transform.position;
                 shootable.OnShot(dir.normalized, _data);
             }
@@ -95,6 +108,13 @@ public class ProjectileBase : AmmunitionBase
     {
         if ((_mask.value & (1 << other.transform.gameObject.layer)) > 0)
         {
+            IShootableEntity directShot = other.GetComponent<IShootableEntity>();
+            if (directShot != null)
+            {
+                _directShotEntity = directShot;
+                _directShotEntity.OnShot((other.transform.position - transform.position).normalized, _data);
+
+            }
             ReachedTarget();
         }
 

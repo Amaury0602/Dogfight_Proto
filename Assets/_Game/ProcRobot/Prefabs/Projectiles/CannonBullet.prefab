@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3461880171624143654}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3461880172047711929}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &3461880171624143650
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -39,7 +39,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3461880171624143654}
-  m_Mesh: {fileID: 4300000, guid: 3e34ed5de12890343a2700cd46e57d8a, type: 3}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &3461880171624143652
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3461880172047711929}
   - component: {fileID: 2988629236170161327}
-  - component: {fileID: 2589487833606146097}
+  - component: {fileID: 894539475}
   m_Layer: 6
   m_Name: CannonBullet
   m_TagString: Untagged
@@ -126,14 +126,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f80293c625d1a54292ff1f946f2741b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 150
-  _effectRadius: 5
-  _maxColliders: 10
+  _moveSpeed: 300
+  _effectRadius: 0
+  _maxColliders: 0
+  _splashDamage: 0
   _mask:
     serializedVersion: 2
     m_Bits: 0
---- !u!135 &2589487833606146097
-SphereCollider:
+--- !u!136 &894539475
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -142,6 +143,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.5
+  m_Radius: 0.89
+  m_Height: 2.45
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class Player : MonoBehaviour, IShootable
+public class Player : MonoBehaviour, IShootableEntity
 {
     [field: SerializeField] public int Health { get; private set; }
 
@@ -9,6 +9,8 @@ public class Player : MonoBehaviour, IShootable
 
 
     public static Player Instance;
+
+    [field: SerializeField] public Transform Body { get; private set; }
 
     public bool Alive => Health > 0;
 
@@ -25,7 +27,7 @@ public class Player : MonoBehaviour, IShootable
     {
         if (!Alive) return;
 
-        VirtualCameraHandler.Instance.Shake(0.25f, 0.25f, 0.1f);
+        VirtualCameraHandler.Instance.Shake(0.25f * data.Damage, 0.25f * data.Damage, 0.1f);
 
         OnTakeDamage?.Invoke(data.Damage);
 

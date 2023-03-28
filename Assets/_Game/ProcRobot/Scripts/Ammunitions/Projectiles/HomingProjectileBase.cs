@@ -28,9 +28,9 @@ public class HomingProjectileBase : ProjectileBase
         {
             dir = (target.position - transform.position).normalized;
 
-            float dProduct = Vector3.Dot(transform.forward, dir);
+            float dProduct = Vector3.Dot(dir, transform.forward);
 
-            if (dProduct > 0.2f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), _rotationSpeed * Time.deltaTime);
+            if (dProduct > 0.5f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), _rotationSpeed * Time.deltaTime);
 
             _lastPos = transform.position;
             transform.position += transform.forward * _moveSpeed * Time.deltaTime;

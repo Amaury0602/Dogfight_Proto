@@ -282,6 +282,7 @@ MonoBehaviour:
   _moveSpeed: 70
   _effectRadius: 4
   _maxColliders: 10
+  _splashDamage: 1
   _mask:
     serializedVersion: 2
     m_Bits: 0

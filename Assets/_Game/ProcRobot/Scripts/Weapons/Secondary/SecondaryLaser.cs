@@ -86,7 +86,7 @@ public class SecondaryLaser : SecondaryWeaponBase
         base.Shoot(hit);
         StartCoroutine(ReleaseBeam(hit.point));
 
-        IShootable shootable = hit.collider.GetComponent<IShootable>();
+        IShootableEntity shootable = hit.collider.GetComponent<IShootableEntity>();
         if (shootable != null)
         {
             Vector3 dir = hit.point - WeaponTransform.position;
