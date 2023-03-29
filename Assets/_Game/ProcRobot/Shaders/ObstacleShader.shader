@@ -8,6 +8,8 @@ Shader "Unlit/ObstacleShader"
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
+        ZWrite Off
+        ColorMask 0
 
         Pass
         {
