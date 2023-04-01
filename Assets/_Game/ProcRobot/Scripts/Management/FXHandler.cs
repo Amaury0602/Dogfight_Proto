@@ -36,10 +36,12 @@ public class FXHandler : MonoBehaviour
         ParticleSystem fx = PoolParty.Instantiate(_baseBulletFX, position, rotation);
         PoolParty.Destroy(fx, 2f);
     }
-    public void PlayDebris(Vector3 position, Quaternion rotation)
+    public void PlayDebris(Vector3 position, Quaternion rotation, int damage = 3)
     {
         //ParticleSystem p = big ? _bigBulletFX : _baseBulletFX;
         ParticleSystem fx = PoolParty.Instantiate(_debrisFX, position, rotation);
+        damage = Mathf.Min(damage, 15);
+        fx.Emit(damage);
         PoolParty.Destroy(fx, 10f);
     }
     

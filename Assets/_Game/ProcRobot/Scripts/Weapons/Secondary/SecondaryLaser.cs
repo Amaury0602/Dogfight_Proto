@@ -52,11 +52,7 @@ public class SecondaryLaser : SecondaryWeaponBase
     private IEnumerator ReleaseBeam(Vector3 endPoint)
     {
         StopCoroutine(_beamRoutine);
-
-
         VirtualCameraHandler.Instance.Shake(Mathf.Lerp(_minMaxShake.x, _minMaxShake.y, _currentPower), 0.1f, 0.25f);
-
-
         _chargeBeamFX.Stop();
 
         float duration = Mathf.Lerp(_minMaxDuration.x, _minMaxDuration.y, _currentPower);

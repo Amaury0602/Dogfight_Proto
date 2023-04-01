@@ -8,12 +8,21 @@ public class HitscanWeapon : WeaponBase
 
         SpawnBulletTrail(hit.point);
 
-        IShootableEntity shootable = hit.collider.GetComponent<IShootableEntity>();
-        if (shootable != null)
+        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("OBSTACLE"))
         {
-            Vector3 dir = hit.point - WeaponTransform.position;
-            shootable.OnShot(dir.normalized, Data);
+            FXHandler.Instance.PlayDebris(hit.point + hit.normal, Quaternion.LookRotation(hit.normal), Data.Damage);
         }
+        else
+        {
+            IShootableEntity shootable = hit.collider.GetComponent<IShootableEntity>();
+            if (shootable != null)
+            {
+                Vector3 dir = hit.point - WeaponTransform.position;
+                shootable.OnShot(dir.normalized, Data);
+            }
+        }
+
+        
     }
 
     protected override void PlayerShootInDirection(Vector3 dir)

@@ -46,10 +46,7 @@ Shader "Unlit/ObstacleShader"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                float dProduct = dot(i.normal, _WorldSpaceLightPos0);
-                dProduct = clamp(dProduct, 0.25, 1);
-                fixed3 col = _BaseColor * dProduct;
-                return fixed4(col, 1);
+                return _BaseColor;
             }
             ENDCG
         }

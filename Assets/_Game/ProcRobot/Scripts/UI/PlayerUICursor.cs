@@ -54,14 +54,6 @@ public class PlayerUICursor : MonoBehaviour
         _playerPlane = new Plane(Vector3.up, _playerHeightMarker.position);
     }
 
-    private void OnEnable()
-    {
-        PlayerInputs.Instance.OnMouseMove += Move;
-        //PlayerInputs.Instance.OnRightMouseDown += SwitchToSecondaryCursor;
-        //PlayerInputs.Instance.OnRightMouseUp += SwitchToBaseCursor;
-    }
-
-
     private void SwitchToBaseCursor()
     {
         _cursorImage.sprite = _baseCursor;
@@ -74,6 +66,8 @@ public class PlayerUICursor : MonoBehaviour
 
     private void Start()
     {
+        PlayerInputs.Instance.OnMouseMove += Move;
+
         _cam = Camera.main;
 
         _rectSize = new Vector3(_rect.rect.width * _rect.lossyScale.x, _rect.rect.height * _rect.lossyScale.y, 0);

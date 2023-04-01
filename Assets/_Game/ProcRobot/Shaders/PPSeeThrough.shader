@@ -45,11 +45,11 @@ Shader "Hidden/PPSeeThrough"
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
                 fixed4 renderTexCol = tex2D(_RenderTex, i.uv);
-                float playerHere = step(renderTexCol.a, 0);
+                float playerHere = step(renderTexCol.r, 1);
                 //// just invert the colors
                 //col.rgb = 1 - col.rgb;
 
-                col = col * playerHere;
+                //col.rgb = playerHere - col.rgb;
                 return col;
             }
             ENDCG

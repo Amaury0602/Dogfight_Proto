@@ -15,6 +15,8 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] protected float _recoil;
     [SerializeField] protected int _muzzleFlashParticleCount;
 
+    protected ShooterBase _shooter;
+
     [field: SerializeField] public AmmunitionData Data { get; private set; }
 
     protected bool _canShoot;
@@ -24,6 +26,16 @@ public abstract class WeaponBase : MonoBehaviour
 
     public Action OnShotFired = default;
 
+    [SerializeField] private WeaponShake _shake;
+
+    [Serializable]
+    public struct WeaponShake
+    {
+        public float Amplitude;
+        public float Frequency;
+        public float Duration;
+    }
+
     protected virtual void Awake()
     {
         _startLocalPosition = WeaponTransform.localPosition;
@@ -31,6 +43,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     public virtual void OnEquipped(ShooterBase shooter)
     {
+        _shooter = shooter;
         _canShoot = true;
         shooter.OnShoot += TryShoot;
         shooter.OnShotHoming += TryShootHoming;
@@ -45,6 +58,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (_canShoot)
         {
+            ShakeCamera();
             PlayerShootInDirection(dir);
             StartCoroutine(ResetFireCoolDown());
         }
@@ -61,6 +75,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (_canShoot)
         {
+            ShakeCamera();
             Shoot(hit);
             StartCoroutine(ResetFireCoolDown());
         }
@@ -70,6 +85,7 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (_canShoot)
         {
+            ShakeCamera();
             ShootHoming(target);
             StartCoroutine(ResetFireCoolDown());
         }
@@ -113,6 +129,14 @@ public abstract class WeaponBase : MonoBehaviour
         WeaponTransform
             .DOLocalMoveZ(WeaponTransform.localPosition.z - _recoil, 0.05f)
             .SetLoops(2, LoopType.Yoyo);
+    }
+
+    private void ShakeCamera()
+    {
+        if (_shooter is PlayerAim)
+        {
+            VirtualCameraHandler.Instance.Shake(_shake.Amplitude, _shake.Frequency, _shake.Duration);
+        }
     }
 
     protected virtual IEnumerator ResetFireCoolDown()

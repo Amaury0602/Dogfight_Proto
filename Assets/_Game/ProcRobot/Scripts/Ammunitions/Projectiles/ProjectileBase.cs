@@ -59,12 +59,21 @@ public class ProjectileBase : AmmunitionBase
             transform.position += dir.normalized * _moveSpeed * Time.deltaTime;
             if (Physics.Linecast(_lastPos, transform.position, out RaycastHit hit, _mask))
             {
-                IShootableEntity direct = hit.collider.GetComponent<IShootableEntity>();
-                if (direct != null) 
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("OBSTACLE"))
                 {
-                    _directShotEntity = direct;
-                    _directShotEntity.OnShot((hit.collider.transform.position - transform.position).normalized, _data);
+                    FXHandler.Instance.PlayDebris(hit.point + hit.normal, Quaternion.LookRotation(hit.normal), _data.Damage);
                 }
+                else
+                {
+                    IShootableEntity direct = hit.collider.GetComponent<IShootableEntity>();
+                    if (direct != null)
+                    {
+                        _directShotEntity = direct;
+                        _directShotEntity.OnShot((hit.collider.transform.position - transform.position).normalized, _data);
+                    }
+                }
+
+                
                 ReachedTarget();
                 yield break;
             }
@@ -108,6 +117,11 @@ public class ProjectileBase : AmmunitionBase
     {
         if ((_mask.value & (1 << other.transform.gameObject.layer)) > 0)
         {
+            if (other.gameObject.layer == LayerMask.NameToLayer("OBSTACLE"))
+            {
+                FXHandler.Instance.PlayDebris(transform.position - transform.forward, Quaternion.LookRotation(-transform.forward), _data.Damage);
+            }
+
             IShootableEntity directShot = other.GetComponent<IShootableEntity>();
             if (directShot != null)
             {
