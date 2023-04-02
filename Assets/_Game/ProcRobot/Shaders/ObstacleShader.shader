@@ -6,7 +6,8 @@ Shader "Unlit/ObstacleShader"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
+        Blend SrcAlpha OneMinusSrcAlpha
         LOD 100
         ZWrite Off
         ColorMask 0

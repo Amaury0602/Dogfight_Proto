@@ -27,6 +27,9 @@ Material:
         m_Texture: {fileID: 8400000, guid: fcb0ccb6a33e222419342c895c00b4b4, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
+    m_Floats:
+    - _StencilComp: 0
+    - _StencilPass: 0
+    - _StencilRef: 1
     m_Colors: []
   m_BuildTextureStacks: []

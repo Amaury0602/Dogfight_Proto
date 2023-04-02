@@ -1,26 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5935804052903897600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cd497f25e15a2a4c9738a2e68bbd6a6, type: 3}
-  m_Name: PostProcessSeeThrough
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  settings:
-    renderPassEvent: 550
-    blitMaterial: {fileID: 2100000, guid: 52281d89f5ec3c94e98f9e0bb02c1f9b, type: 2}
-    blitMaterialPassIndex: -1
-    sourceType: 0
-    destinationType: 0
-    sourceTextureId: _SourceTexture
-    destinationTextureId: _DestinationTexture
 --- !u!114 &-4591535914959344509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: Mask
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   settings:
     passTag: Mask
     Event: 250
@@ -46,8 +25,8 @@ MonoBehaviour:
     overrideMaterial: {fileID: 2100000, guid: f279c3d54d56b4b4ea09d8654c91d6fc, type: 2}
     overrideMaterialPassIndex: 0
     overrideDepthState: 0
-    depthCompareFunction: 4
-    enableWrite: 1
+    depthCompareFunction: 5
+    enableWrite: 0
     stencilSettings:
       overrideStencilState: 1
       stencilReference: 1
@@ -75,8 +54,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -4591535914959344509}
   - {fileID: 7050550545423122847}
-  - {fileID: -5935804052903897600}
-  m_RendererFeatureMap: 836c668f699647c09fc1e19a5d96d86100d656c2a9c99fad
+  - {fileID: 4702474842023593452}
+  m_RendererFeatureMap: 836c668f699647c09fc1e19a5d96d861ec05073cf48b4241
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   shaders:
     blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
@@ -90,7 +69,7 @@ MonoBehaviour:
     materialErrorPS: {fileID: 4800000, guid: 5fd9a8feb75a4b5894c241777f519d4e, type: 3}
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 5887
   m_TransparentLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -125,6 +104,27 @@ MonoBehaviour:
     destinationType: 0
     sourceTextureId: _SourceTexture
     destinationTextureId: _DestinationTexture
+--- !u!114 &4702474842023593452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd497f25e15a2a4c9738a2e68bbd6a6, type: 3}
+  m_Name: PostProcessSeeThrough
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    renderPassEvent: 600
+    blitMaterial: {fileID: 2100000, guid: 52281d89f5ec3c94e98f9e0bb02c1f9b, type: 2}
+    blitMaterialPassIndex: -1
+    sourceType: 0
+    destinationType: 0
+    sourceTextureId: _SourceTexture
+    destinationTextureId: _DestinationTexture
 --- !u!114 &7050550545423122847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,10 +137,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: SeeThrough
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   settings:
     passTag: SeeThrough
-    Event: 600
+    Event: 300
     filterSettings:
       RenderQueueType: 0
       LayerMask:
@@ -163,4 +163,4 @@ MonoBehaviour:
       overrideCamera: 0
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
+      cameraFieldOfView: 22.3

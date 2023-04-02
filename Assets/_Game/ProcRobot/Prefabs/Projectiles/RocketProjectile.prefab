@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb6b3e41f60c3742a05e47aa81d76bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 50
+  _moveSpeed: 125
   _effectRadius: 4
   _maxColliders: 10
   _splashDamage: 1

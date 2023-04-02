@@ -1825,7 +1825,7 @@ MonoBehaviour:
   <WeaponTransform>k__BackingField: {fileID: 4253063385549384873}
   Cannon: {fileID: 4253063386995042208}
   _muzzleFlash: {fileID: 4253063385318734071}
-  _fireCD: 0.25
+  _fireCD: 0.75
   _recoil: 3
   _muzzleFlashParticleCount: 3
   <Data>k__BackingField: {fileID: 11400000, guid: ada6affdba9bd6f4b9252fc0e0920636, type: 2}
@@ -1954,9 +1954,9 @@ MonoBehaviour:
   _muzzleFlashParticleCount: 3
   <Data>k__BackingField: {fileID: 11400000, guid: 1af95d499d872bd4f9e4eea0bcc3b88f, type: 2}
   _shake:
-    Amplitude: 1
-    Frequency: 1
-    Duration: 0.15
+    Amplitude: 0.5
+    Frequency: 0.5
+    Duration: 0.1
 --- !u!1001 &4253063385300329387
 PrefabInstance:
   m_ObjectHideFlags: 0

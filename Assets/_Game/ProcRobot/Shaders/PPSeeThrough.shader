@@ -4,6 +4,10 @@ Shader "Hidden/PPSeeThrough"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _RenderTex("RenderTexture", 2D) = "white" {}
+
+        _StencilRef("Stencil Reference", Range(0, 255)) = 1
+        _StencilComp("Stencil Comparison", Range(0, 6)) = 2
+        _StencilPass("Stencil Pass", Range(0, 6)) = 3
     }
     SubShader
     {
@@ -12,6 +16,15 @@ Shader "Hidden/PPSeeThrough"
 
         Pass
         {
+
+            Stencil
+            {
+                Ref[_StencilRef]
+                Comp[_StencilComp]
+                Pass[_StencilPass]
+            }
+
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -39,17 +52,27 @@ Shader "Hidden/PPSeeThrough"
             }
 
             sampler2D _MainTex;
+            sampler2D _SourceTexture;
+            sampler2D _CameraDepthTexture; 
+            sampler2D _DestinationTexture;
             sampler2D _RenderTex;
 
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
                 fixed4 renderTexCol = tex2D(_RenderTex, i.uv);
-                float playerHere = step(renderTexCol.r, 1);
+
+
+                float depth = Linear01Depth(tex2D(_CameraDepthTexture, i.uv));
+                /*fixed4 renderTexCol = tex2D(_RenderTex, i.uv);
+                float playerHere = step(renderTexCol.r, 1);*/
                 //// just invert the colors
                 //col.rgb = 1 - col.rgb;
 
                 //col.rgb = playerHere - col.rgb;
+                //return fixed4(depth, depth, depth, 1);
+                float maskHere = step(renderTexCol.r, 0);
+                col = lerp(1 - col, col, maskHere);
                 return col;
             }
             ENDCG
